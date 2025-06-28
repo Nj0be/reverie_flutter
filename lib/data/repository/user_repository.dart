@@ -2,8 +2,8 @@ import 'package:reverie_flutter/storage_service.dart';
 
 import '../model/user.dart';
 
-class DiaryRepository {
-  DiaryRepository({required StorageService storage})
+class UserRepository {
+  UserRepository({required StorageService storage})
       : _storage = storage;
 
   late final StorageService _storage;
