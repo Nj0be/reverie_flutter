@@ -1,7 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 // firebase
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
+import 'package:reverie_flutter/data/repository/diary_repository.dart';
+import 'package:reverie_flutter/storage_service.dart';
 import 'package:reverie_flutter/themes/colors.dart';
 import 'firebase_options.dart';
 
@@ -10,7 +14,21 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+
+  runApp(
+    MultiProvider(
+      providers: [
+        Provider(create: (context) => FirebaseFirestore.instance),
+        Provider(create: (context) => StorageService(
+          firestore: context.read()
+        )),
+        Provider(create: (context) => DiaryRepository(
+            storage: context.read()
+        )),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -39,7 +57,7 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: AppColors.secondary),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Reverie'),
     );
   }
 }
@@ -86,7 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Reverie'),
+        title: Text(widget.title),
         centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         // actions: <Widget>[
