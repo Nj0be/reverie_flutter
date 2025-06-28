@@ -3,10 +3,14 @@ import 'package:flutter/material.dart';
 
 // firebase
 import 'package:firebase_core/firebase_core.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:reverie_flutter/data/repository/user_repository.dart';
 import 'package:reverie_flutter/storage_service.dart';
-import 'package:reverie_flutter/themes/colors.dart';
+import 'package:reverie_flutter/navigation/diary_route.dart';
+import 'package:reverie_flutter/navigation/profile_route.dart';
+import 'package:reverie_flutter/ui/themes/colors.dart';
+import 'package:reverie_flutter/ui/screens/all_diaries_screen.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -26,10 +30,41 @@ Future<void> main() async {
             storage: context.read()
         )),
       ],
-      child: const MyApp(),
+      child: MyApp(),
     ),
   );
 }
+
+final _router = GoRouter(
+  initialLocation: '/',
+  routes: [
+    ShellRoute(
+      builder: (
+          BuildContext context,
+          GoRouterState state,
+          Widget child,
+          ) {
+        return MainScaffold(
+          title: 'Reverie',
+          child: child,
+          currentPath: state.uri.path,
+        );
+      },
+      routes: [
+        GoRoute(
+          name: 'view_all_diaries',
+          path: '/',
+          builder: (context, state) => const AllDiariesScreen()
+        ),
+        GoRoute(
+            name: 'view_profile',
+            path: '/profile',
+            builder: (context, state) => Center(child: Text('Sei nel tuo Profilo'))
+        ),
+      ],
+    ),
+  ],
+);
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -37,132 +72,69 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
+    return MaterialApp.router(
+      title: 'Reverie',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: AppColors.secondary),
       ),
-      home: const MyHomePage(title: 'Reverie'),
+      routerConfig: _router,
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
+class MainScaffold extends StatefulWidget {
   final String title;
+  final Widget child;
+  final String currentPath;
+
+  const MainScaffold({
+    super.key,
+    required this.title,
+    required this.child,
+    required this.currentPath
+  });
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<MainScaffold> createState() => _MainScaffoldState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
+class _MainScaffoldState extends State<MainScaffold> {
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+    final path = widget.currentPath;
+
+    // Determina index attuale basato sulla route
+    final currentIndex = switch (path) {
+      '/profile' => 1,
+      _ => 0,
+    };
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
         centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // actions: <Widget>[
-        //   IconButton(
-        //     icon: const Icon(Icons.account_circle),
-        //     onPressed: () {
-        //       // Esempio: naviga alla pagina del profilo
-        //       // Navigator.pushNamed(context, '/profile');
-        //     },
-        //   )
-        // ]
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+      body: widget.child,
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: const [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: AppColors.background,
+              ),
+              child: Text('Impostazioni'),
+            ),
+            ListTile(
+              leading: Icon(Icons.help_outline),
+              title: Text('Aiuto e Feedbacks'),
             ),
           ],
         ),
       ),
-      drawer:  Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            DrawerHeader(
-            decoration: BoxDecoration(
-              color: AppColors.background,
-            ),
-            child: Text('Impostazioni'),
-            ),
-            ListTile(
-              leading: const Icon(Icons.help_outline),
-              title: const Text('Aiuto e Feedbacks')
-            )
-          ]
-        ),
-      ),
-      bottomNavigationBar:  BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
+      bottomNavigationBar: BottomNavigationBar(
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.menu_book),
             label: 'Diaries',
@@ -172,31 +144,20 @@ class _MyHomePageState extends State<MyHomePage> {
             label: 'Profile',
           ),
         ],
-        currentIndex: _selectedIndex,
+        currentIndex: currentIndex,
         selectedItemColor: AppColors.secondary,
-        onTap: _onItemTapped,
+        onTap: (index) {
+          if (index == currentIndex) return;
+          switch (index) {
+            case 0:
+              context.go('/');
+              break;
+            case 1:
+              context.go('/profile');
+              break;
+          }
+        },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
-  }
-
-  int _selectedIndex = 0;
-  void _onItemTapped(int index) {
-    setState(() {
-      switch (_selectedIndex) {
-        case 0:
-          _selectedIndex = 1;
-          break;
-        case 1:
-          _selectedIndex = 0;
-          break;
-        default:
-          _selectedIndex = 0;
-      }
-    });
   }
 }
