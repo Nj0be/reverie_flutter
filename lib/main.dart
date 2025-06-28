@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 // firebase
 import 'package:firebase_core/firebase_core.dart';
+import 'package:reverie_flutter/themes/colors.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
         //
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: AppColors.secondary),
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
@@ -131,7 +132,7 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             DrawerHeader(
             decoration: BoxDecoration(
-              color: Colors.blue,
+              color: AppColors.background,
             ),
             child: Text('Impostazioni'),
             ),
@@ -154,7 +155,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
+        selectedItemColor: AppColors.secondary,
         onTap: _onItemTapped,
       ),
       floatingActionButton: FloatingActionButton(
