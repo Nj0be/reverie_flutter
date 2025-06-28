@@ -85,13 +85,18 @@ class _MyHomePageState extends State<MyHomePage> {
     // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
+        title: const Text('Reverie'),
+        centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        // actions: <Widget>[
+        //   IconButton(
+        //     icon: const Icon(Icons.account_circle),
+        //     onPressed: () {
+        //       // Esempio: naviga alla pagina del profilo
+        //       // Navigator.pushNamed(context, '/profile');
+        //     },
+        //   )
+        // ]
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
@@ -120,11 +125,59 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
+      drawer:  Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+            decoration: BoxDecoration(
+              color: Colors.blue,
+            ),
+            child: Text('Impostazioni'),
+            ),
+            ListTile(
+              leading: const Icon(Icons.help_outline),
+              title: const Text('Aiuto e Feedbacks')
+            )
+          ]
+        ),
+      ),
+      bottomNavigationBar:  BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.menu_book),
+            label: 'Diaries',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.amber[800],
+        onTap: _onItemTapped,
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  int _selectedIndex = 0;
+  void _onItemTapped(int index) {
+    setState(() {
+      switch (_selectedIndex) {
+        case 0:
+          _selectedIndex = 1;
+          break;
+        case 1:
+          _selectedIndex = 0;
+          break;
+        default:
+          _selectedIndex = 0;
+      }
+    });
   }
 }
