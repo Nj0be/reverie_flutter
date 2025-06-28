@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:reverie_flutter/data/repository/diary_repository.dart';
 import 'package:reverie_flutter/data/repository/user_repository.dart';
 import 'package:reverie_flutter/storage_service.dart';
 import 'package:reverie_flutter/navigation/diary_route.dart';
@@ -27,6 +28,9 @@ Future<void> main() async {
           firestore: context.read()
         )),
         Provider(create: (context) => UserRepository(
+            storage: context.read()
+        )),
+        Provider(create: (context) => DiaryRepository(
             storage: context.read()
         )),
       ],

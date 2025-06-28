@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:reverie_flutter/data/model/diary.dart';
 import 'dart:async';
 
 import 'data/model/user.dart';
@@ -20,6 +21,12 @@ class StorageService {
     final doc = await _firestore.collection(usersCollection).doc(userId).get();
     if (!doc.exists) return null;
     return User.fromFirestore(doc);
+  }
+
+  Future<Diary?> getDiary(String diaryId) async {
+    final doc = await _firestore.collection(diariesCollection).doc(diaryId).get();
+    if (!doc.exists) return null;
+    return Diary.fromFirestore(doc);
   }
 
 /*
