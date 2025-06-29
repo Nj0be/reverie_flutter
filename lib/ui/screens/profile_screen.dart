@@ -16,11 +16,11 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final uiState = context.watch<ProfileViewModel>().uiState;
 
-    if (uiState is LoadingState) {
+    if (uiState is ProfileLoadingState) {
       return const Center(child: CircularProgressIndicator());
     }
 
-    if (uiState is ErrorState) {
+    if (uiState is ProfileErrorState) {
       return Center(
         child: Text(
           'Error: ${uiState.message}',
@@ -29,7 +29,7 @@ class ProfileScreen extends StatelessWidget {
       );
     }
 
-    if (uiState is SuccessState) {
+    if (uiState is ProfileSuccessState) {
       final profile = uiState.profile;
       final isOwner = uiState.isOwner;
 

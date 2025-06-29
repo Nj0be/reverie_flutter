@@ -11,9 +11,11 @@ import 'package:reverie_flutter/data/repository/user_repository.dart';
 import 'package:reverie_flutter/storage_service.dart';
 import 'package:reverie_flutter/navigation/diary_route.dart';
 import 'package:reverie_flutter/navigation/profile_route.dart';
+import 'package:reverie_flutter/ui/screens/edit_profile_screen.dart';
 import 'package:reverie_flutter/ui/screens/profile_screen.dart';
 import 'package:reverie_flutter/ui/themes/colors.dart';
 import 'package:reverie_flutter/ui/screens/all_diaries_screen.dart';
+import 'package:reverie_flutter/viewmodel/edit_profile_viewmodel.dart';
 import 'package:reverie_flutter/viewmodel/profile_viewmodel.dart';
 import 'firebase_options.dart';
 
@@ -76,10 +78,34 @@ final _router = GoRouter(
               ),
               child: ProfileScreen(
                 onEditProfile: (id) {
-                  // gestione edit profile
+                  context.goNamed(
+                    'edit_profile',
+                    pathParameters: {'profileId': id},
+                  );
                 },
                 onLogout: (id) {
                   // gestione logout
+                },
+              ),
+            );
+          },
+        ),
+        // Aggiungi questa rotta per edit_profile:
+        GoRoute(
+          name: 'edit_profile',
+          path: '/profile/:profileId/edit',
+          builder: (context, state) {
+            final profileId = state.pathParameters['profileId']!;
+            return ChangeNotifierProvider(
+              create: (_) => EditProfileViewModel(
+                repository: context.read<UserRepository>(),
+                profileId: profileId,
+                context: context,
+              ),
+              child: EditProfileScreen(
+                onComplete: (updatedProfile) {
+                  // Torna alla pagina del profilo dopo modifica
+                  context.goNamed('view_profile', pathParameters: {'profileId': updatedProfile.id});
                 },
               ),
             );

@@ -9,19 +9,19 @@ enum ProfileStatus { loading, success, error }
 // Sealed Class in Flutter
 abstract class ProfileUiState {}
 
-class LoadingState extends ProfileUiState {}
+class ProfileLoadingState extends ProfileUiState {}
 
-class SuccessState extends ProfileUiState {
+class ProfileSuccessState extends ProfileUiState {
   final User profile;
   final bool isOwner;
 
-  SuccessState(this.profile, this.isOwner);
+  ProfileSuccessState(this.profile, this.isOwner);
 }
 
-class ErrorState extends ProfileUiState {
+class ProfileErrorState extends ProfileUiState {
   final String message;
 
-  ErrorState(this.message);
+  ProfileErrorState(this.message);
 }
 //
 
@@ -30,7 +30,7 @@ class ProfileViewModel extends ChangeNotifier {
   final fb.FirebaseAuth auth;
   final String profileId;
 
-  ProfileUiState _uiState = LoadingState();
+  ProfileUiState _uiState = ProfileLoadingState();
   ProfileUiState get uiState => _uiState;
 
   ProfileViewModel({
@@ -44,18 +44,18 @@ class ProfileViewModel extends ChangeNotifier {
   Future<void> _loadProfile() async {
     try {
       final user = await userRepository.getUser(profileId);
-      final isOwner = auth.currentUser?.uid == user.id;
-      // final isOwner = true; // for testing only, before login implementation
-      _uiState = SuccessState(user, isOwner);
+      // final isOwner = auth.currentUser?.uid == user.id;
+      final isOwner = true; // for testing only, before login implementation
+      _uiState = ProfileSuccessState(user, isOwner);
     } catch (e) {
-      _uiState = ErrorState(e.toString());
+      _uiState = ProfileErrorState(e.toString());
     }
     notifyListeners();
   }
 
   void overwriteProfile(User? profile) {
     if (profile != null) {
-      _uiState = SuccessState(profile, true);
+      _uiState = ProfileSuccessState(profile, true);
       notifyListeners();
     }
   }

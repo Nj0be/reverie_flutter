@@ -35,4 +35,48 @@ class User {
           data['receivedTimeCapsuleIds'] ?? []),
     );
   }
+
+  factory User.empty() => User(
+    id: '',
+    email: '',
+    username: '',
+    name: '',
+    surname: '',
+    diaryIds: [],
+    sentTimeCapsuleIds: [],
+    receivedTimeCapsuleIds: [],
+  );
+
+  User copyWith({
+    String? id,
+    String? email,
+    String? username,
+    String? name,
+    String? surname,
+    List<String>? diaryIds,
+    List<String>? sentTimeCapsuleIds,
+    List<String>? receivedTimeCapsuleIds,
+  }) {
+    return User(
+      id: id ?? this.id,
+      email: email ?? this.email,
+      username: username ?? this.username,
+      name: name ?? this.name,
+      surname: surname ?? this.surname,
+      diaryIds: diaryIds ?? this.diaryIds,
+      sentTimeCapsuleIds: sentTimeCapsuleIds ?? this.sentTimeCapsuleIds,
+      receivedTimeCapsuleIds: receivedTimeCapsuleIds ?? this.receivedTimeCapsuleIds,
+    );
+  }
+  Map<String, dynamic> toMap() {
+    return {
+      'email': email,
+      'username': username,
+      'name': name,
+      'surname': surname,
+      'diaryIds': diaryIds,
+      'sentTimeCapsuleIds': sentTimeCapsuleIds,
+      'receivedTimeCapsuleIds': receivedTimeCapsuleIds,
+    };
+  }
 }

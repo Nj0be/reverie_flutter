@@ -29,6 +29,36 @@ class StorageService {
     return Diary.fromFirestore(doc);
   }
 
+  Future<bool> isUsernameTaken(String username) async {
+    final docSnapshot = await _firestore.collection(emailsCollection).doc(username).get();
+    return docSnapshot.data() != null;
+  }
+
+  Future<void> updateUser(User user) async {
+
+    final userRef = _firestore.collection(usersCollection).doc(user.id);
+
+    await _firestore.runTransaction((transaction) async {
+      final oldUserSnapshot = await transaction.get(userRef);
+      final oldUser = oldUserSnapshot.exists ? User.fromFirestore(oldUserSnapshot) : null;
+
+      if (oldUser != null && user.username != oldUser.username) {
+        final usernameRef = _firestore.collection(usersCollection).doc(user.username);
+
+        final usernameSnapshot = await transaction.get(usernameRef);
+        if (usernameSnapshot.exists) {
+          throw Exception('Username già in uso');
+        }
+
+        final oldUsernameRef = _firestore.collection(usersCollection).doc(oldUser.username);
+        transaction.delete(oldUsernameRef);
+
+        transaction.set(usernameRef, {'uid': user.id});
+      }
+
+      transaction.set(userRef, user.toMap());
+    });
+  }
 /*
   Future<String?> saveUser(User user) async {
     try {

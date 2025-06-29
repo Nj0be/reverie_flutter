@@ -15,4 +15,12 @@ class UserRepository {
     }
     return user;
   }
+
+  Future<bool> isUsernameTaken(String username) async {
+    return await _storage.isUsernameTaken(username);
+  }
+
+  Future<void> updateUser(User user) async {
+    await _storage.updateUser(user);
+  }
 }
