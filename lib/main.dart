@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 // firebase
@@ -10,8 +11,10 @@ import 'package:reverie_flutter/data/repository/user_repository.dart';
 import 'package:reverie_flutter/storage_service.dart';
 import 'package:reverie_flutter/navigation/diary_route.dart';
 import 'package:reverie_flutter/navigation/profile_route.dart';
+import 'package:reverie_flutter/ui/screens/profile_screen.dart';
 import 'package:reverie_flutter/ui/themes/colors.dart';
 import 'package:reverie_flutter/ui/screens/all_diaries_screen.dart';
+import 'package:reverie_flutter/viewmodel/profile_viewmodel.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -61,9 +64,26 @@ final _router = GoRouter(
           builder: (context, state) => const AllDiariesScreen()
         ),
         GoRoute(
-            name: 'view_profile',
-            path: '/profile',
-            builder: (context, state) => Center(child: Text('Sei nel tuo Profilo'))
+          name: 'view_profile',
+          path: '/profile/:profileId',  // param dinamico
+          builder: (context, state) {
+            final profileId = state.pathParameters['profileId']!;
+            return ChangeNotifierProvider(
+              create: (_) => ProfileViewModel(
+                userRepository: context.read<UserRepository>(),
+                auth: FirebaseAuth.instance,
+                profileId: profileId,
+              ),
+              child: ProfileScreen(
+                onEditProfile: (id) {
+                  // gestione edit profile
+                },
+                onLogout: (id) {
+                  // gestione logout
+                },
+              ),
+            );
+          },
         ),
       ],
     ),
@@ -109,7 +129,7 @@ class _MainScaffoldState extends State<MainScaffold> {
 
     // Determina index attuale basato sulla route
     final currentIndex = switch (path) {
-      '/profile' => 1,
+      _ when path.startsWith('/profile') => 1,
       _ => 0,
     };
 
@@ -157,7 +177,19 @@ class _MainScaffoldState extends State<MainScaffold> {
               context.go('/');
               break;
             case 1:
-              context.go('/profile');
+              // final userId = FirebaseAuth.instance.currentUser?.uid;
+              final userId = '86GXIqMY3oA2YTXdISX4'; // userId for testing before login implementation
+              if (userId != null) {
+                context.goNamed(
+                  'view_profile',
+                  pathParameters: {'profileId': userId},
+                );
+              } else {
+                // L'utente non è loggato
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Utente non autenticato')),
+                );
+              }
               break;
           }
         },
