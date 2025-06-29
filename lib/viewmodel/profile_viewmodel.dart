@@ -45,6 +45,7 @@ class ProfileViewModel extends ChangeNotifier {
     try {
       final user = await userRepository.getUser(profileId);
       final isOwner = auth.currentUser?.uid == user.id;
+      // final isOwner = true; // for testing only, before login implementation
       _uiState = SuccessState(user, isOwner);
     } catch (e) {
       _uiState = ErrorState(e.toString());
