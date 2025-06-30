@@ -179,29 +179,29 @@ class _MainScaffoldState extends State<MainScaffold> {
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
-          children: const [
+          children: [
             DrawerHeader(
               decoration: BoxDecoration(
                 color: AppColors.background,
               ),
-              child: Text('Impostazioni'),
+              child: Text(AppLocalizations.of(context)!.settings),
             ),
             ListTile(
               leading: Icon(Icons.help_outline),
-              title: Text('Aiuto e Feedbacks'),
+              title: Text(AppLocalizations.of(context)!.help),
             ),
           ],
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: const [
+        items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.menu_book),
-            label: 'Diaries',
+            label: AppLocalizations.of(context)!.diariesNavigationButton,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
-            label: 'Profile',
+            label: AppLocalizations.of(context)!.profileNavigationButton,
           ),
         ],
         currentIndex: currentIndex,
@@ -223,7 +223,7 @@ class _MainScaffoldState extends State<MainScaffold> {
               } else {
                 // L'utente non è loggato
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Utente non autenticato')),
+                   SnackBar(content: Text(AppLocalizations.of(context)!.userNotAuthenticated)),
                 );
               }
               break;

@@ -8,5 +8,10 @@
     "editProfileButton": "Modifica",
     "errorMessage": "Errore",
     "logoutButton": "Logout",
-    "saveButton": "Salva"
+    "saveButton": "Salva",
+    "settings": "Impostazioni",
+    "help": "Aiuto e Feedbacks",
+    "diariesNavigationButton": "Diari",
+    "profileNavigationButton": "Profilo",
+    "userNotAuthenticated": "Utente non autenticato"
 }

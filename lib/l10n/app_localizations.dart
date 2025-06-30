@@ -157,6 +157,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Save'**
   String get saveButton;
+
+  /// No description provided for @settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settings;
+
+  /// No description provided for @help.
+  ///
+  /// In en, this message translates to:
+  /// **'Help and Feedbacks'**
+  String get help;
+
+  /// No description provided for @diariesNavigationButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Diaries'**
+  String get diariesNavigationButton;
+
+  /// No description provided for @profileNavigationButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profileNavigationButton;
+
+  /// No description provided for @userNotAuthenticated.
+  ///
+  /// In en, this message translates to:
+  /// **'User not authenticated'**
+  String get userNotAuthenticated;
 }
 
 class _AppLocalizationsDelegate

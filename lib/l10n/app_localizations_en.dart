@@ -37,4 +37,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get saveButton => 'Save';
+
+  @override
+  String get settings => 'Settings';
+
+  @override
+  String get help => 'Help and Feedbacks';
+
+  @override
+  String get diariesNavigationButton => 'Diaries';
+
+  @override
+  String get profileNavigationButton => 'Profile';
+
+  @override
+  String get userNotAuthenticated => 'User not authenticated';
 }
