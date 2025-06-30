@@ -64,9 +64,9 @@ class LoginNotifier extends StateNotifier<LoginState> {
     // Clear any form-wide errors
     // Validate individual inputs
     state = state.copyWith(
-      formError: '',
       emailError: validateEmail(state.email),
       passwordError: validatePassword(state.password),
+      formError: '',
     );
 
     if (state.emailError.isNotEmpty || state.passwordError.isNotEmpty) {

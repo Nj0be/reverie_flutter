@@ -6,7 +6,7 @@ import '../../notifier/profile_notifier.dart';
 
 class ProfileScreen extends ConsumerWidget {
   final void Function(String) onEditProfile;
-  final void Function(String) onLogout;
+  final void Function() onLogout;
 
   const ProfileScreen({
     super.key,
@@ -60,7 +60,7 @@ class ProfileScreen extends ConsumerWidget {
                     ),
                     const SizedBox(height: 24),
                     ElevatedButton(
-                      onPressed: () => onLogout(profile.id),
+                      onPressed: () => onLogout(),
                       child: Text(AppLocalizations.of(context)!.logout),
                     ),
                   ],

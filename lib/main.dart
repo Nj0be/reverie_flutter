@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:reverie_flutter/ui/screens/edit_profile_screen.dart';
 import 'package:reverie_flutter/ui/screens/login_screen.dart';
 import 'package:reverie_flutter/ui/screens/profile_screen.dart';
+import 'package:reverie_flutter/ui/screens/signup_screen.dart';
 import 'package:reverie_flutter/ui/themes/colors.dart';
 import 'package:reverie_flutter/ui/screens/all_diaries_screen.dart';
 import 'package:reverie_flutter/utils.dart';
@@ -63,8 +64,9 @@ final _router = GoRouter(
                     pathParameters: {'profileId': id},
                   );
                 },
-                onLogout: (id) {
-                  // Handle logout
+                onLogout: () {
+                  logout();
+                  context.goNamed('login');
                 },
               ),
             );
@@ -106,8 +108,32 @@ final _router = GoRouter(
                     'view_all_diaries',
                   );
                 },
-                onNavigateToRegister: (){},
+                onNavigateToSignup: (){
+                  context.goNamed('signup');
+                },
                 onNavigateToResetPassword: (){},
+              ),
+            );
+          },
+        ),
+
+        GoRoute(
+          name: 'signup',
+          path: '/signup',
+          builder: (context, state) {
+            return ProviderScope(
+              child: SignupScreen(
+                onSignupSuccess: () {
+                  // handle signup success
+                  context.goNamed(
+                    'login',
+                  );
+                },
+                onNavigateToLogin: (){
+                  context.goNamed(
+                    'login',
+                  );
+                },
               ),
             );
           },
