@@ -175,11 +175,11 @@ class _MainScaffoldState extends State<MainScaffold> {
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.menu_book),
-            label: AppLocalizations.of(context)!.diariesNavigationButton,
+            label: AppLocalizations.of(context)!.allDiaries,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
-            label: AppLocalizations.of(context)!.profileNavigationButton,
+            label: AppLocalizations.of(context)!.profile,
           ),
         ],
         currentIndex: currentIndex,
@@ -201,7 +201,7 @@ class _MainScaffoldState extends State<MainScaffold> {
               } else {
                 // L'utente non è loggato
                 ScaffoldMessenger.of(context).showSnackBar(
-                   SnackBar(content: Text(AppLocalizations.of(context)!.userNotAuthenticated)),
+                   SnackBar(content: Text("User not authenticated")),
                 );
               }
               break;

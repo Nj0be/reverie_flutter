@@ -87,5 +87,8 @@
     "editDiaryPage": "Modifica pagina di diario",
     "add": "Aggiungi",
     "enterPhoneNumber": "Inserisci un numero di telefono",
-    "enterEmail": "Inserisci un'email"
+    "enterEmail": "Inserisci un'email",
+    "errorMessage": "Errore",
+    "settings": "Impostazioni",
+    "help": "Aiuto e Feedbacks"
 }

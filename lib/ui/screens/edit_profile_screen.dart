@@ -35,7 +35,7 @@ class EditProfileScreen extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                AppLocalizations.of(context)!.editProfileTitle,
+                AppLocalizations.of(context)!.editProfile,
                 // o usa localization
                 style: Theme
                     .of(context)
@@ -74,18 +74,18 @@ class EditProfileScreen extends ConsumerWidget {
 
               ElevatedButton(
                 onPressed: () => notifier.onSaveProfile(onComplete),
-                child: Text(AppLocalizations.of(context)!.saveButton),
+                child: Text(AppLocalizations.of(context)!.save),
               ),
 
-              if (data.editError.isNotEmpty) ErrorField(
-                  errorMessage: data.editError),
+              if (data.formError.isNotEmpty) ErrorField(
+                  errorMessage: data.formError),
             ],
           ),
         );
       },
       error: (error, _) {
         return Center(child: Text(
-            '${AppLocalizations.of(context)!.errorMessage}: ${error
+            '${AppLocalizations.of(context)!.error}: ${error
                 .toString()}'));
       },
       loading: () {

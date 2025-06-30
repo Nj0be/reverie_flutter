@@ -7,3 +7,8 @@ Timestamp timestampFromJson(Object json) {
 }
 
 Timestamp? timestampToJson(Timestamp? timestamp) => timestamp;
+
+bool isEmailValid(String email) {
+  final emailRegex = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
+  return emailRegex.hasMatch(email);
+}

@@ -17,7 +17,7 @@ abstract class EditProfileState with _$EditProfileState {
     @Default('') String nameError,
     @Default('') String surname,
     @Default('') String surnameError,
-    @Default('') String editError,
+    @Default('') String formError,
   }) = _EditProfileState;
 }
 
