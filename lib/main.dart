@@ -9,8 +9,6 @@ import 'package:provider/provider.dart';
 import 'package:reverie_flutter/data/repository/diary_repository.dart';
 import 'package:reverie_flutter/data/repository/user_repository.dart';
 import 'package:reverie_flutter/storage_service.dart';
-import 'package:reverie_flutter/navigation/diary_route.dart';
-import 'package:reverie_flutter/navigation/profile_route.dart';
 import 'package:reverie_flutter/ui/screens/edit_profile_screen.dart';
 import 'package:reverie_flutter/ui/screens/profile_screen.dart';
 import 'package:reverie_flutter/ui/themes/colors.dart';
