@@ -310,4 +310,13 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get enterEmail => 'Inserisci un\'email';
+
+  @override
+  String get errorMessage => 'Errore';
+
+  @override
+  String get settings => 'Impostazioni';
+
+  @override
+  String get help => 'Aiuto e Feedbacks';
 }

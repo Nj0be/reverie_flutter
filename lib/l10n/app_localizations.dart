@@ -691,6 +691,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Enter an email'**
   String get enterEmail;
+
+  /// No description provided for @errorMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get errorMessage;
+
+  /// No description provided for @settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settings;
+
+  /// No description provided for @help.
+  ///
+  /// In en, this message translates to:
+  /// **'Help and Feedbacks'**
+  String get help;
 }
 
 class _AppLocalizationsDelegate

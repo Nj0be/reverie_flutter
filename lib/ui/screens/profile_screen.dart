@@ -32,7 +32,7 @@ class ProfileScreen extends ConsumerWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    isOwner ? AppLocalizations.of(context)!.viewYourProfileTitle : AppLocalizations.of(context)!.viewProfileTitle,
+                    isOwner ? AppLocalizations.of(context)!.yourProfile : AppLocalizations.of(context)!.profile,
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -56,12 +56,12 @@ class ProfileScreen extends ConsumerWidget {
                   if (isOwner) ...[
                     ElevatedButton(
                       onPressed: () => onEditProfile(profile.id),
-                      child: Text(AppLocalizations.of(context)!.editProfileButton),
+                      child: Text(AppLocalizations.of(context)!.editProfile),
                     ),
                     const SizedBox(height: 24),
                     ElevatedButton(
                       onPressed: () => onLogout(profile.id),
-                      child: Text(AppLocalizations.of(context)!.logoutButton),
+                      child: Text(AppLocalizations.of(context)!.logout),
                     ),
                   ],
                 ],

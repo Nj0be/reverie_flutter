@@ -97,5 +97,8 @@
     "editDiaryPage": "Edit diary page",
     "add": "Add",
     "enterPhoneNumber": "Enter a phone number",
-    "enterEmail": "Enter an email"
+    "enterEmail": "Enter an email",
+    "errorMessage": "Error",
+    "settings": "Settings",
+    "help": "Help and Feedbacks"
 }

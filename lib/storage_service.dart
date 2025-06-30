@@ -6,6 +6,7 @@ import 'dart:async';
 
 import 'data/model/user.dart';
 
+
 final firestoreInstanceProvider = Provider<FirebaseFirestore>((ref) {
   return FirebaseFirestore.instance;
 });
