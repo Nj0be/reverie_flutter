@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:reverie_flutter/data/model/time_capsule.dart';
 import 'package:reverie_flutter/data/model/user.dart';
 import 'dart:async';
 import 'package:reverie_flutter/data/repository/user_repository.dart';
 import 'package:riverpod/riverpod.dart';
 
-part 'edit_profile_viewmodel.freezed.dart';
+part 'edit_profile_notifier.freezed.dart';
+
 @freezed
 abstract class EditProfileState with _$EditProfileState {
   const factory EditProfileState({
@@ -20,12 +20,12 @@ abstract class EditProfileState with _$EditProfileState {
     @Default('') String editError,
   }) = _EditProfileState;
 }
+
 final editProfileNotifierProvider = StateNotifierProvider.family<
     EditProfileNotifier, AsyncValue<EditProfileState>, String>((ref, profileId) {
   final repository = ref.read(userRepositoryProvider);
   return EditProfileNotifier(repository: repository, profileId: profileId);
 });
-
 
 class EditProfileNotifier extends StateNotifier<AsyncValue<EditProfileState>> {
   final UserRepository repository;

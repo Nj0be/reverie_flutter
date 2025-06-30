@@ -4,7 +4,7 @@ import 'package:reverie_flutter/data/model/user.dart';
 import 'package:reverie_flutter/l10n/app_localizations.dart';
 import 'package:reverie_flutter/ui/components/error_field.dart';
 import 'package:reverie_flutter/ui/components/single_field.dart';
-import '../../viewmodel/edit_profile_viewmodel.dart';
+import '../../notifier/edit_profile_notifier.dart';
 
 
 final profileIdProvider = Provider<String>((ref) {

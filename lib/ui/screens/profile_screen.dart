@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reverie_flutter/l10n/app_localizations.dart';
 import 'package:reverie_flutter/ui/screens/edit_profile_screen.dart';
-import '../../viewmodel/profile_viewmodel.dart';
-import 'package:provider/provider.dart';
+import '../../notifier/profile_notifier.dart';
 
 class ProfileScreen extends ConsumerWidget {
   final void Function(String) onEditProfile;
@@ -26,7 +25,8 @@ class ProfileScreen extends ConsumerWidget {
 
     if (state is ProfileErrorState) {
       return Center(
-        child: Text(
+        child: Text
+(
           '${AppLocalizations.of(context)!.errorMessage}: ${state.message}',
           style: const TextStyle(color: Colors.red),
         ),
