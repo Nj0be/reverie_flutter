@@ -37,10 +37,10 @@ class EditProfileNotifier extends StateNotifier<AsyncValue<EditProfileState>> {
     required this.repository,
     required this.profileId,
   }) : super(const AsyncLoading()) {
-    loadProfile(profileId);
+    _loadProfile(profileId);
   }
 
-  Future<void> loadProfile(String profileId) async {
+  Future<void> _loadProfile(String profileId) async {
     state = const AsyncLoading();
 
     try {

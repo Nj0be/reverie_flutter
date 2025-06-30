@@ -1,39 +1,33 @@
 import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:reverie_flutter/storage_service.dart';
-
 import '../data/repository/user_repository.dart';
 import '../data/model/user.dart';
+import 'package:riverpod/riverpod.dart';
 
-enum ProfileStatus { loading, success, error }
+part 'profile_notifier.freezed.dart';
 
-// Sealed Class in Flutter
-abstract class ProfileUiState {}
-
-class ProfileLoadingState extends ProfileUiState {}
-
-class ProfileSuccessState extends ProfileUiState {
-  final User profile;
-  final bool isOwner;
-
-  ProfileSuccessState(this.profile, this.isOwner);
-}
-
-class ProfileErrorState extends ProfileUiState {
-  final String message;
-
-  ProfileErrorState(this.message);
+@freezed
+abstract class ProfileState with _$ProfileState {
+  const factory ProfileState({
+    @Default(User()) User profile,
+    @Default(false) bool isOwner,
+  }) = _ProfileState;
 }
 
 final profileNotifierProvider = StateNotifierProvider.family<
-    ProfileNotifier, ProfileUiState, String>((ref, profileId) {
+    ProfileNotifier,
+    AsyncValue<ProfileState>,
+    String>((ref, profileId) {
   final repository = ref.read(userRepositoryProvider);
   final auth = ref.read(firebaseAuthInstanceProvider);
 
-  return ProfileNotifier(repository: repository, auth: auth, profileId: profileId);
+  return ProfileNotifier(
+      repository: repository, auth: auth, profileId: profileId);
 });
 
-class ProfileNotifier extends StateNotifier<ProfileUiState> {
+class ProfileNotifier extends StateNotifier<AsyncValue<ProfileState>> {
   final UserRepository repository;
   final FirebaseAuth auth;
   final String profileId;
@@ -42,24 +36,31 @@ class ProfileNotifier extends StateNotifier<ProfileUiState> {
     required this.repository,
     required this.auth,
     required this.profileId,
-  }) : super(ProfileLoadingState()) {
-    _loadProfile();
+  }) : super(const AsyncLoading()) {
+    _loadProfile(profileId);
   }
 
-  Future<void> _loadProfile() async {
+  Future<void> _loadProfile(String profileId) async {
+    state = const AsyncLoading();
+
     try {
       final user = await repository.getUser(profileId);
-      // final isOwner = auth.currentUser?.uid == user.id;
-      final isOwner = true; // for testing only, before login implementation
-      state = ProfileSuccessState(user, isOwner);
-    } catch (e) {
-      state = ProfileErrorState(e.toString());
+      state = AsyncValue.data(
+          ProfileState(
+              profile: user,
+              isOwner: auth.currentUser?.uid == user.id
+          )
+      );
+    } catch (e, st) {
+      state = AsyncValue.error(e, st);
     }
   }
 
   void overwriteProfile(User? profile) {
     if (profile != null) {
-      state = ProfileSuccessState(profile, true);
+      state = AsyncValue.data(
+          ProfileState(profile: profile, isOwner: true)
+      );
     }
   }
 }
