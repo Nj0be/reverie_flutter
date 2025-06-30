@@ -1,57 +1,39 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import '../../utils.dart';
 
-class TimeCapsule {
-  final String id;
-  final String userId;
-  final String title;
-  final String content;
-  final Timestamp deadline;
-  final List<String> emails;
-  final List<String> phones;
-  final List<String> receiversIds;
-  final Timestamp creationDate;
-  final bool isSent;
+part 'time_capsule.freezed.dart';
+part 'time_capsule.g.dart';
 
-  TimeCapsule({
-    this.id = '',
-    required this.userId,
-    required this.title,
-    required this.content,
-    required this.deadline,
-    required this.emails,
-    required this.phones,
-    required this.receiversIds,
-    required this.creationDate,
-    this.isSent = false,
-  });
+@freezed
+abstract class TimeCapsule with _$TimeCapsule {
+  @override
+  @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson) final Timestamp deadline;
+  @override
+  @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson) final Timestamp creationDate;
+
+  TimeCapsule._({Timestamp? deadline, Timestamp? creationDate})
+      : deadline = deadline ?? Timestamp.now(),
+        creationDate = creationDate ?? Timestamp.now();
+
+  factory TimeCapsule({
+    @JsonKey(includeToJson: false) @Default('') String id,
+    @Default('') String userId,
+    @Default('') String title,
+    @Default('') String content,
+    @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson) Timestamp? deadline,
+    @Default(<String>[]) List<String> emails,
+    @Default(<String>[]) List<String> phones,
+    @Default(<String>[]) List<String> receiversIds,
+    @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson) Timestamp? creationDate,
+    @Default(false) bool isSent,
+  }) = _TimeCapsule;
 
   factory TimeCapsule.fromFirestore(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
-    return TimeCapsule(
-      id: doc.id,
-      userId: data['userId'] ?? '',
-      title: data['title'] ?? '',
-      content: data['content'] ?? '',
-      deadline: data['deadline'] ?? Timestamp.now(),
-      emails: List<String>.from(data['emails'] ?? []),
-      phones: List<String>.from(data['phones'] ?? []),
-      receiversIds: List<String>.from(data['receiversIds'] ?? []),
-      creationDate: data['creationDate'] ?? Timestamp.now(),
-      isSent: data['isSent'] ?? false,
-    );
+    data['id'] = doc.id;
+    return TimeCapsule.fromJson(data);
   }
 
-  Map<String, dynamic> toFirestore() {
-    return {
-      'userId': userId,
-      'title': title,
-      'content': content,
-      'deadline': deadline,
-      'emails': emails,
-      'phones': phones,
-      'receiversIds': receiversIds,
-      'creationDate': creationDate,
-      'isSent': isSent,
-    };
-  }
+  factory TimeCapsule.fromJson(Map<String, dynamic> json) => _$TimeCapsuleFromJson(json);
 }

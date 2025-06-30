@@ -1,30 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class DiaryCover {
-  final String id;
-  final String name;
-  final String url;
+part 'diary_cover.freezed.dart';
+part 'diary_cover.g.dart';
 
-  DiaryCover({
-    this.id = '',
-    required this.name,
-    required this.url,
-  });
+@freezed
+abstract class DiaryCover with _$DiaryCover {
+  const factory DiaryCover({
+    @JsonKey(includeToJson: false) @Default('') String id,
+    @Default('') String name,
+    @Default('') String url,
+  }) = _DiaryCover;
 
   factory DiaryCover.fromFirestore(DocumentSnapshot doc) {
-    final data = doc.data() as Map<String, dynamic>;
-    return DiaryCover(
-      id: doc.id,
-      name: data['name'] ?? '',
-      url: data['url'] ?? '',
-    );
+    var data = doc.data() as Map<String, dynamic>? ?? {};
+    data['id'] = doc.id;
+    return DiaryCover.fromJson(data);
   }
 
-  Map<String, dynamic> toFirestore() {
-    return {
-      'name': name,
-      'url': url,
-    };
-  }
+  factory DiaryCover.fromJson(Map<String, dynamic> json) => _$DiaryCoverFromJson(json);
 }
-

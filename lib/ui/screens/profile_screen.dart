@@ -1,38 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reverie_flutter/l10n/app_localizations.dart';
+import 'package:reverie_flutter/ui/screens/edit_profile_screen.dart';
 import '../../viewmodel/profile_viewmodel.dart';
 import 'package:provider/provider.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends ConsumerWidget {
   final void Function(String) onEditProfile;
   final void Function(String) onLogout;
 
   const ProfileScreen({
     super.key,
     required this.onEditProfile,
-    required this.onLogout,
+    required this.onLogout
   });
 
   @override
-  Widget build(BuildContext context) {
-    final uiState = context.watch<ProfileViewModel>().uiState;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final profileId = ref.watch(profileIdProvider);
+    final state = ref.watch(profileNotifierProvider(profileId));
 
-    if (uiState is ProfileLoadingState) {
+    if (state is ProfileLoadingState) {
       return const Center(child: CircularProgressIndicator());
     }
 
-    if (uiState is ProfileErrorState) {
+    if (state is ProfileErrorState) {
       return Center(
         child: Text(
-          '${AppLocalizations.of(context)!.errorMessage}: ${uiState.message}',
+          '${AppLocalizations.of(context)!.errorMessage}: ${state.message}',
           style: const TextStyle(color: Colors.red),
         ),
       );
     }
 
-    if (uiState is ProfileSuccessState) {
-      final profile = uiState.profile;
-      final isOwner = uiState.isOwner;
+    if (state is ProfileSuccessState) {
+      final profile = state.profile;
+      final isOwner = state.isOwner;
 
       return Scaffold(
         body: Padding(

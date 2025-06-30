@@ -1,8 +1,23 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart' hide User;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reverie_flutter/data/model/diary.dart';
 import 'dart:async';
 
 import 'data/model/user.dart';
+
+final firestoreInstanceProvider = Provider<FirebaseFirestore>((ref) {
+  return FirebaseFirestore.instance;
+});
+
+final firebaseAuthInstanceProvider = Provider<FirebaseAuth>((ref) {
+  return FirebaseAuth.instance;
+});
+
+final storageServiceProvider = Provider<StorageService>((ref) {
+  final firestore = ref.read(firestoreInstanceProvider);
+  return StorageService(firestore: firestore);
+});
 
 class StorageService {
   StorageService({required FirebaseFirestore firestore})
@@ -56,7 +71,7 @@ class StorageService {
         transaction.set(usernameRef, {'uid': user.id});
       }
 
-      transaction.set(userRef, user.toMap());
+      transaction.set(userRef, user.toJson());
     });
   }
 /*

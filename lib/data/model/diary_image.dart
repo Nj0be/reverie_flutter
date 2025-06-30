@@ -1,49 +1,27 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class DiaryImage {
-  final String id;
-  final String subPageId;
-  final String diaryId;
-  final int offsetX;
-  final int offsetY;
-  final double scale;
-  final double rotation;
-  final String url;
+part 'diary_image.freezed.dart';
+part 'diary_image.g.dart';
 
-  DiaryImage({
-    this.id = '',
-    required this.subPageId,
-    required this.diaryId,
-    required this.offsetX,
-    required this.offsetY,
-    required this.scale,
-    required this.rotation,
-    required this.url,
-  });
+@freezed
+abstract class DiaryImage with _$DiaryImage {
+  const factory DiaryImage({
+    @JsonKey(includeToJson: false) @Default('') String id,
+    @Default('') String subPageId,
+    @Default('') String diaryId,
+    @Default(0) int offsetX,
+    @Default(0) int offsetY,
+    @Default(1) double scale,
+    @Default(0) double rotation,
+    @Default('') String url,
+  }) = _DiaryImage;
 
   factory DiaryImage.fromFirestore(DocumentSnapshot doc) {
-    final data = doc.data() as Map<String, dynamic>;
-    return DiaryImage(
-      id: doc.id,
-      subPageId: data['subPageId'] ?? '',
-      diaryId: data['diaryId'] ?? '',
-      offsetX: data['offsetX'] ?? 0,
-      offsetY: data['offsetY'] ?? 0,
-      scale: (data['scale'] ?? 1.0).toDouble(),
-      rotation: (data['rotation'] ?? 0.0).toDouble(),
-      url: data['url'] ?? '',
-    );
+    var data = doc.data() as Map<String, dynamic>? ?? {};
+    data['id'] = doc.id;
+    return DiaryImage.fromJson(data);
   }
 
-  Map<String, dynamic> toFirestore() {
-    return {
-      'subPageId': subPageId,
-      'diaryId': diaryId,
-      'offsetX': offsetX,
-      'offsetY': offsetY,
-      'scale': scale,
-      'rotation': rotation,
-      'url': url,
-    };
-  }
+  factory DiaryImage.fromJson(Map<String, dynamic> json) => _$DiaryImageFromJson(json);
 }

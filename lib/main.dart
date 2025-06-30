@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 // firebase
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:reverie_flutter/data/repository/diary_repository.dart';
@@ -25,23 +26,7 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  runApp(
-    MultiProvider(
-      providers: [
-        Provider(create: (context) => FirebaseFirestore.instance),
-        Provider(create: (context) => StorageService(
-          firestore: context.read()
-        )),
-        Provider(create: (context) => UserRepository(
-            storage: context.read()
-        )),
-        Provider(create: (context) => DiaryRepository(
-            storage: context.read()
-        )),
-      ],
-      child: MyApp(),
-    ),
-  );
+  runApp(MyApp());
 }
 
 final _router = GoRouter(
@@ -60,22 +45,23 @@ final _router = GoRouter(
         );
       },
       routes: [
+        // Route for viewing all diaries
         GoRoute(
           name: 'view_all_diaries',
           path: '/',
-          builder: (context, state) => const AllDiariesScreen()
+          builder: (context, state) => const AllDiariesScreen(),
         ),
+
+        // Route for viewing a profile
         GoRoute(
           name: 'view_profile',
-          path: '/profile/:profileId',  // param dinamico
+          path: '/profile/:profileId',
           builder: (context, state) {
             final profileId = state.pathParameters['profileId']!;
-            return ChangeNotifierProvider(
-              create: (_) => ProfileViewModel(
-                userRepository: context.read<UserRepository>(),
-                auth: FirebaseAuth.instance,
-                profileId: profileId,
-              ),
+            return ProviderScope(
+              overrides: [
+                profileIdProvider.overrideWithValue(profileId),
+              ],
               child: ProfileScreen(
                 onEditProfile: (id) {
                   context.goNamed(
@@ -84,28 +70,30 @@ final _router = GoRouter(
                   );
                 },
                 onLogout: (id) {
-                  // gestione logout
+                  // Handle logout
                 },
               ),
             );
           },
         ),
-        // Aggiungi questa rotta per edit_profile:
+
+        // Route for editing a profile
         GoRoute(
           name: 'edit_profile',
           path: '/profile/:profileId/edit',
           builder: (context, state) {
             final profileId = state.pathParameters['profileId']!;
-            return ChangeNotifierProvider(
-              create: (_) => EditProfileViewModel(
-                repository: context.read<UserRepository>(),
-                profileId: profileId,
-                context: context,
-              ),
+            return ProviderScope(
+              overrides: [
+                profileIdProvider.overrideWithValue(profileId),
+              ],
               child: EditProfileScreen(
                 onComplete: (updatedProfile) {
-                  // Torna alla pagina del profilo dopo modifica
-                  context.goNamed('view_profile', pathParameters: {'profileId': updatedProfile.id});
+                  // Navigate back to the profile page after editing
+                  context.goNamed(
+                    'view_profile',
+                    pathParameters: {'profileId': updatedProfile.id},
+                  );
                 },
               ),
             );

@@ -1,26 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class Username {
-  final String username;
-  final String uid;
+part 'username.freezed.dart';
+part 'username.g.dart';
 
-  Username({
-    required this.username,
-    required this.uid,
-  });
+@freezed
+abstract class Username with _$Username {
+  const factory Username({
+    @JsonKey(includeToJson: false) @Default('') String username,
+    @Default('') String uid,
+  }) = _Username;
 
   factory Username.fromFirestore(DocumentSnapshot doc) {
-    final data = doc.data() as Map<String, dynamic>;
-    return Username(
-      username: data['username'] ?? '',
-      uid: data['uid'] ?? '',
-    );
+    var data = doc.data() as Map<String, dynamic>? ?? {};
+    data['username'] = doc.id;
+    return Username.fromJson(data);
   }
 
-  Map<String, dynamic> toFirestore() {
-    return {
-      'username': username,
-      'uid': uid,
-    };
-  }
+  factory Username.fromJson(Map<String, dynamic> json) => _$UsernameFromJson(json);
 }

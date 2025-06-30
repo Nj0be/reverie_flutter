@@ -1,6 +1,12 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reverie_flutter/storage_service.dart';
 
 import '../model/user.dart';
+
+final userRepositoryProvider = Provider<UserRepository>((ref) {
+  final storage = ref.read(storageServiceProvider);
+  return UserRepository(storage: storage);
+});
 
 class UserRepository {
   UserRepository({required StorageService storage})

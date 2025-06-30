@@ -1,26 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class Email {
-  final String email;
-  final String uid;
+part 'email.freezed.dart';
+part 'email.g.dart';
 
-  Email({
-    required this.email,
-    required this.uid,
-  });
+@freezed
+abstract class Email with _$Email {
+  const factory Email({
+    @JsonKey(includeToJson: false) @Default('') String email,
+    @Default('') String uid,
+  }) = _Email;
 
   factory Email.fromFirestore(DocumentSnapshot doc) {
-    final data = doc.data() as Map<String, dynamic>;
-    return Email(
-      email: data['email'] ?? '',
-      uid: data['uid'] ?? '',
-    );
+    var data = doc.data() as Map<String, dynamic>? ?? {};
+    data['email'] = doc.id;
+    return Email.fromJson(data);
   }
 
-  Map<String, dynamic> toFirestore() {
-    return {
-      'email': email,
-      'uid': uid,
-    };
-  }
+  factory Email.fromJson(Map<String, dynamic> json) => _$EmailFromJson(json);
 }

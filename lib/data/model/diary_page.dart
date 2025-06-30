@@ -1,37 +1,30 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import '../../utils.dart';
 
-class DiaryPage {
-  final String id;
-  final String diaryId;
-  final String content;
-  final List<String> subPageIds;
-  final Timestamp timestamp;
+part 'diary_page.freezed.dart';
+part 'diary_page.g.dart';
 
-  DiaryPage({
-    this.id = '',
-    required this.diaryId,
-    required this.content,
-    required this.subPageIds,
-    Timestamp? timestamp,
-  }) : timestamp = timestamp ?? Timestamp.now();
+@freezed
+abstract class DiaryPage with _$DiaryPage {
+  @override
+  @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson) final Timestamp timestamp;
+
+  DiaryPage._({Timestamp? timestamp}) : timestamp = timestamp ?? Timestamp.now();
+
+  factory DiaryPage({
+    @JsonKey(includeToJson: false) @Default('') String id,
+    @Default('') String diaryId,
+    @Default('') String content,
+    @Default(<String>[]) List<String> subPageIds,
+    @JsonKey(fromJson: timestampFromJson, toJson: timestampToJson) Timestamp? timestamp,
+  }) = _DiaryPage;
 
   factory DiaryPage.fromFirestore(DocumentSnapshot doc) {
-    final data = doc.data() as Map<String, dynamic>;
-    return DiaryPage(
-      id: doc.id,
-      diaryId: data['diaryId'] ?? '',
-      content: data['content'] ?? '',
-      subPageIds: List<String>.from(data['subPageIds'] ?? []),
-      timestamp: data['timestamp'] ?? Timestamp.now(),
-    );
+    var data = doc.data() as Map<String, dynamic>? ?? {};
+    data['id'] = doc.id;
+    return DiaryPage.fromJson(data);
   }
 
-  Map<String, dynamic> toFirestore() {
-    return {
-      'diaryId': diaryId,
-      'content': content,
-      'subPageIds': subPageIds,
-      'timestamp': timestamp,
-    };
-  }
+  factory DiaryPage.fromJson(Map<String, dynamic> json) => _$DiaryPageFromJson(json);
 }

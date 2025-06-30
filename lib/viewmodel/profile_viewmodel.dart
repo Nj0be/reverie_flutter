@@ -1,5 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart' as fb;
-import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart' hide User;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:reverie_flutter/storage_service.dart';
 
 import '../data/repository/user_repository.dart';
 import '../data/model/user.dart';
@@ -23,40 +24,42 @@ class ProfileErrorState extends ProfileUiState {
 
   ProfileErrorState(this.message);
 }
-//
 
-class ProfileViewModel extends ChangeNotifier {
-  final UserRepository userRepository;
-  final fb.FirebaseAuth auth;
+final profileNotifierProvider = StateNotifierProvider.family<
+    ProfileNotifier, ProfileUiState, String>((ref, profileId) {
+  final repository = ref.read(userRepositoryProvider);
+  final auth = ref.read(firebaseAuthInstanceProvider);
+
+  return ProfileNotifier(repository: repository, auth: auth, profileId: profileId);
+});
+
+class ProfileNotifier extends StateNotifier<ProfileUiState> {
+  final UserRepository repository;
+  final FirebaseAuth auth;
   final String profileId;
 
-  ProfileUiState _uiState = ProfileLoadingState();
-  ProfileUiState get uiState => _uiState;
-
-  ProfileViewModel({
-    required this.userRepository,
+  ProfileNotifier({
+    required this.repository,
     required this.auth,
     required this.profileId,
-  }) {
+  }) : super(ProfileLoadingState()) {
     _loadProfile();
   }
 
   Future<void> _loadProfile() async {
     try {
-      final user = await userRepository.getUser(profileId);
+      final user = await repository.getUser(profileId);
       // final isOwner = auth.currentUser?.uid == user.id;
       final isOwner = true; // for testing only, before login implementation
-      _uiState = ProfileSuccessState(user, isOwner);
+      state = ProfileSuccessState(user, isOwner);
     } catch (e) {
-      _uiState = ProfileErrorState(e.toString());
+      state = ProfileErrorState(e.toString());
     }
-    notifyListeners();
   }
 
   void overwriteProfile(User? profile) {
     if (profile != null) {
-      _uiState = ProfileSuccessState(profile, true);
-      notifyListeners();
+      state = ProfileSuccessState(profile, true);
     }
   }
 }

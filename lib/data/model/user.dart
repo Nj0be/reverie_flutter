@@ -1,82 +1,27 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class User {
-  final String id;
-  final String email;
-  final String username;
-  final String name;
-  final String surname;
-  final List<String> diaryIds;
-  final List<String> sentTimeCapsuleIds;
-  final List<String> receivedTimeCapsuleIds;
+part 'user.freezed.dart';
+part 'user.g.dart';
 
-  User({
-    this.id = '',
-    this.email = '',
-    required this.username,
-    required this.name,
-    required this.surname,
-    required this.diaryIds,
-    required this.sentTimeCapsuleIds,
-    required this.receivedTimeCapsuleIds,
-  });
+@freezed
+abstract class User with _$User {
+  const factory User({
+    @JsonKey(includeToJson: false) @Default('') String id,
+    @Default('') String email,
+    @Default('') String username,
+    @Default('') String name,
+    @Default('') String surname,
+    @Default(<String>[]) List<String> diaryIds,
+    @Default(<String>[]) List<String> sentTimeCapsuleIds,
+    @Default(<String>[]) List<String> receivedTimeCapsuleIds,
+  }) = _User;
 
   factory User.fromFirestore(DocumentSnapshot doc) {
-    final data = doc.data() as Map<String, dynamic>;
-    return User(
-      id: doc.id,
-      email: data['email'] ?? '',
-      username: data['username'] ?? '',
-      name: data['name'] ?? '',
-      surname: data['surname'] ?? '',
-      diaryIds: List<String>.from(data['diaryIds'] ?? []),
-      sentTimeCapsuleIds: List<String>.from(data['sentTimeCapsuleIds'] ?? []),
-      receivedTimeCapsuleIds: List<String>.from(
-          data['receivedTimeCapsuleIds'] ?? []),
-    );
+    var data = doc.data() as Map<String, dynamic>? ?? {};
+    data['id'] = doc.id;
+    return User.fromJson(data);
   }
 
-  factory User.empty() => User(
-    id: '',
-    email: '',
-    username: '',
-    name: '',
-    surname: '',
-    diaryIds: [],
-    sentTimeCapsuleIds: [],
-    receivedTimeCapsuleIds: [],
-  );
-
-  User copyWith({
-    String? id,
-    String? email,
-    String? username,
-    String? name,
-    String? surname,
-    List<String>? diaryIds,
-    List<String>? sentTimeCapsuleIds,
-    List<String>? receivedTimeCapsuleIds,
-  }) {
-    return User(
-      id: id ?? this.id,
-      email: email ?? this.email,
-      username: username ?? this.username,
-      name: name ?? this.name,
-      surname: surname ?? this.surname,
-      diaryIds: diaryIds ?? this.diaryIds,
-      sentTimeCapsuleIds: sentTimeCapsuleIds ?? this.sentTimeCapsuleIds,
-      receivedTimeCapsuleIds: receivedTimeCapsuleIds ?? this.receivedTimeCapsuleIds,
-    );
-  }
-  Map<String, dynamic> toMap() {
-    return {
-      'email': email,
-      'username': username,
-      'name': name,
-      'surname': surname,
-      'diaryIds': diaryIds,
-      'sentTimeCapsuleIds': sentTimeCapsuleIds,
-      'receivedTimeCapsuleIds': receivedTimeCapsuleIds,
-    };
-  }
+  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 }
