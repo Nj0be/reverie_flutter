@@ -5,9 +5,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:reverie_flutter/ui/screens/edit_profile_screen.dart';
+import 'package:reverie_flutter/ui/screens/login_screen.dart';
 import 'package:reverie_flutter/ui/screens/profile_screen.dart';
 import 'package:reverie_flutter/ui/themes/colors.dart';
 import 'package:reverie_flutter/ui/screens/all_diaries_screen.dart';
+import 'package:reverie_flutter/utils.dart';
 import 'firebase_options.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'l10n/app_localizations.dart';
@@ -22,7 +24,7 @@ Future<void> main() async {
 }
 
 final _router = GoRouter(
-  initialLocation: '/',
+  initialLocation: isUserAuthenticated() ? '/' : '/login',
   routes: [
     ShellRoute(
       builder: (
@@ -87,6 +89,25 @@ final _router = GoRouter(
                     pathParameters: {'profileId': updatedProfile.id},
                   );
                 },
+              ),
+            );
+          },
+        ),
+
+        GoRoute(
+          name: 'login',
+          path: '/login',
+          builder: (context, state) {
+            return ProviderScope(
+              child: LoginScreen(
+                onLoginSuccess: () {
+                  // Navigate back to the profile page after editing
+                  context.goNamed(
+                    'view_all_diaries',
+                  );
+                },
+                onNavigateToRegister: (){},
+                onNavigateToResetPassword: (){},
               ),
             );
           },
@@ -192,7 +213,7 @@ class _MainScaffoldState extends State<MainScaffold> {
               break;
             case 1:
               // final userId = FirebaseAuth.instance.currentUser?.uid;
-              final userId = '86GXIqMY3oA2YTXdISX4'; // userId for testing before login implementation
+              final userId = getUserId(); // userId for testing before login implementation
               if (userId != null) {
                 context.goNamed(
                   'view_profile',
