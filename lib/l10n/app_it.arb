@@ -1,3 +1,12 @@
 {
-    "viewProfileTitle": "Il tuo Profilo"
+    "viewYourProfileTitle": "Il tuo Profilo",
+    "viewProfileTitle": "Profilo",
+    "editProfileTitle": "Modifica Profilo",
+    "username": "Username",
+    "name": "Nome",
+    "surname": "Cognome",
+    "editProfileButton": "Modifica",
+    "errorMessage": "Errore",
+    "logoutButton": "Logout",
+    "saveButton": "Salva"
 }

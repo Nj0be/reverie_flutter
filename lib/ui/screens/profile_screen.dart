@@ -24,7 +24,7 @@ class ProfileScreen extends StatelessWidget {
     if (uiState is ProfileErrorState) {
       return Center(
         child: Text(
-          'Error: ${uiState.message}',
+          '${AppLocalizations.of(context)!.errorMessage}: ${uiState.message}',
           style: const TextStyle(color: Colors.red),
         ),
       );
@@ -42,36 +42,36 @@ class ProfileScreen extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  isOwner ? AppLocalizations.of(context)!.viewProfileTitle : 'Profile',
+                  isOwner ? AppLocalizations.of(context)!.viewYourProfileTitle : AppLocalizations.of(context)!.viewProfileTitle,
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(height: 40),
                 Text(
-                  'Username: ${profile.username}',
+                  '${AppLocalizations.of(context)!.username}: ${profile.username}',
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
                 const SizedBox(height: 40),
                 Text(
-                  'Name: ${profile.name}',
+                  '${AppLocalizations.of(context)!.name}: ${profile.name}',
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
                 const SizedBox(height: 40),
                 Text(
-                  'Surname: ${profile.surname}',
+                  '${AppLocalizations.of(context)!.surname}: ${profile.surname}',
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
                 const SizedBox(height: 40),
                 if (isOwner) ...[
                   ElevatedButton(
                     onPressed: () => onEditProfile(profile.id),
-                    child: const Text('Edit Profile'),
+                    child: Text(AppLocalizations.of(context)!.editProfileButton),
                   ),
                   const SizedBox(height: 24),
                   ElevatedButton(
                     onPressed: () => onLogout(profile.id),
-                    child: const Text('Logout'),
+                    child: Text(AppLocalizations.of(context)!.logoutButton),
                   ),
                 ],
               ],
