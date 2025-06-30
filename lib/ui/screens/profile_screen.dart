@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reverie_flutter/l10n/app_localizations.dart';
 import '../../viewmodel/profile_viewmodel.dart';
 import 'package:provider/provider.dart';
 
@@ -41,7 +42,7 @@ class ProfileScreen extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  isOwner ? 'Your Profile' : 'Profile',
+                  isOwner ? AppLocalizations.of(context)!.viewProfileTitle : 'Profile',
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
