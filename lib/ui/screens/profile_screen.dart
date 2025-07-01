@@ -5,6 +5,9 @@ import 'package:reverie_flutter/ui/screens/edit_profile_screen.dart';
 import '../../notifier/profile_notifier.dart';
 
 class ProfileScreen extends ConsumerWidget {
+  static const String name = 'profile';
+  static const String path = '/profile/:profileId';
+
   final void Function(String) onEditProfile;
   final void Function() onLogout;
 

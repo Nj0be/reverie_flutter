@@ -6,6 +6,9 @@ import 'package:reverie_flutter/ui/components/error_field.dart';
 import 'package:reverie_flutter/ui/components/single_field.dart';
 
 class SignupScreen extends ConsumerWidget {
+  static const String name = 'signup';
+  static const String path = '/signup';
+
   final void Function() onSignupSuccess;
   final void Function() onNavigateToLogin;
 

@@ -100,5 +100,7 @@
     "enterEmail": "Enter an email",
     "errorMessage": "Error",
     "settings": "Settings",
-    "help": "Help and Feedbacks"
+    "help": "Help and Feedbacks",
+    "reverie": "Reverie",
+    "userNotSignedIn": "User not signed in"
 }

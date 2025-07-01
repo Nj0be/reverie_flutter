@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:reverie_flutter/ui/screens/edit_profile_screen.dart';
 import 'package:reverie_flutter/ui/screens/login_screen.dart';
 import 'package:reverie_flutter/ui/screens/profile_screen.dart';
+import 'package:reverie_flutter/ui/screens/reset_password_screen.dart';
 import 'package:reverie_flutter/ui/screens/signup_screen.dart';
 import 'package:reverie_flutter/ui/themes/colors.dart';
 import 'package:reverie_flutter/ui/screens/all_diaries_screen.dart';
@@ -25,7 +26,7 @@ Future<void> main() async {
 }
 
 final _router = GoRouter(
-  initialLocation: isUserAuthenticated() ? '/' : '/login',
+  initialLocation: isUserAuthenticated() ? '/' : LoginScreen.path,
   routes: [
     ShellRoute(
       builder: (
@@ -34,9 +35,9 @@ final _router = GoRouter(
           Widget child,
           ) {
         return MainScaffold(
-          title: 'Reverie',
-          child: child,
+          title: AppLocalizations.of(context)!.reverie,
           currentPath: state.uri.path,
+          child: child,
         );
       },
       routes: [
@@ -49,8 +50,8 @@ final _router = GoRouter(
 
         // Route for viewing a profile
         GoRoute(
-          name: 'view_profile',
-          path: '/profile/:profileId',
+          name: ProfileScreen.name,
+          path: ProfileScreen.path,
           builder: (context, state) {
             final profileId = state.pathParameters['profileId']!;
             return ProviderScope(
@@ -60,13 +61,13 @@ final _router = GoRouter(
               child: ProfileScreen(
                 onEditProfile: (id) {
                   context.goNamed(
-                    'edit_profile',
+                    EditProfileScreen.name,
                     pathParameters: {'profileId': id},
                   );
                 },
                 onLogout: () {
                   logout();
-                  context.goNamed('login');
+                  context.goNamed(LoginScreen.name);
                 },
               ),
             );
@@ -75,8 +76,8 @@ final _router = GoRouter(
 
         // Route for editing a profile
         GoRoute(
-          name: 'edit_profile',
-          path: '/profile/:profileId/edit',
+          name: EditProfileScreen.name,
+          path: EditProfileScreen.path,
           builder: (context, state) {
             final profileId = state.pathParameters['profileId']!;
             return ProviderScope(
@@ -87,7 +88,7 @@ final _router = GoRouter(
                 onComplete: (updatedProfile) {
                   // Navigate back to the profile page after editing
                   context.goNamed(
-                    'view_profile',
+                    ProfileScreen.name,
                     pathParameters: {'profileId': updatedProfile.id},
                   );
                 },
@@ -97,8 +98,8 @@ final _router = GoRouter(
         ),
 
         GoRoute(
-          name: 'login',
-          path: '/login',
+          name: LoginScreen.name,
+          path: LoginScreen.path,
           builder: (context, state) {
             return ProviderScope(
               child: LoginScreen(
@@ -109,29 +110,48 @@ final _router = GoRouter(
                   );
                 },
                 onNavigateToSignup: (){
-                  context.goNamed('signup');
+                  context.goNamed(SignupScreen.name);
                 },
-                onNavigateToResetPassword: (){},
+                onNavigateToResetPassword: (){
+                  context.goNamed(ResetPasswordScreen.name);
+                },
               ),
             );
           },
         ),
 
         GoRoute(
-          name: 'signup',
-          path: '/signup',
+          name: SignupScreen.name,
+          path: SignupScreen.path,
           builder: (context, state) {
             return ProviderScope(
               child: SignupScreen(
                 onSignupSuccess: () {
                   // handle signup success
                   context.goNamed(
-                    'login',
+                    LoginScreen.name,
                   );
                 },
                 onNavigateToLogin: (){
                   context.goNamed(
-                    'login',
+                    LoginScreen.name,
+                  );
+                },
+              ),
+            );
+          },
+        ),
+
+        GoRoute(
+          name: ResetPasswordScreen.name,
+          path: ResetPasswordScreen.path,
+          builder: (context, state) {
+            return ProviderScope(
+              child: ResetPasswordScreen(
+                onResetPasswordSuccess: () {
+                  // handle signup success
+                  context.goNamed(
+                    LoginScreen.name,
                   );
                 },
               ),
@@ -186,19 +206,25 @@ class MainScaffold extends StatefulWidget {
 class _MainScaffoldState extends State<MainScaffold> {
   @override
   Widget build(BuildContext context) {
-    final path = widget.currentPath;
-
-    // Determina index attuale basato sulla route
-    final currentIndex = switch (path) {
-      _ when path.startsWith('/profile') => 1,
-      _ => 0,
-    };
+    final currentIndex = 0;
 
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
         centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.person),
+            tooltip: AppLocalizations.of(context)!.yourProfile,
+            onPressed: () {
+              context.goNamed(
+                ProfileScreen.name,
+                pathParameters: {'profileId': ?getUserId()},
+              );
+            },
+          ),
+        ],
       ),
       body: widget.child,
       drawer: Drawer(
@@ -238,19 +264,7 @@ class _MainScaffoldState extends State<MainScaffold> {
               context.go('/');
               break;
             case 1:
-              // final userId = FirebaseAuth.instance.currentUser?.uid;
-              final userId = getUserId(); // userId for testing before login implementation
-              if (userId != null) {
-                context.goNamed(
-                  'view_profile',
-                  pathParameters: {'profileId': userId},
-                );
-              } else {
-                // L'utente non è loggato
-                ScaffoldMessenger.of(context).showSnackBar(
-                   SnackBar(content: Text("User not authenticated")),
-                );
-              }
+              //context.goNamed()
               break;
           }
         },

@@ -66,4 +66,8 @@ class UserRepository {
       return null;
     }
   }
+
+  Null sendPasswordResetEmail(String email) {
+    _auth.sendPasswordResetEmail(email: email);
+  }
 }

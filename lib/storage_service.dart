@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reverie_flutter/data/model/diary.dart';
+import 'package:reverie_flutter/data/model/time_capsule.dart';
 import 'package:reverie_flutter/l10n/app_localizations.dart';
 import 'package:reverie_flutter/l10n/localizations_provider.dart';
 import 'dart:async';
@@ -40,7 +41,8 @@ class StorageService {
   final String diariesCollection = 'diaries';
   final String usernamesCollection = 'usernames';
   final String emailsCollection = 'emails';
-  final String diaryImagesBucket = 'diary-images';
+  final String diaryImagesBucket = 'diaryImages';
+  final String timeCapsulesCollection = "timeCapsules";
 
   Future<User?> getUser(String userId) async {
     final doc = await _firestore.collection(usersCollection).doc(userId).get();
@@ -120,5 +122,20 @@ class StorageService {
   Future<bool> isEmailTaken(String email) async {
     final docSnapshot = await _firestore.collection(emailsCollection).doc(email).get();
     return docSnapshot.data() != null;
+  }
+
+  Future<TimeCapsule?> getTimeCapsule(String timeCapsuleId) async {
+    final doc = await _firestore.collection(timeCapsulesCollection).doc(timeCapsuleId).get();
+    if (!doc.exists) return null;
+    return TimeCapsule.fromFirestore(doc);
+  }
+
+  Future<TimeCapsule> saveTimeCapsule(TimeCapsule timeCapsule) async {
+    final docRef = await _firestore.collection(timeCapsulesCollection).add(timeCapsule.toJson());
+    return timeCapsule.copyWith(id: docRef.id);
+  }
+
+  Future<void> deleteTimeCapsule(String timeCapsuleId) async {
+    await _firestore.collection(timeCapsulesCollection).doc(timeCapsuleId).delete();
   }
 }
