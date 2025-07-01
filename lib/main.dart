@@ -26,7 +26,7 @@ Future<void> main() async {
 }
 
 final _router = GoRouter(
-  initialLocation: isUserAuthenticated() ? '/' : LoginScreen.name,
+  initialLocation: isUserAuthenticated() ? '/' : LoginScreen.path,
   routes: [
     ShellRoute(
       builder: (
@@ -206,19 +206,25 @@ class MainScaffold extends StatefulWidget {
 class _MainScaffoldState extends State<MainScaffold> {
   @override
   Widget build(BuildContext context) {
-    final path = widget.currentPath;
-
-    // Determina index attuale basato sulla route
-    final currentIndex = switch (path) {
-      _ when path.startsWith('/profile') => 1,
-      _ => 0,
-    };
+    final currentIndex = 0;
 
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
         centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.person),
+            tooltip: AppLocalizations.of(context)!.yourProfile,
+            onPressed: () {
+              context.goNamed(
+                ProfileScreen.name,
+                pathParameters: {'profileId': ?getUserId()},
+              );
+            },
+          ),
+        ],
       ),
       body: widget.child,
       drawer: Drawer(
@@ -258,19 +264,7 @@ class _MainScaffoldState extends State<MainScaffold> {
               context.go('/');
               break;
             case 1:
-              // final userId = FirebaseAuth.instance.currentUser?.uid;
-              final userId = getUserId(); // userId for testing before login implementation
-              if (userId != null) {
-                context.goNamed(
-                  'view_profile',
-                  pathParameters: {'profileId': userId},
-                );
-              } else {
-                // L'utente non è loggato
-                ScaffoldMessenger.of(context).showSnackBar(
-                   SnackBar(content: Text("User not authenticated")),
-                );
-              }
+              //context.goNamed()
               break;
           }
         },

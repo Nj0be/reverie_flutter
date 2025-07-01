@@ -322,4 +322,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get reverie => 'Reverie';
+
+  @override
+  String get userNotSignedIn => 'Utente non loggato';
 }

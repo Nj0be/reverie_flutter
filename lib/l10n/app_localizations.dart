@@ -715,6 +715,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Reverie'**
   String get reverie;
+
+  /// No description provided for @userNotSignedIn.
+  ///
+  /// In en, this message translates to:
+  /// **'User not signed in'**
+  String get userNotSignedIn;
 }
 
 class _AppLocalizationsDelegate

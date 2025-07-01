@@ -25,4 +25,3 @@ String? getUserId() {
 Null logout() {
   FirebaseAuth.instance.signOut();
 }
-

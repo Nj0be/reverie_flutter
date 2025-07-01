@@ -101,5 +101,6 @@
     "errorMessage": "Error",
     "settings": "Settings",
     "help": "Help and Feedbacks",
-    "reverie": "Reverie"
+    "reverie": "Reverie",
+    "userNotSignedIn": "User not signed in"
 }
