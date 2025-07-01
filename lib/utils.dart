@@ -21,3 +21,8 @@ bool isUserAuthenticated() {
 String? getUserId() {
   return FirebaseAuth.instance.currentUser?.uid;
 }
+
+Null logout() {
+  FirebaseAuth.instance.signOut();
+}
+

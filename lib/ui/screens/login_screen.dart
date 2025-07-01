@@ -7,13 +7,13 @@ import 'package:reverie_flutter/ui/components/single_field.dart';
 
 class LoginScreen extends ConsumerWidget {
   final void Function() onLoginSuccess;
-  final void Function() onNavigateToRegister;
+  final void Function() onNavigateToSignup;
   final void Function() onNavigateToResetPassword;
 
   const LoginScreen({
     super.key,
     required this.onLoginSuccess,
-    required this.onNavigateToRegister,
+    required this.onNavigateToSignup,
     required this.onNavigateToResetPassword,
   });
 
@@ -61,6 +61,22 @@ class LoginScreen extends ConsumerWidget {
             onPressed: () => notifier.onLogin(onLoginSuccess),
             child: Text(AppLocalizations.of(context)!.login),
           ),
+
+          const SizedBox(height: 8),
+
+          TextButton(
+              onPressed: onNavigateToSignup,
+              child: Text(AppLocalizations.of(context)!.goToSignup)
+          ),
+
+          const SizedBox(height: 8),
+
+          TextButton(
+              onPressed: onNavigateToResetPassword,
+              child: Text(AppLocalizations.of(context)!.resetPassword)
+          ),
+
+          const SizedBox(height: 16),
 
           if (state.formError.isNotEmpty) ErrorField(
               errorMessage: state.formError),

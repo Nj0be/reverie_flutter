@@ -1,3 +1,4 @@
+import 'package:async/async.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:reverie_flutter/data/model/user.dart';
@@ -31,8 +32,6 @@ class EditProfileNotifier extends StateNotifier<AsyncValue<EditProfileState>> {
   final UserRepository repository;
   final String profileId;
 
-  Timer? _usernameCheckTimer;
-
   EditProfileNotifier({
     required this.repository,
     required this.profileId,
@@ -56,9 +55,11 @@ class EditProfileNotifier extends StateNotifier<AsyncValue<EditProfileState>> {
     }
   }
 
+  CancelableOperation? _usernameCheckJob;
+
   void onUsernameChange(String newUsername) {
     // Cancel previous timer if exists
-    _usernameCheckTimer?.cancel();
+    _usernameCheckJob?.cancel();
 
     // Update username immediately, clear error for now
     state = state.whenData((s) => s.copyWith(
@@ -66,11 +67,12 @@ class EditProfileNotifier extends StateNotifier<AsyncValue<EditProfileState>> {
       usernameError: '',
     ));
 
-    // Debounce validation
-    _usernameCheckTimer = Timer(const Duration(milliseconds: 500), () async {
-      final error = await validateUsername(newUsername);
-      state = state.whenData((s) => s.copyWith(usernameError: error));
-    });
+    _usernameCheckJob = CancelableOperation.fromFuture(
+      (() async {
+        final error = await validateUsername(newUsername);
+        state = state.whenData((s) => s.copyWith(usernameError: error));
+      })(),
+    );
   }
 
   void onNameChange(String newName) {

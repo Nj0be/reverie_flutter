@@ -34,6 +34,10 @@ class UserRepository {
     return await _storage.isUsernameTaken(username);
   }
 
+  Future<bool> isEmailTaken(String email) async {
+    return await _storage.isEmailTaken(email);
+  }
+
   Future<void> updateUser(User user) async {
     await _storage.updateUser(user);
   }
@@ -44,6 +48,22 @@ class UserRepository {
       return true;
     } catch (e) {
       return false;
+    }
+  }
+
+  Future<User?> createAccount(User user, String password) async {
+    try {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: user.email,
+        password: password,
+      );
+
+      final userWithId = await _storage.saveUser(user);
+      if (userWithId == null) return null;
+
+      return userWithId;
+    } catch (e) {
+      return null;
     }
   }
 }
