@@ -4,6 +4,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:reverie_flutter/data/model/user.dart';
 import 'dart:async';
 import 'package:reverie_flutter/data/repository/user_repository.dart';
+import 'package:reverie_flutter/l10n/app_localizations.dart';
+import 'package:reverie_flutter/l10n/localizations_provider.dart';
 import 'package:riverpod/riverpod.dart';
 
 part 'edit_profile_notifier.freezed.dart';
@@ -23,27 +25,37 @@ abstract class EditProfileState with _$EditProfileState {
 }
 
 final editProfileNotifierProvider = StateNotifierProvider.family<
-    EditProfileNotifier, AsyncValue<EditProfileState>, String>((ref, profileId) {
+    EditProfileNotifier,
+    AsyncValue<EditProfileState>,
+    String>((ref, profileId) {
   final repository = ref.read(userRepositoryProvider);
-  return EditProfileNotifier(repository: repository, profileId: profileId);
+  final localizations = ref.read(appLocalizationsProvider);
+
+  return EditProfileNotifier(repository: repository, localizations: localizations, profileId: profileId);
 });
 
 class EditProfileNotifier extends StateNotifier<AsyncValue<EditProfileState>> {
-  final UserRepository repository;
-  final String profileId;
+  final UserRepository _repository;
+  final AppLocalizations _localizations;
+  final String _profileId;
 
   EditProfileNotifier({
-    required this.repository,
-    required this.profileId,
-  }) : super(const AsyncLoading()) {
-    _loadProfile(profileId);
+    required UserRepository repository,
+    required AppLocalizations localizations,
+    required String profileId,
+  })
+      : _repository = repository,
+        _localizations = localizations,
+        _profileId = profileId,
+        super(const AsyncLoading()) {
+    _loadProfile(_profileId);
   }
 
   Future<void> _loadProfile(String profileId) async {
     state = const AsyncLoading();
 
     try {
-      final user = await repository.getUser(profileId);
+      final user = await _repository.getUser(profileId);
       state = AsyncValue.data(EditProfileState(
         profile: user,
         username: user.username,
@@ -62,10 +74,11 @@ class EditProfileNotifier extends StateNotifier<AsyncValue<EditProfileState>> {
     _usernameCheckJob?.cancel();
 
     // Update username immediately, clear error for now
-    state = state.whenData((s) => s.copyWith(
-      username: newUsername,
-      usernameError: '',
-    ));
+    state = state.whenData((s) =>
+        s.copyWith(
+          username: newUsername,
+          usernameError: '',
+        ));
 
     _usernameCheckJob = CancelableOperation.fromFuture(
       (() async {
@@ -82,24 +95,25 @@ class EditProfileNotifier extends StateNotifier<AsyncValue<EditProfileState>> {
 
   void onSurnameChange(String newSurname) {
     final error = validateSurname(newSurname);
-    state = state.whenData((s) => s.copyWith(surname: newSurname, surnameError: error));
+    state = state.whenData((s) =>
+        s.copyWith(surname: newSurname, surnameError: error));
   }
 
   Future<String> validateUsername(String username) async {
     final profile = state.value?.profile ?? User();
 
     if (username == profile.username) return '';
-    if (username.trim().isEmpty) return 'Username obbligatorio';
-    if (await repository.isUsernameTaken(username)) return 'Username già in uso';
+    if (username.trim().isEmpty) return _localizations.usernameMandatory;
+    if (await _repository.isUsernameTaken(username)) return _localizations.usernameAlreadyTaken;
     return '';
   }
 
   String validateName(String name) {
-    return name.trim().isEmpty ? 'Nome obbligatorio' : '';
+    return name.trim().isEmpty ? _localizations.nameMandatory : '';
   }
 
   String validateSurname(String surname) {
-    return surname.trim().isEmpty ? 'Cognome obbligatorio' : '';
+    return surname.trim().isEmpty ? _localizations.surnameMandatory : '';
   }
 
   Future<void> onSaveProfile(void Function(User) onComplete) async {
@@ -118,7 +132,8 @@ class EditProfileNotifier extends StateNotifier<AsyncValue<EditProfileState>> {
       surnameError: surnameError,
     ));
 
-    final hasErrors = [usernameError, nameError, surnameError].any((e) => e.isNotEmpty);
+    final hasErrors = [usernameError, nameError, surnameError].any((e) =>
+    e.isNotEmpty);
     if (hasErrors) {
       // Don't proceed if validation fails
       return;
@@ -132,7 +147,7 @@ class EditProfileNotifier extends StateNotifier<AsyncValue<EditProfileState>> {
     );
 
     try {
-      await repository.updateUser(updatedUser);
+      await _repository.updateUser(updatedUser);
       // Update state with new user & clear errors
       state = AsyncValue.data(currentState.copyWith(
         profile: updatedUser,
