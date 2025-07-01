@@ -319,4 +319,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get help => 'Aiuto e Feedbacks';
+
+  @override
+  String get reverie => 'Reverie';
 }

@@ -26,7 +26,7 @@ Future<void> main() async {
 }
 
 final _router = GoRouter(
-  initialLocation: isUserAuthenticated() ? '/' : '/login',
+  initialLocation: isUserAuthenticated() ? '/' : LoginScreen.name,
   routes: [
     ShellRoute(
       builder: (
@@ -35,9 +35,9 @@ final _router = GoRouter(
           Widget child,
           ) {
         return MainScaffold(
-          title: 'Reverie',
-          child: child,
+          title: AppLocalizations.of(context)!.reverie,
           currentPath: state.uri.path,
+          child: child,
         );
       },
       routes: [
@@ -50,8 +50,8 @@ final _router = GoRouter(
 
         // Route for viewing a profile
         GoRoute(
-          name: 'view_profile',
-          path: '/profile/:profileId',
+          name: ProfileScreen.name,
+          path: ProfileScreen.path,
           builder: (context, state) {
             final profileId = state.pathParameters['profileId']!;
             return ProviderScope(
@@ -61,13 +61,13 @@ final _router = GoRouter(
               child: ProfileScreen(
                 onEditProfile: (id) {
                   context.goNamed(
-                    'edit_profile',
+                    EditProfileScreen.name,
                     pathParameters: {'profileId': id},
                   );
                 },
                 onLogout: () {
                   logout();
-                  context.goNamed('login');
+                  context.goNamed(LoginScreen.name);
                 },
               ),
             );
@@ -76,8 +76,8 @@ final _router = GoRouter(
 
         // Route for editing a profile
         GoRoute(
-          name: 'edit_profile',
-          path: '/profile/:profileId/edit',
+          name: EditProfileScreen.name,
+          path: EditProfileScreen.path,
           builder: (context, state) {
             final profileId = state.pathParameters['profileId']!;
             return ProviderScope(
@@ -88,7 +88,7 @@ final _router = GoRouter(
                 onComplete: (updatedProfile) {
                   // Navigate back to the profile page after editing
                   context.goNamed(
-                    'view_profile',
+                    ProfileScreen.name,
                     pathParameters: {'profileId': updatedProfile.id},
                   );
                 },
@@ -98,8 +98,8 @@ final _router = GoRouter(
         ),
 
         GoRoute(
-          name: 'login',
-          path: '/login',
+          name: LoginScreen.name,
+          path: LoginScreen.path,
           builder: (context, state) {
             return ProviderScope(
               child: LoginScreen(
@@ -110,10 +110,10 @@ final _router = GoRouter(
                   );
                 },
                 onNavigateToSignup: (){
-                  context.goNamed('signup');
+                  context.goNamed(SignupScreen.name);
                 },
                 onNavigateToResetPassword: (){
-                  context.goNamed('reset_password');
+                  context.goNamed(ResetPasswordScreen.name);
                 },
               ),
             );
@@ -121,20 +121,20 @@ final _router = GoRouter(
         ),
 
         GoRoute(
-          name: 'signup',
-          path: '/signup',
+          name: SignupScreen.name,
+          path: SignupScreen.path,
           builder: (context, state) {
             return ProviderScope(
               child: SignupScreen(
                 onSignupSuccess: () {
                   // handle signup success
                   context.goNamed(
-                    'login',
+                    LoginScreen.name,
                   );
                 },
                 onNavigateToLogin: (){
                   context.goNamed(
-                    'login',
+                    LoginScreen.name,
                   );
                 },
               ),
@@ -143,15 +143,15 @@ final _router = GoRouter(
         ),
 
         GoRoute(
-          name: 'reset_password',
-          path: '/reset_password',
+          name: ResetPasswordScreen.name,
+          path: ResetPasswordScreen.path,
           builder: (context, state) {
             return ProviderScope(
               child: ResetPasswordScreen(
                 onResetPasswordSuccess: () {
                   // handle signup success
                   context.goNamed(
-                    'login',
+                    LoginScreen.name,
                   );
                 },
               ),

@@ -6,6 +6,9 @@ import 'package:reverie_flutter/ui/components/error_field.dart';
 import 'package:reverie_flutter/ui/components/single_field.dart';
 
 class LoginScreen extends ConsumerWidget {
+  static const String name = 'login';
+  static const String path = '/login';
+
   final void Function() onLoginSuccess;
   final void Function() onNavigateToSignup;
   final void Function() onNavigateToResetPassword;

@@ -709,6 +709,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Help and Feedbacks'**
   String get help;
+
+  /// No description provided for @reverie.
+  ///
+  /// In en, this message translates to:
+  /// **'Reverie'**
+  String get reverie;
 }
 
 class _AppLocalizationsDelegate

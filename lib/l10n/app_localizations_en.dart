@@ -317,4 +317,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get help => 'Help and Feedbacks';
+
+  @override
+  String get reverie => 'Reverie';
 }

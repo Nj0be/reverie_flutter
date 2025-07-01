@@ -6,6 +6,9 @@ import 'package:reverie_flutter/ui/components/error_field.dart';
 import 'package:reverie_flutter/ui/components/single_field.dart';
 
 class ResetPasswordScreen extends ConsumerWidget {
+  static const String name = 'reset_password';
+  static const String path = '/reset_password';
+
   final void Function() onResetPasswordSuccess;
 
   const ResetPasswordScreen({

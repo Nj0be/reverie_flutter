@@ -13,6 +13,9 @@ final profileIdProvider = Provider<String>((ref) {
 
 
 class EditProfileScreen extends ConsumerWidget {
+  static const String name = 'edit_profile';
+  static const String path = '/profile/:profileId/edit';
+
   final void Function(User) onComplete;
 
   const EditProfileScreen({
