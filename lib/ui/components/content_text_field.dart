@@ -1,26 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:reverie_flutter/ui/components/error_field.dart';
 
-class SingleLineField extends StatelessWidget {
+// Basic ContentTextField without error
+class ContentTextField extends StatelessWidget {
   final String value;
   final ValueChanged<String> onNewValue;
   final String label;
-  final Widget? trailingIcon;
   final double width;
 
-  const SingleLineField({
+  const ContentTextField({
     super.key,
     required this.value,
     required this.onNewValue,
     required this.label,
-    this.trailingIcon,
     this.width = 280,
   });
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: width, // set your desired width here
+      width: width,
       child: TextField(
         controller: TextEditingController.fromValue(
           TextEditingValue(
@@ -32,33 +31,26 @@ class SingleLineField extends StatelessWidget {
         decoration: InputDecoration(
           labelText: label,
           border: OutlineInputBorder(),
-          suffixIconConstraints: BoxConstraints(
-              minHeight: 24,
-              minWidth: 24
-          ),
-          suffixIcon: trailingIcon,
         ),
-        maxLines: 1,
       ),
     );
   }
 }
 
-class SingleLineFieldWithError extends StatelessWidget {
+// ContentTextField with error message that calls the basic ContentTextField
+class ContentTextFieldWithError extends StatelessWidget {
   final String value;
   final String errorMessage;
   final ValueChanged<String> onNewValue;
   final String label;
-  final Widget? trailingIcon;
   final double width;
 
-  const SingleLineFieldWithError({
+  const ContentTextFieldWithError({
     super.key,
     required this.value,
     required this.errorMessage,
     required this.onNewValue,
     required this.label,
-    this.trailingIcon,
     this.width = 280,
   });
 
@@ -67,14 +59,13 @@ class SingleLineFieldWithError extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        SingleLineField(
+        ContentTextField(
           value: value,
           onNewValue: onNewValue,
           label: label,
-          trailingIcon: trailingIcon,
           width: width,
         ),
-        ErrorField(errorMessage: errorMessage),
+        if (errorMessage.isNotEmpty) ErrorField(errorMessage: errorMessage),
       ],
     );
   }

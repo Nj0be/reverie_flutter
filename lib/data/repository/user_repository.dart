@@ -70,4 +70,8 @@ class UserRepository {
   Null sendPasswordResetEmail(String email) {
     _auth.sendPasswordResetEmail(email: email);
   }
+
+  Future<List<User>> getUsersMatchingPartialUsername(String partialUsername) async {
+    return await _storage.getUsersMatchingPartialUsername(partialUsername);
+  }
 }

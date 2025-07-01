@@ -46,6 +46,8 @@ class StorageService {
   final String diaryImagesBucket = 'diaryImages';
   final String timeCapsulesCollection = "timeCapsules";
 
+  final String usernameField = 'username';
+
   Future<User?> getUser(String userId) async {
     final doc = await _firestore.collection(usersCollection).doc(userId).get();
     if (!doc.exists) return null;
@@ -108,6 +110,20 @@ class StorageService {
 
       transaction.set(userRef, user.toJson());
     });
+  }
+
+  Future<List<User>> getUsersMatchingPartialUsername(String partialUsername) async {
+    final end = '$partialUsername\uf8ff'; // Unicode to limit results
+
+    final querySnapshot = await FirebaseFirestore.instance
+        .collection(usersCollection) // Replace USERS_COLLECTION if needed
+        .where(usernameField, isGreaterThanOrEqualTo: partialUsername)
+        .where(usernameField, isLessThan: end)
+        .get();
+
+    return querySnapshot.docs.map((doc) {
+      return User.fromFirestore(doc);
+    }).toList();
   }
 
   Future<Diary?> getDiary(String diaryId) async {

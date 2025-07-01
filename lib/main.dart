@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 
 // firebase
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_libphonenumber/flutter_libphonenumber.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:reverie_flutter/data/model/time_capsule.dart';
+import 'package:reverie_flutter/ui/screens/all_time_capsules_screen.dart';
+import 'package:reverie_flutter/ui/screens/create_time_capsule_screen.dart';
 import 'package:reverie_flutter/ui/screens/edit_profile_screen.dart';
 import 'package:reverie_flutter/ui/screens/login_screen.dart';
 import 'package:reverie_flutter/ui/screens/profile_screen.dart';
@@ -12,7 +16,7 @@ import 'package:reverie_flutter/ui/screens/signup_screen.dart';
 import 'package:reverie_flutter/ui/themes/colors.dart';
 import 'package:reverie_flutter/ui/screens/all_diaries_screen.dart';
 import 'package:reverie_flutter/utils.dart';
-import 'firebase_options.dart';
+import '../firebase_options.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'l10n/app_localizations.dart';
 
@@ -21,6 +25,10 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  // TODO: use FutureBuilder instead?
+  // initialize libphonenumberutil
+  await init();
 
   runApp(MyApp());
 }
@@ -164,6 +172,38 @@ final _router = GoRouter(
                   );
                 },
               ),
+            );
+          },
+        ),
+
+        GoRoute(
+          name: AllTimeCapsulesScreen.name,
+          path: AllTimeCapsulesScreen.path,
+          builder: (context, state) {
+            TimeCapsule? newTimeCapsule = state.extra as TimeCapsule?;
+            return ProviderScope(
+              child: AllTimeCapsulesScreen(
+                  onNavigateToCreateTimeCapsule: () {
+                    return context.pushNamed(LoginScreen.name);
+                  },
+                  onNavigateToViewTimeCapsule: (timeCapsuleId, timeCapsuleType) {
+                    //TODO
+                  },
+              )
+            );
+          },
+        ),
+
+        GoRoute(
+          name: CreateTimeCapsuleScreen.name,
+          path: CreateTimeCapsuleScreen.path,
+          builder: (context, state) {
+            return ProviderScope(
+                child: CreateTimeCapsuleScreen(
+                  onComplete: (timeCapsule) {
+                    //TODO
+                  },
+                )
             );
           },
         ),

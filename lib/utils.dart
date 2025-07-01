@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:intl/intl.dart';
 
 // Helpers to handle Timestamp serialization
 Timestamp timestampFromJson(Object json) {
@@ -24,4 +25,9 @@ String? getUserId() {
 
 Null logout() {
   FirebaseAuth.instance.signOut();
+}
+
+String formatDate(DateTime date, {String pattern = 'dd MMMM yyyy', String? locale}) {
+  final formatter = DateFormat(pattern, locale);
+  return formatter.format(date);
 }
