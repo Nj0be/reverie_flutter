@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:reverie_flutter/ui/screens/edit_profile_screen.dart';
 import 'package:reverie_flutter/ui/screens/login_screen.dart';
 import 'package:reverie_flutter/ui/screens/profile_screen.dart';
+import 'package:reverie_flutter/ui/screens/reset_password_screen.dart';
 import 'package:reverie_flutter/ui/screens/signup_screen.dart';
 import 'package:reverie_flutter/ui/themes/colors.dart';
 import 'package:reverie_flutter/ui/screens/all_diaries_screen.dart';
@@ -111,7 +112,9 @@ final _router = GoRouter(
                 onNavigateToSignup: (){
                   context.goNamed('signup');
                 },
-                onNavigateToResetPassword: (){},
+                onNavigateToResetPassword: (){
+                  context.goNamed('reset_password');
+                },
               ),
             );
           },
@@ -130,6 +133,23 @@ final _router = GoRouter(
                   );
                 },
                 onNavigateToLogin: (){
+                  context.goNamed(
+                    'login',
+                  );
+                },
+              ),
+            );
+          },
+        ),
+
+        GoRoute(
+          name: 'reset_password',
+          path: '/reset_password',
+          builder: (context, state) {
+            return ProviderScope(
+              child: ResetPasswordScreen(
+                onResetPasswordSuccess: () {
+                  // handle signup success
                   context.goNamed(
                     'login',
                   );
