@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reverie_flutter/data/model/diary.dart';
+import 'package:reverie_flutter/data/model/diary_cover.dart';
 import 'package:reverie_flutter/data/model/time_capsule.dart';
 import 'package:reverie_flutter/l10n/app_localizations.dart';
 import 'package:reverie_flutter/l10n/localizations_provider.dart';
@@ -39,6 +40,7 @@ class StorageService {
 
   final String usersCollection = 'users';
   final String diariesCollection = 'diaries';
+  final String diaryCoversCollection = 'diaryCovers';
   final String usernamesCollection = 'usernames';
   final String emailsCollection = 'emails';
   final String diaryImagesBucket = 'diaryImages';
@@ -137,5 +139,11 @@ class StorageService {
 
   Future<void> deleteTimeCapsule(String timeCapsuleId) async {
     await _firestore.collection(timeCapsulesCollection).doc(timeCapsuleId).delete();
+  }
+
+  Future<DiaryCover?> getDiaryCover(String diaryCoverId) async {
+    final doc = await FirebaseFirestore.instance.collection(diaryCoversCollection).doc(diaryCoverId).get();
+    if (!doc.exists) return null;
+    return DiaryCover.fromFirestore(doc);
   }
 }

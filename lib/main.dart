@@ -43,9 +43,18 @@ final _router = GoRouter(
       routes: [
         // Route for viewing all diaries
         GoRoute(
-          name: 'view_all_diaries',
-          path: '/',
-          builder: (context, state) => const AllDiariesScreen(),
+          name: AllDiariesScreen.name,
+          path: AllDiariesScreen.path,
+          builder: (context, state) {
+            return ProviderScope(
+              child: AllDiariesScreen(
+                updatedDiary: null,
+                onNavigateToDiary: (_) {},
+                onNavigateToEditDiary: (_) {},
+                onNavigateToCreateDiary: () {},
+              ),
+            );
+          },
         ),
 
         // Route for viewing a profile
