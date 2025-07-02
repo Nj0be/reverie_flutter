@@ -10,12 +10,12 @@ class AllTimeCapsulesScreen extends ConsumerWidget {
   static const String name = 'all_time_capsules';
   static const String path = '/all_time_capsules';
 
-  final Future<TimeCapsule?> Function() _onNavigateToCreateTimeCapsule;
+  final Future<TimeCapsule> Function() _onNavigateToCreateTimeCapsule;
   final void Function(String, TimeCapsuleType) _onNavigateToViewTimeCapsule;
 
   const AllTimeCapsulesScreen({
     super.key,
-    required Future<TimeCapsule?> Function() onNavigateToCreateTimeCapsule,
+    required Future<TimeCapsule> Function() onNavigateToCreateTimeCapsule,
     required void Function(String, TimeCapsuleType) onNavigateToViewTimeCapsule,
   }) : _onNavigateToCreateTimeCapsule = onNavigateToCreateTimeCapsule,
        _onNavigateToViewTimeCapsule = onNavigateToViewTimeCapsule;
@@ -53,8 +53,8 @@ class AllTimeCapsulesScreen extends ConsumerWidget {
         return Scaffold(
           floatingActionButton: FloatingActionButton(
             onPressed: () async {
-              final capsule = await _onNavigateToCreateTimeCapsule();
-              notifier.addNewTimeCapsule(capsule);
+              final newCapsule = await _onNavigateToCreateTimeCapsule();
+              notifier.addNewTimeCapsule(newCapsule);
             },
             backgroundColor: Theme.of(context).colorScheme.secondary,
             child: Icon(Icons.add, color: Theme.of(context).colorScheme.primary),
@@ -72,7 +72,7 @@ class AllTimeCapsulesScreen extends ConsumerWidget {
                           padding: EdgeInsets.all(8.0),
                           child: Image(
                             image: NetworkImage(
-                                'https://wjecfnvsxxnvgheqdnpx.supabase.co/storage/v1/object/sign/time-capsules/letter.png?...'
+                                'https://wjecfnvsxxnvgheqdnpx.supabase.co/storage/v1/object/sign/time-capsules/letter.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8xNTIwYmQ5Yy05ZTUxLTQ5MjMtODRmMy1kNzFiNTRkNTNjZjUiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJ0aW1lLWNhcHN1bGVzL2xldHRlci5wbmciLCJpYXQiOjE3NTA3NTc1MDQsImV4cCI6MTc4MjI5MzUwNH0.RTnD7Gu7q2mF6MlXhHmZXgn-xN4QJ3CVxUt4xf48s98'
                             ),
                           ),
                         ),

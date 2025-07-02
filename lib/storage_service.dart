@@ -99,14 +99,14 @@ class StorageService {
       final oldUser = oldUserSnapshot.exists ? User.fromFirestore(oldUserSnapshot) : null;
 
       if (oldUser != null && user.username != oldUser.username) {
-        final usernameRef = _firestore.collection(usersCollection).doc(user.username);
+        final usernameRef = _firestore.collection(usernamesCollection).doc(user.username);
 
         final usernameSnapshot = await transaction.get(usernameRef);
         if (usernameSnapshot.exists) {
           throw Exception(_localizations.usernameAlreadyTaken);
         }
 
-        final oldUsernameRef = _firestore.collection(usersCollection).doc(oldUser.username);
+        final oldUsernameRef = _firestore.collection(usernamesCollection).doc(oldUser.username);
         transaction.delete(oldUsernameRef);
 
         transaction.set(usernameRef, {'uid': user.id});

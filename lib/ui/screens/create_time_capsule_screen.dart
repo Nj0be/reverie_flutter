@@ -7,6 +7,7 @@ import 'package:reverie_flutter/data/model/user.dart';
 import 'package:reverie_flutter/l10n/app_localizations.dart';
 import 'package:reverie_flutter/notifier/create_time_capsule_notifier.dart';
 import 'package:reverie_flutter/ui/components/content_text_field.dart';
+import 'package:reverie_flutter/ui/components/error_field.dart';
 import 'package:reverie_flutter/ui/components/phone_number.dart';
 import 'package:reverie_flutter/ui/components/single_field.dart';
 import 'package:reverie_flutter/utils.dart';
@@ -77,6 +78,7 @@ class CreateTimeCapsuleScreen extends ConsumerWidget {
               ),
             ],
           ),
+          ErrorField(errorMessage: state.deadlineError),
 
           SizedBox(height: 16),
 
@@ -169,7 +171,7 @@ class CreateTimeCapsuleScreen extends ConsumerWidget {
           SizedBox(height: 16),
 
           ElevatedButton(
-            onPressed: notifier.createTimeCapsule,
+            onPressed: () => notifier.createTimeCapsule(onComplete),
             child: Text('Create'),
           ),
         ],

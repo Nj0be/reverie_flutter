@@ -1,5 +1,4 @@
 import 'package:async/async.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:reverie_flutter/data/model/user.dart';
 import 'dart:async';
@@ -116,7 +115,7 @@ class EditProfileNotifier extends StateNotifier<AsyncValue<EditProfileState>> {
     return surname.trim().isEmpty ? _localizations.surnameMandatory : '';
   }
 
-  Future<void> onSaveProfile(void Function(User) onComplete) async {
+  void onSaveProfile(void Function(User) onComplete) async {
     final currentState = state.value;
     if (currentState == null) return;
 
@@ -156,9 +155,7 @@ class EditProfileNotifier extends StateNotifier<AsyncValue<EditProfileState>> {
         surnameError: '',
       ));
 
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        onComplete(updatedUser);
-      });
+      onComplete(updatedUser);
     } catch (e, st) {
       // If save fails, keep current inputs but surface error in some way
       state = AsyncValue.error(e, st);

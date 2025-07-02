@@ -271,7 +271,7 @@ class CreateTimeCapsuleNotifier extends StateNotifier<CreateTimeCapsuleState> {
     );
   }
 
-  Future<void> createTimeCapsule() async {
+  void createTimeCapsule(void Function(TimeCapsule) onComplete) async {
     // Validate fields
     state = state.copyWith(
       titleError: validateTitle(state.timeCapsule.title),
@@ -291,6 +291,8 @@ class CreateTimeCapsuleNotifier extends StateNotifier<CreateTimeCapsuleState> {
     try {
       final savedCapsule = await _repository.saveTimeCapsule(state.timeCapsule);
       state = state.copyWith(timeCapsule: savedCapsule);
+
+      onComplete(savedCapsule);
     } catch (e) {
       state = state.copyWith(formError: e.toString());
     }

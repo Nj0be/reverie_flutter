@@ -39,7 +39,7 @@ class ButtonBarWidget<T> extends StatelessWidget {
                 ),
                 alignment: Alignment.center,
                 child: Text(
-                  item.toString(),
+                  _displayName(item),
                   style: TextStyle(
                     fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                     color: theme.colorScheme.primary,
@@ -51,5 +51,15 @@ class ButtonBarWidget<T> extends StatelessWidget {
         }).toList(),
       ),
     );
+  }
+
+  String _displayName(T item) {
+    // Check if item has a `name` property (enum in Dart 2.15+)
+    // We can do this with `item is Enum` or use a try-catch on `item.name`
+
+    if (item is Enum) {
+      return (item as Enum).name.toUpperCase();
+    }
+    return item.toString().toUpperCase();
   }
 }

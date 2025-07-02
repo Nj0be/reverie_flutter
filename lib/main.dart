@@ -6,6 +6,9 @@ import 'package:flutter_libphonenumber/flutter_libphonenumber.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:reverie_flutter/data/model/time_capsule.dart';
+import 'package:reverie_flutter/data/model/user.dart';
+import 'package:reverie_flutter/notifier/all_time_capsules_notifier.dart';
+import 'package:reverie_flutter/notifier/view_time_capsule_notifier.dart';
 import 'package:reverie_flutter/ui/screens/all_time_capsules_screen.dart';
 import 'package:reverie_flutter/ui/screens/create_time_capsule_screen.dart';
 import 'package:reverie_flutter/ui/screens/edit_profile_screen.dart';
@@ -13,6 +16,7 @@ import 'package:reverie_flutter/ui/screens/login_screen.dart';
 import 'package:reverie_flutter/ui/screens/profile_screen.dart';
 import 'package:reverie_flutter/ui/screens/reset_password_screen.dart';
 import 'package:reverie_flutter/ui/screens/signup_screen.dart';
+import 'package:reverie_flutter/ui/screens/view_time_capsule_screen.dart';
 import 'package:reverie_flutter/ui/themes/colors.dart';
 import 'package:reverie_flutter/ui/screens/all_diaries_screen.dart';
 import 'package:reverie_flutter/utils.dart';
@@ -70,17 +74,18 @@ final _router = GoRouter(
           name: ProfileScreen.name,
           path: ProfileScreen.path,
           builder: (context, state) {
-            final profileId = state.pathParameters['profileId']!;
+            final profileId = state.pathParameters['id']!;
             return ProviderScope(
               overrides: [
                 profileIdProvider.overrideWithValue(profileId),
               ],
               child: ProfileScreen(
-                onEditProfile: (id) {
-                  context.goNamed(
+                onEditProfile: (id) async {
+                  // return updated profile from editProfile
+                  return await context.pushNamed(
                     EditProfileScreen.name,
-                    pathParameters: {'profileId': id},
-                  );
+                    pathParameters: {'id': id},
+                  ) as User;
                 },
                 onLogout: () {
                   logout();
@@ -96,7 +101,7 @@ final _router = GoRouter(
           name: EditProfileScreen.name,
           path: EditProfileScreen.path,
           builder: (context, state) {
-            final profileId = state.pathParameters['profileId']!;
+            final profileId = state.pathParameters['id']!;
             return ProviderScope(
               overrides: [
                 profileIdProvider.overrideWithValue(profileId),
@@ -104,10 +109,8 @@ final _router = GoRouter(
               child: EditProfileScreen(
                 onComplete: (updatedProfile) {
                   // Navigate back to the profile page after editing
-                  context.goNamed(
-                    ProfileScreen.name,
-                    pathParameters: {'profileId': updatedProfile.id},
-                  );
+                  // we send the updated profile
+                  context.pop(updatedProfile);
                 },
               ),
             );
@@ -122,9 +125,7 @@ final _router = GoRouter(
               child: LoginScreen(
                 onLoginSuccess: () {
                   // Navigate back to the profile page after editing
-                  context.goNamed(
-                    'view_all_diaries',
-                  );
+                  context.goNamed(AllDiariesScreen.name);
                 },
                 onNavigateToSignup: (){
                   context.goNamed(SignupScreen.name);
@@ -180,14 +181,18 @@ final _router = GoRouter(
           name: AllTimeCapsulesScreen.name,
           path: AllTimeCapsulesScreen.path,
           builder: (context, state) {
-            TimeCapsule? newTimeCapsule = state.extra as TimeCapsule?;
             return ProviderScope(
               child: AllTimeCapsulesScreen(
-                  onNavigateToCreateTimeCapsule: () {
-                    return context.pushNamed(LoginScreen.name);
+                  onNavigateToCreateTimeCapsule: () async {
+                    return await context.pushNamed(
+                      CreateTimeCapsuleScreen.name
+                    ) as TimeCapsule;
                   },
                   onNavigateToViewTimeCapsule: (timeCapsuleId, timeCapsuleType) {
-                    //TODO
+                    context.pushNamed(
+                      ViewTimeCapsuleScreen.name,
+                      pathParameters: {'id': timeCapsuleId, 'type': timeCapsuleType.name }
+                    );
                   },
               )
             );
@@ -200,8 +205,34 @@ final _router = GoRouter(
           builder: (context, state) {
             return ProviderScope(
                 child: CreateTimeCapsuleScreen(
-                  onComplete: (timeCapsule) {
-                    //TODO
+                  onComplete: (createdTimeCapsule) {
+                    context.pop(createdTimeCapsule);
+                  },
+                )
+            );
+          },
+        ),
+
+        GoRoute(
+          name: ViewTimeCapsuleScreen.name,
+          path: ViewTimeCapsuleScreen.path,
+          builder: (context, state) {
+            final timeCapsuleId = state.pathParameters['id']!;
+            final timeCapsuleTypeStr = state.pathParameters['type']!;
+            final timeCapsuleType = TimeCapsuleType.values.firstWhere(
+                  (e) => e.name == timeCapsuleTypeStr,
+              orElse: () => TimeCapsuleType.scheduled, // fallback
+            );
+            return ProviderScope(
+                overrides: [
+                  viewTimeCapsuleParamsProvider.overrideWithValue(ViewTimeCapsuleParams(timeCapsuleId: timeCapsuleId, timeCapsuleType: timeCapsuleType)),
+                ],
+                child: ViewTimeCapsuleScreen(
+                  onViewProfile: (profileId) {
+                    context.pushNamed(
+                        ProfileScreen.name,
+                      pathParameters: {'id': profileId}
+                    );
                   },
                 )
             );
@@ -267,9 +298,9 @@ class _MainScaffoldState extends State<MainScaffold> {
             icon: const Icon(Icons.person),
             tooltip: AppLocalizations.of(context)!.yourProfile,
             onPressed: () {
-              context.goNamed(
+              context.pushNamed(
                 ProfileScreen.name,
-                pathParameters: {'profileId': ?getUserId()},
+                pathParameters: {'id': ?getUserId()},
               );
             },
           ),
