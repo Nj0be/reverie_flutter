@@ -180,14 +180,13 @@ class AllDiariesScreen extends ConsumerWidget {
               final newDiaries = newState.value!.diaries;
 
               final newIndex = newDiaries.length - 1;
+
+              // Aggiorna current index
               ref.read(currentDiaryPageIndexProvider.notifier).state = newIndex;
 
-              final controller = ref.read(pageControllerProvider);
-              controller.animateToPage(
-                newIndex,
-                duration: const Duration(milliseconds: 300),
-                curve: Curves.easeInOut,
-              );
+              // Ricrea il controller con la nuova pagina iniziale
+              final newController = PageController(initialPage: newIndex);
+              ref.read(pageControllerProvider.notifier).state = newController;
             },
             child: const Icon(Icons.add),
           ),

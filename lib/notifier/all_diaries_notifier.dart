@@ -33,23 +33,20 @@ final allDiariesNotifierProvider = StateNotifierProvider<
 
 final currentDiaryPageIndexProvider = StateProvider<int>((ref) => 0);
 
-final pageControllerProvider = Provider.autoDispose<PageController>((ref) {
+final pageControllerProvider = StateProvider.autoDispose<PageController>((ref) {
   final initialPage = ref.read(currentDiaryPageIndexProvider);
   final controller = PageController(initialPage: initialPage);
-  ref.listen<int>(
-    currentDiaryPageIndexProvider,
-        (previous, next) {
-      if (previous != null && previous != next && controller.hasClients) {
-        controller.animateToPage(
-          next,
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeInOut,
-        );
-      }
-    },
-  );
 
-  // Quando il provider viene smontato, eliminiamo il controller
+  ref.listen<int>(currentDiaryPageIndexProvider, (previous, next) {
+    if (controller.hasClients && previous != next) {
+      controller.animateToPage(
+        next,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    }
+  });
+
   ref.onDispose(() => controller.dispose());
 
   return controller;
