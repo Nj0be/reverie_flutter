@@ -56,7 +56,7 @@ class ViewTimeCapsuleNotifier extends StateNotifier<AsyncValue<ViewTimeCapsuleSt
     _onStart(timeCapsuleId, timeCapsuleType);
   }
 
-  void _onStart(String timeCapsuleId, TimeCapsuleType timeCapsuleType) async {
+  Future<void> _onStart(String timeCapsuleId, TimeCapsuleType timeCapsuleType) async {
     final timeCapsule = await _repository.getTimeCapsule(timeCapsuleId);
 
     // Fetch all users in parallel

@@ -28,6 +28,7 @@ class ContentTextField extends StatelessWidget {
           ),
         ),
         onChanged: onNewValue,
+        maxLines: null, // multiple lines
         decoration: InputDecoration(
           labelText: label,
           border: OutlineInputBorder(),
