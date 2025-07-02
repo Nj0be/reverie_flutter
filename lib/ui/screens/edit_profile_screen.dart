@@ -28,6 +28,7 @@ class EditProfileScreen extends ConsumerWidget {
     final profileId = ref.watch(profileIdProvider);
     final state = ref.watch(editProfileNotifierProvider(profileId));
     final notifier = ref.read(editProfileNotifierProvider(profileId).notifier);
+    final localizations = AppLocalizations.of(context)!;
 
     return state.when(
       data: (data) {
@@ -38,7 +39,7 @@ class EditProfileScreen extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                AppLocalizations.of(context)!.editProfile,
+                localizations.editProfile,
                 // o usa localization
                 style: Theme
                     .of(context)
@@ -52,32 +53,32 @@ class EditProfileScreen extends ConsumerWidget {
                 value: data.username,
                 errorMessage: data.usernameError,
                 onNewValue: notifier.onUsernameChange,
-                label: AppLocalizations.of(context)!.username,
+                label: localizations.username,
               ),
 
               const SizedBox(height: 16),
 
               SingleLineFieldWithError(
-                value: data.name,
+                value: data.profile.name,
                 errorMessage: data.nameError,
                 onNewValue: notifier.onNameChange,
-                label: AppLocalizations.of(context)!.name,
+                label: localizations.name,
               ),
 
               const SizedBox(height: 16),
 
               SingleLineFieldWithError(
-                value: data.surname,
+                value: data.profile.surname,
                 errorMessage: data.surnameError,
                 onNewValue: notifier.onSurnameChange,
-                label: AppLocalizations.of(context)!.surname,
+                label: localizations.surname,
               ),
 
               const SizedBox(height: 32),
 
               ElevatedButton(
                 onPressed: () => notifier.onSaveProfile(onComplete),
-                child: Text(AppLocalizations.of(context)!.save),
+                child: Text(localizations.save),
               ),
 
               if (data.formError.isNotEmpty) ErrorField(
@@ -88,7 +89,7 @@ class EditProfileScreen extends ConsumerWidget {
       },
       error: (error, _) {
         return Center(child: Text(
-            '${AppLocalizations.of(context)!.error}: ${error
+            '${localizations.error}: ${error
                 .toString()}'));
       },
       loading: () {

@@ -15,9 +15,7 @@ abstract class EditProfileState with _$EditProfileState {
     @Default(User()) User profile,
     @Default('') String username,
     @Default('') String usernameError,
-    @Default('') String name,
     @Default('') String nameError,
-    @Default('') String surname,
     @Default('') String surnameError,
     @Default('') String formError,
   }) = _EditProfileState;
@@ -58,8 +56,6 @@ class EditProfileNotifier extends StateNotifier<AsyncValue<EditProfileState>> {
       state = AsyncValue.data(EditProfileState(
         profile: user,
         username: user.username,
-        name: user.name,
-        surname: user.surname,
       ));
     } catch (e, st) {
       state = AsyncValue.error(e, st);
@@ -72,30 +68,42 @@ class EditProfileNotifier extends StateNotifier<AsyncValue<EditProfileState>> {
     // Cancel previous timer if exists
     _usernameCheckJob?.cancel();
 
+    var strippedUsername = newUsername.trim();
+
     // Update username immediately, clear error for now
     state = state.whenData((s) =>
         s.copyWith(
-          username: newUsername,
+          username: strippedUsername,
           usernameError: '',
         ));
 
     _usernameCheckJob = CancelableOperation.fromFuture(
       (() async {
-        final error = await validateUsername(newUsername);
+        final error = await validateUsername(strippedUsername);
         state = state.whenData((s) => s.copyWith(usernameError: error));
       })(),
     );
   }
 
   void onNameChange(String newName) {
-    final error = validateName(newName);
-    state = state.whenData((s) => s.copyWith(name: newName, nameError: error));
+    var strippedName = newName.trim();
+
+    state = state.whenData((s) =>
+        s.copyWith(
+          profile: s.profile.copyWith(name: strippedName),
+          nameError: validateName(strippedName),
+        ));
+
   }
 
   void onSurnameChange(String newSurname) {
-    final error = validateSurname(newSurname);
+    var strippedSurname = newSurname.trim();
+
     state = state.whenData((s) =>
-        s.copyWith(surname: newSurname, surnameError: error));
+        s.copyWith(
+          profile: s.profile.copyWith(surname: strippedSurname),
+          surnameError: validateSurname(strippedSurname),
+        ));
   }
 
   Future<String> validateUsername(String username) async {
@@ -119,10 +127,11 @@ class EditProfileNotifier extends StateNotifier<AsyncValue<EditProfileState>> {
     final currentState = state.value;
     if (currentState == null) return;
 
+/*
     // Validate all fields
-    final usernameError = await validateUsername(currentState.username);
-    final nameError = validateName(currentState.name);
-    final surnameError = validateSurname(currentState.surname);
+    final usernameError = await validateUsername(currentState.profile.username);
+    final nameError = validateName(currentState.profile.name);
+    final surnameError = validateSurname(currentState.profile.surname);
 
     // Update errors in state
     state = AsyncValue.data(currentState.copyWith(
@@ -131,7 +140,8 @@ class EditProfileNotifier extends StateNotifier<AsyncValue<EditProfileState>> {
       surnameError: surnameError,
     ));
 
-    final hasErrors = [usernameError, nameError, surnameError].any((e) =>
+*/
+    final hasErrors = [currentState.usernameError, currentState.nameError, currentState.surnameError].any((e) =>
     e.isNotEmpty);
     if (hasErrors) {
       // Don't proceed if validation fails
@@ -141,19 +151,12 @@ class EditProfileNotifier extends StateNotifier<AsyncValue<EditProfileState>> {
     // Build updated user
     final updatedUser = currentState.profile.copyWith(
       username: currentState.username,
-      name: currentState.name,
-      surname: currentState.surname,
     );
 
     try {
       await _repository.updateUser(updatedUser);
       // Update state with new user & clear errors
-      state = AsyncValue.data(currentState.copyWith(
-        profile: updatedUser,
-        usernameError: '',
-        nameError: '',
-        surnameError: '',
-      ));
+      state = AsyncValue.data(currentState.copyWith(profile: updatedUser));
 
       onComplete(updatedUser);
     } catch (e, st) {
