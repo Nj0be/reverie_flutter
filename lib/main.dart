@@ -327,14 +327,26 @@ class MainScaffold extends StatefulWidget {
 class _MainScaffoldState extends State<MainScaffold> {
   var currentIndex = 0;
 
+
   @override
   Widget build(BuildContext context) {
+
+    // Schermate in cui non vengono mostrate la bottom bar e l'app bar
+    final hideBars = [
+      LoginScreen.path,
+      SignupScreen.path,
+      ResetPasswordScreen.path,
+    ].contains(widget.currentPath) ||
+        widget.currentPath.startsWith('/profile') ||
+        widget.currentPath.startsWith('/edit-profile');
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
         centerTitle: true,
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        actions: [
+        actions: hideBars ? []
+          : [
           IconButton(
             icon: const Icon(Icons.person),
             tooltip: AppLocalizations.of(context)!.yourProfile,
@@ -348,7 +360,8 @@ class _MainScaffoldState extends State<MainScaffold> {
         ],
       ),
       body: widget.child,
-      drawer: Drawer(
+      drawer: hideBars ? null
+        : Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
@@ -365,7 +378,8 @@ class _MainScaffoldState extends State<MainScaffold> {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
+      bottomNavigationBar: hideBars ? null
+        : BottomNavigationBar(
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.menu_book),
