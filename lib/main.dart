@@ -34,7 +34,7 @@ Future<void> main() async {
 }
 
 final _router = GoRouter(
-  initialLocation: isUserAuthenticated() ? '/' : LoginScreen.path,
+  initialLocation: isUserAuthenticated() ? AllDiariesScreen.path : LoginScreen.path,
   routes: [
     ShellRoute(
       builder: (
@@ -253,10 +253,10 @@ class MainScaffold extends StatefulWidget {
 }
 
 class _MainScaffoldState extends State<MainScaffold> {
+  var currentIndex = 0;
+
   @override
   Widget build(BuildContext context) {
-    final currentIndex = 0;
-
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -300,20 +300,23 @@ class _MainScaffoldState extends State<MainScaffold> {
             label: AppLocalizations.of(context)!.allDiaries,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: AppLocalizations.of(context)!.profile,
+            icon: Icon(Icons.library_books_rounded),
+            label: AppLocalizations.of(context)!.timeCapsule,
           ),
         ],
         currentIndex: currentIndex,
         selectedItemColor: AppColors.secondary,
         onTap: (index) {
           if (index == currentIndex) return;
+          setState(() {
+            currentIndex = index; // update current index state
+          });
           switch (index) {
             case 0:
-              context.go('/');
+              context.goNamed(AllDiariesScreen.name);
               break;
             case 1:
-              //context.goNamed()
+              context.goNamed(AllTimeCapsulesScreen.name);
               break;
           }
         },
