@@ -106,7 +106,7 @@ class AllTimeCapsulesNotifier
       };
 
       // Update UI state
-      state = AsyncValue.data(
+      state = AsyncData(
           AllTimeCapsulesState(
               sentTimeCapsules: sentTimeCapsulesMap,
               receivedTimeCapsules: receivedTimeCapsulesMap
