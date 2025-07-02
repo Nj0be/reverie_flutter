@@ -61,15 +61,14 @@ class AllDiariesScreen extends ConsumerWidget {
       });
     });
 
+    final controller = ref.watch(pageControllerProvider);
     final state = ref.watch(allDiariesNotifierProvider);
+    final currentIndex = ref.watch(currentDiaryPageIndexProvider);
 
     return state.when(
       data: (data) {
         final diaries = data.diaries;
         final diaryCoversMap = data.diaryCoversMap;
-
-        final currentIndex = ref.watch(currentDiaryPageIndexProvider);
-        final controller = PageController(initialPage: currentIndex);
 
         return Scaffold(
           body: Column(

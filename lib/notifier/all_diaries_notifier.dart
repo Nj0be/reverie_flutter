@@ -11,7 +11,8 @@ import 'package:riverpod/riverpod.dart';
 import 'package:reverie_flutter/data/model/diary_cover.dart';
 import 'package:reverie_flutter/l10n/app_localizations.dart';
 import 'package:reverie_flutter/l10n/localizations_provider.dart';
-
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 part 'all_diaries_notifier.freezed.dart';
 
 @freezed
@@ -35,6 +36,28 @@ final allDiariesNotifierProvider = StateNotifierProvider<
 });
 
 final currentDiaryPageIndexProvider = StateProvider<int>((ref) => 0);
+
+final pageControllerProvider = Provider.autoDispose<PageController>((ref) {
+  final initialPage = ref.read(currentDiaryPageIndexProvider);
+  final controller = PageController(initialPage: initialPage);
+  ref.listen<int>(
+    currentDiaryPageIndexProvider,
+        (previous, next) {
+      if (previous != null && previous != next && controller.hasClients) {
+        controller.animateToPage(
+          next,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+        );
+      }
+    },
+  );
+
+  // Quando il provider viene smontato, eliminiamo il controller
+  ref.onDispose(() => controller.dispose());
+
+  return controller;
+});
 
 class AllDiariesNotifier
     extends StateNotifier<AsyncValue<AllDiariesState>> {
@@ -116,8 +139,9 @@ class AllDiariesNotifier
       await _repository.deleteDiary(diaryId);
       final updatedDiaries = List<Diary>.from(currentState.diaries)..removeWhere((d) => d.id == diaryId);
 
-      // Reset current diary page index a zero dopo la cancellazione
-      _ref.read(currentDiaryPageIndexProvider.notifier).state = 0;
+      final currentIndex = _ref.read(currentDiaryPageIndexProvider);
+      final newIndex = (currentIndex > 0) ? currentIndex - 1 : 0;
+      _ref.read(currentDiaryPageIndexProvider.notifier).state = newIndex;
 
       // Aggiorna stato con diario eliminato e chiudi dialog
       state = AsyncValue.data(
@@ -127,6 +151,7 @@ class AllDiariesNotifier
           // eventualmente aggiorna anche diaryCoversMap se serve
         ),
       );
+
     } catch (e, st) {
       state = AsyncValue.error(e, st);
     }
