@@ -19,7 +19,7 @@ abstract class AllDiariesState with _$AllDiariesState {
   const factory AllDiariesState({
     @Default([]) List<Diary> diaries,
     @Default({}) Map<String, DiaryCover> diaryCoversMap,
-    // @Default("") String deleteDialogState,
+    @Default(false) bool deleteDialogState,
   }) = _AllDiariesState;
 }
 
@@ -31,23 +31,28 @@ final allDiariesNotifierProvider = StateNotifierProvider<
   final auth = ref.read(firebaseAuthInstanceProvider);
   final localizations = ref.read(appLocalizationsProvider);
 
-  return AllDiariesNotifier(repository: repository, auth: auth, localizations: localizations);
+  return AllDiariesNotifier(repository: repository, auth: auth, localizations: localizations, ref: ref);
 });
+
+final currentDiaryPageIndexProvider = StateProvider<int>((ref) => 0);
 
 class AllDiariesNotifier
     extends StateNotifier<AsyncValue<AllDiariesState>> {
   final DiaryRepository _repository;
   final FirebaseAuth _auth;
   final AppLocalizations _localizations;
+  final Ref _ref;
 
   AllDiariesNotifier({
     required DiaryRepository repository,
     required FirebaseAuth auth,
     required AppLocalizations localizations,
+    required Ref ref,
   })
       : _auth = auth,
         _repository = repository,
         _localizations = localizations,
+        _ref = ref,
         super(const AsyncLoading()) {
     _loadDiaries();
   }
@@ -81,6 +86,49 @@ class AllDiariesNotifier
       );
     } catch (error, stackTrace) {
       state = AsyncValue.error(error, stackTrace);
+    }
+  }
+
+  void _updateDeleteDiaryDialog(bool newDeleteDialogState) {
+    final currentState = state.value;
+    if (currentState == null) return;
+
+    state = AsyncValue.data(
+      currentState.copyWith(
+        deleteDialogState: newDeleteDialogState,
+      ),
+    );
+  }
+
+  void openDeleteDialog() {
+    _updateDeleteDiaryDialog(true);
+  }
+
+  void closeDeleteDialog() {
+    _updateDeleteDiaryDialog(false);
+  }
+
+  Future<void> deleteDiary(String diaryId) async {
+    final currentState = state.value;
+    if (currentState == null) return;
+
+    try {
+      await _repository.deleteDiary(diaryId);
+      final updatedDiaries = List<Diary>.from(currentState.diaries)..removeWhere((d) => d.id == diaryId);
+
+      // Reset current diary page index a zero dopo la cancellazione
+      _ref.read(currentDiaryPageIndexProvider.notifier).state = 0;
+
+      // Aggiorna stato con diario eliminato e chiudi dialog
+      state = AsyncValue.data(
+        currentState.copyWith(
+          diaries: updatedDiaries,
+          deleteDialogState: false,
+          // eventualmente aggiorna anche diaryCoversMap se serve
+        ),
+      );
+    } catch (e, st) {
+      state = AsyncValue.error(e, st);
     }
   }
 }

@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reverie_flutter/data/model/diary.dart';
 import 'package:reverie_flutter/data/model/diary_cover.dart';
+import 'package:reverie_flutter/data/model/diary_page.dart';
+import 'package:reverie_flutter/data/model/diary_sub_page.dart';
 import 'package:reverie_flutter/data/model/time_capsule.dart';
 import 'package:reverie_flutter/l10n/app_localizations.dart';
 import 'package:reverie_flutter/l10n/localizations_provider.dart';
@@ -40,6 +42,8 @@ class StorageService {
 
   final String usersCollection = 'users';
   final String diariesCollection = 'diaries';
+  final String pagesCollection = 'pages';
+  final String subPagesCollection = 'subpages';
   final String diaryCoversCollection = 'diaryCovers';
   final String usernamesCollection = 'usernames';
   final String emailsCollection = 'emails';
@@ -161,5 +165,37 @@ class StorageService {
     final doc = await FirebaseFirestore.instance.collection(diaryCoversCollection).doc(diaryCoverId).get();
     if (!doc.exists) return null;
     return DiaryCover.fromFirestore(doc);
+  }
+
+  Future<void> deleteDiary(String diaryId) async {
+    await _firestore.collection(diariesCollection).doc(diaryId).delete();
+  }
+
+  Future<void> deleteSubPage(String subPageId) async {
+    await _firestore.collection(subPagesCollection).doc(subPageId).delete();
+  }
+
+  Future<void> updatePage(DiaryPage page) async {
+    await _firestore.collection(pagesCollection).doc(page.id).set(page.toJson());
+  }
+
+  Future<DiarySubPage?> getSubPage(String subPageId) async {
+    final doc = await _firestore.collection(subPagesCollection).doc(subPageId).get();
+    if (!doc.exists) return null;
+    return DiarySubPage.fromFirestore(doc);
+  }
+
+  Future<void> updateDiary(Diary diary) async {
+    await _firestore.collection(diariesCollection).doc(diary.id).set(diary.toJson());
+  }
+
+  Future<void> deletePage(String pageId) async {
+    await _firestore.collection(pagesCollection).doc(pageId).delete();
+  }
+
+  Future<DiaryPage?> getPage(String pageId) async {
+    final doc = await _firestore.collection(pagesCollection).doc(pageId).get();
+    if (!doc.exists) return null;
+    return DiaryPage.fromFirestore(doc);
   }
 }
