@@ -37,8 +37,24 @@ class DiaryRepository {
     return Future.wait(user.diaryIds.map(getDiary));
   }
 
+  // Future<Diary> saveDiary(Diary diary) async {
+  //   return await _storage.saveDiary(diary);
+  // }
+
   Future<Diary> saveDiary(Diary diary) async {
-    return await _storage.saveDiary(diary);
+    final savedDiary = await _storage.saveDiary(diary);
+
+    // aggiungi la prima pagina
+    await savePage(DiaryPage(diaryId: savedDiary.id));
+
+    // ottieni l'utente attuale e aggiorna la lista dei suoi diari
+    final user = await _userRepository.getUser(diary.uid);
+    final diaryIds = List<String>.from(user.diaryIds);
+    diaryIds.add(savedDiary.id);
+
+    _userRepository.updateUser(user.copyWith(diaryIds: diaryIds));
+
+    return await getDiary(savedDiary.id);
   }
 
   Future<void> updateDiary(Diary diary) async {
@@ -62,8 +78,26 @@ class DiaryRepository {
     return await _storage.getPage(pageId) ?? (throw Exception('Page with ID $pageId does not exist'));
   }
 
+  // Future<DiaryPage> savePage(DiaryPage page) async {
+  //   return await _storage.savePage(page);
+  // }
+
   Future<DiaryPage> savePage(DiaryPage page) async {
-    return await _storage.savePage(page);
+    // salva la pagina
+    final savedPage = await _storage.savePage(page);
+
+    // aggiungi la prima sotto-pagina
+    await saveSubPage(DiarySubPage(pageId: savedPage.id, diaryId: page.diaryId));
+
+    // aggiorna il diario con la nuova pagina
+    final diary = await getDiary(page.diaryId);
+    final pageIds = List<String>.from(diary.pageIds);
+    pageIds.add(savedPage.id);
+
+    await updateDiary(diary.copyWith(pageIds: pageIds));
+
+    // ritorna la pagina aggiornata
+    return await getPage(savedPage.id);
   }
 
   Future<void> updatePage(DiaryPage page) async {
@@ -82,8 +116,22 @@ class DiaryRepository {
     return await _storage.getSubPage(subPageId) ?? (throw Exception('SubPage with ID $subPageId does not exist'));
   }
 
+  // Future<DiarySubPage> saveSubPage(DiarySubPage subPage) async {
+  //   return await _storage.saveSubPage(subPage);
+  // }
+
   Future<DiarySubPage> saveSubPage(DiarySubPage subPage) async {
-    return await _storage.saveSubPage(subPage);
+    final savedSubPage = await _storage.saveSubPage(subPage);
+
+    final page = await getPage(subPage.pageId);
+    if (page == null) return DiarySubPage();
+
+    final subPageIds = List<String>.from(page.subPageIds);
+    subPageIds.add(savedSubPage.id);
+
+    await updatePage(page.copyWith(subPageIds: subPageIds));
+
+    return savedSubPage;
   }
 
   Future<void> updateSubPage(DiarySubPage subPage) async {
