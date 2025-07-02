@@ -6,26 +6,21 @@ import 'package:reverie_flutter/ui/components/error_field.dart';
 import 'package:reverie_flutter/ui/components/single_field.dart';
 import '../../notifier/edit_profile_notifier.dart';
 
-
-final profileIdProvider = Provider<String>((ref) {
-  throw UnimplementedError(); // Will be overridden in ProviderScope.
-});
-
-
 class EditProfileScreen extends ConsumerWidget {
   static const String name = 'edit_profile';
   static const String path = '/profile/:id/edit';
 
+  final String profileId;
   final void Function(User) onComplete;
 
   const EditProfileScreen({
     super.key,
+    required this.profileId,
     required this.onComplete,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final profileId = ref.watch(profileIdProvider);
     final state = ref.watch(editProfileNotifierProvider(profileId));
     final notifier = ref.read(editProfileNotifierProvider(profileId).notifier);
     final localizations = AppLocalizations.of(context)!;

@@ -2,25 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reverie_flutter/data/model/user.dart';
 import 'package:reverie_flutter/l10n/app_localizations.dart';
-import 'package:reverie_flutter/ui/screens/edit_profile_screen.dart';
 import '../../notifier/profile_notifier.dart';
 
 class ProfileScreen extends ConsumerWidget {
   static const String name = 'profile';
   static const String path = '/profile/:id';
 
+  final String profileId;
   final Future<User> Function(String) onEditProfile;
   final void Function() onLogout;
 
   const ProfileScreen({
     super.key,
+    required this.profileId,
     required this.onEditProfile,
     required this.onLogout,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final profileId = ref.watch(profileIdProvider);
     final state = ref.watch(profileNotifierProvider(profileId));
     final notifier = ref.watch(profileNotifierProvider(profileId).notifier);
 

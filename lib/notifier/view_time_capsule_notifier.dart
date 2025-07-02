@@ -31,10 +31,6 @@ abstract class ViewTimeCapsuleParams with _$ViewTimeCapsuleParams{
   }) = _ViewTimeCapsuleParams;
 }
 
-final viewTimeCapsuleParamsProvider = Provider<ViewTimeCapsuleParams>((ref) {
-  throw UnimplementedError(); // Will be overridden in ProviderScope.
-});
-
 final viewTimeCapsuleNotifierProvider = StateNotifierProvider.family<ViewTimeCapsuleNotifier, AsyncValue<ViewTimeCapsuleState>, ViewTimeCapsuleParams>((ref, params) {
   final repository = ref.read(timeCapsuleRepositoryProvider);
   final userRepository = ref.read(userRepositoryProvider);

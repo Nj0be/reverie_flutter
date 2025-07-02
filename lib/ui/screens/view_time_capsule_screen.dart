@@ -9,14 +9,18 @@ class ViewTimeCapsuleScreen extends ConsumerWidget {
   static const String name = 'view_time_capsule';
   static const String path = '/view_time_capsule/:id/:type';
 
+  final ViewTimeCapsuleParams viewTimeCapsuleParams;
   final void Function(String) onViewProfile;
 
-  const ViewTimeCapsuleScreen({super.key, required this.onViewProfile});
+  const ViewTimeCapsuleScreen({
+    super.key,
+    required this.viewTimeCapsuleParams,
+    required this.onViewProfile
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final localizations = AppLocalizations.of(context)!;
-    final viewTimeCapsuleParams = ref.watch(viewTimeCapsuleParamsProvider);
     final state = ref.watch(
       viewTimeCapsuleNotifierProvider(viewTimeCapsuleParams),
     );

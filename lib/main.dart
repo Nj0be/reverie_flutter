@@ -76,10 +76,8 @@ final _router = GoRouter(
           builder: (context, state) {
             final profileId = state.pathParameters['id']!;
             return ProviderScope(
-              overrides: [
-                profileIdProvider.overrideWithValue(profileId),
-              ],
               child: ProfileScreen(
+                profileId: profileId,
                 onEditProfile: (id) async {
                   // return updated profile from editProfile
                   return await context.pushNamed(
@@ -103,10 +101,8 @@ final _router = GoRouter(
           builder: (context, state) {
             final profileId = state.pathParameters['id']!;
             return ProviderScope(
-              overrides: [
-                profileIdProvider.overrideWithValue(profileId),
-              ],
               child: EditProfileScreen(
+                profileId: profileId,
                 onComplete: (updatedProfile) {
                   // Navigate back to the profile page after editing
                   // we send the updated profile
@@ -224,10 +220,8 @@ final _router = GoRouter(
               orElse: () => TimeCapsuleType.scheduled, // fallback
             );
             return ProviderScope(
-                overrides: [
-                  viewTimeCapsuleParamsProvider.overrideWithValue(ViewTimeCapsuleParams(timeCapsuleId: timeCapsuleId, timeCapsuleType: timeCapsuleType)),
-                ],
                 child: ViewTimeCapsuleScreen(
+                  viewTimeCapsuleParams: ViewTimeCapsuleParams(timeCapsuleId: timeCapsuleId, timeCapsuleType: timeCapsuleType),
                   onViewProfile: (profileId) {
                     context.pushNamed(
                         ProfileScreen.name,
