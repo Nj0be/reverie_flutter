@@ -5,14 +5,10 @@ import 'package:reverie_flutter/data/model/diary.dart';
 import 'package:reverie_flutter/data/repository/diary_repository.dart';
 import 'package:reverie_flutter/l10n/app_localizations.dart';
 import 'package:reverie_flutter/storage_service.dart';
-import '../data/repository/user_repository.dart';
-import '../data/model/user.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:reverie_flutter/data/model/diary_cover.dart';
-import 'package:reverie_flutter/l10n/app_localizations.dart';
 import 'package:reverie_flutter/l10n/localizations_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 part 'all_diaries_notifier.freezed.dart';
 
 @freezed
@@ -135,8 +131,10 @@ class AllDiariesNotifier
     final currentState = state.value;
     if (currentState == null) return;
 
+    final diary = currentState.diaries.firstWhere((d) => d.id == diaryId);
+
     try {
-      await _repository.deleteDiary(diaryId);
+      await _repository.deleteDiary(diary);
       final updatedDiaries = List<Diary>.from(currentState.diaries)..removeWhere((d) => d.id == diaryId);
 
       final currentIndex = _ref.read(currentDiaryPageIndexProvider);

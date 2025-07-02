@@ -164,8 +164,12 @@ class AllTimeCapsulesNotifier
 
     final capsuleIdToDelete = currentState.deleteDialogCapsuleId;
 
+    final capsuleToDelete = currentState.sentTimeCapsules[capsuleIdToDelete];
+    if (capsuleToDelete == null) return;
+
+
     try {
-      await _repository.deleteTimeCapsule(capsuleIdToDelete);
+      await _repository.deleteTimeCapsule(capsuleToDelete);
 
       final updatedSentTimeCapsules = Map<String, TimeCapsule>.from(currentState.sentTimeCapsules)
         ..remove(capsuleIdToDelete);

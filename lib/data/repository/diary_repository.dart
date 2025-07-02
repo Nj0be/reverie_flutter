@@ -45,22 +45,12 @@ class DiaryRepository {
     await _storage.updateDiary(diary);
   }
 
-  Future<void> deleteDiary(String diaryId) async {
-    Diary? diary;
-    try { diary = await getDiary(diaryId); } catch (_) { return; }
-
+  Future<void> deleteDiary(Diary diary) async {
     for (final pageId in diary.pageIds) {
-      await deletePage(pageId);
+      await deletePage(await getPage(pageId));
     }
 
-    final user = await _userRepository.getUser(diary.uid);
-
-    final diaryIds = List<String>.from(user.diaryIds);
-    diaryIds.remove(diaryId);
-
-    await _userRepository.updateUser(user.copyWith(diaryIds: diaryIds));
-
-    await _storage.deleteDiary(diaryId);
+    await _storage.deleteDiary(diary);
   }
 
   Future<DiaryCover> getDiaryCover(String diaryCoverId) async {
@@ -80,22 +70,12 @@ class DiaryRepository {
     await _storage.updatePage(page);
   }
 
-  Future<void> deletePage(String pageId) async {
-    DiaryPage? page;
-    try { page = await getPage(pageId); } catch (_) { return; }
-
+  Future<void> deletePage(DiaryPage page) async {
     for (final subPageId in page.subPageIds) {
-      await deleteSubPage(subPageId);
+      await deleteSubPage(await getSubPage(subPageId));
     }
 
-    final diary = await getDiary(page.diaryId);
-
-    final pageIds = List<String>.from(diary.pageIds);
-    pageIds.remove(pageId);
-
-    await updateDiary(diary.copyWith(pageIds: pageIds));
-
-    await _storage.deletePage(pageId);
+    await _storage.deletePage(page);
   }
 
   Future<DiarySubPage> getSubPage(String subPageId) async {
@@ -110,21 +90,12 @@ class DiaryRepository {
     await _storage.updateSubPage(subPage);
   }
 
-  Future<void> deleteSubPage(String subPageId) async {
-    DiarySubPage? subPage;
-    try { subPage = await getSubPage(subPageId); } catch (_) { return; }
-
+  Future<void> deleteSubPage(DiarySubPage subPage) async {
     for (final imageId in subPage.imageIds) {
       await deleteDiaryImage(imageId);
     }
 
-    final page = await getPage(subPage.pageId);
-    final subPageIds = List<String>.from(page.subPageIds);
-    subPageIds.remove(subPageId);
-
-    await updatePage(page.copyWith(subPageIds: subPageIds));
-
-    await _storage.deleteSubPage(subPageId);
+    await _storage.deleteSubPage(subPage);
   }
 
   Future<DiaryImage> getDiaryImage(String diaryImageId) async {

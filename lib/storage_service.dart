@@ -48,8 +48,10 @@ class StorageService {
   final String diaryCoversCollection = 'diaryCovers';
   final String usernamesCollection = 'usernames';
   final String emailsCollection = 'emails';
-  final String diaryImagesBucket = 'diaryImages';
+  final String diaryImagesCollection = 'diaryImages';
   final String timeCapsulesCollection = "timeCapsules";
+
+  final String diaryImagesBucket = 'diary-images';
 
   final String usernameField = 'username';
 
@@ -147,15 +149,6 @@ class StorageService {
     return TimeCapsule.fromFirestore(doc);
   }
 
-  Future<TimeCapsule> saveTimeCapsule(TimeCapsule timeCapsule) async {
-    final docRef = await _firestore.collection(timeCapsulesCollection).add(timeCapsule.toJson());
-    return timeCapsule.copyWith(id: docRef.id);
-  }
-
-  Future<void> deleteTimeCapsule(String timeCapsuleId) async {
-    await _firestore.collection(timeCapsulesCollection).doc(timeCapsuleId).delete();
-  }
-
   Future<DiaryCover?> getDiaryCover(String diaryCoverId) async {
     final doc = await FirebaseFirestore.instance.collection(diaryCoversCollection).doc(diaryCoverId).get();
     if (!doc.exists) return null;
@@ -177,8 +170,13 @@ class StorageService {
     await _firestore.collection(diariesCollection).doc(diary.id).set(diary.toJson());
   }
 
-  Future<void> deleteDiary(String diaryId) async {
-    await _firestore.collection(diariesCollection).doc(diaryId).delete();
+  Future<void> deleteDiary(Diary diary) async {
+    await _firestore.collection(diariesCollection).doc(diary.id).delete();
+
+    final userRef = FirebaseFirestore.instance.collection(usersCollection).doc(diary.uid);
+    await userRef.update({
+      'diaryIds': FieldValue.arrayRemove([diary.id]),
+    });
   }
 
   Future<DiaryPage?> getPage(String pageId) async {
@@ -196,8 +194,13 @@ class StorageService {
     await _firestore.collection(pagesCollection).doc(page.id).set(page.toJson());
   }
 
-  Future<void> deletePage(String pageId) async {
-    await _firestore.collection(pagesCollection).doc(pageId).delete();
+  Future<void> deletePage(DiaryPage page) async {
+    await _firestore.collection(pagesCollection).doc(page.id).delete();
+
+    final userRef = FirebaseFirestore.instance.collection(diariesCollection).doc(page.diaryId);
+    await userRef.update({
+      'pageIds': FieldValue.arrayRemove([page.id]),
+    });
   }
 
   Future<DiarySubPage?> getSubPage(String subPageId) async {
@@ -215,18 +218,23 @@ class StorageService {
     await _firestore.collection(subPagesCollection).doc(subPage.id).set(subPage.toJson());
   }
 
-  Future<void> deleteSubPage(String subPageId) async {
-    await _firestore.collection(subPagesCollection).doc(subPageId).delete();
+  Future<void> deleteSubPage(DiarySubPage subPage) async {
+    await _firestore.collection(subPagesCollection).doc(subPage.id).delete();
+
+    final userRef = FirebaseFirestore.instance.collection(pagesCollection).doc(subPage.pageId);
+    await userRef.update({
+      'subPageIds': FieldValue.arrayRemove([subPage.id]),
+    });
   }
 
   Future<DiaryImage?> getDiaryImage(String diaryImageId) async {
-    final doc = await _firestore.collection(diaryImagesBucket).doc(diaryImageId).get();
+    final doc = await _firestore.collection(diaryImagesCollection).doc(diaryImageId).get();
     if (!doc.exists) return null;
     return DiaryImage.fromFirestore(doc);
   }
 
   Future<void> deleteDiaryImage(String diaryImageId) async {
-    await _firestore.collection(diaryImagesBucket).doc(diaryImageId).delete();
+    await _firestore.collection(diaryImagesCollection).doc(diaryImageId).delete();
   }
 
   Future<List<DiaryCover>> getAllDiaryCovers() async {
@@ -235,5 +243,28 @@ class StorageService {
     return querySnapshot.docs.map((doc) {
       return DiaryCover.fromFirestore(doc);
     }).toList();
+  }
+
+  Future<TimeCapsule> saveTimeCapsule(TimeCapsule timeCapsule) async {
+    final docRef = await _firestore.collection(timeCapsulesCollection).add(timeCapsule.toJson());
+    return timeCapsule.copyWith(id: docRef.id);
+  }
+
+  Future<void> deleteTimeCapsule(TimeCapsule timeCapsule) async {
+    await _firestore.collection(timeCapsulesCollection).doc(timeCapsule.id).delete();
+
+    final firestore = FirebaseFirestore.instance;
+
+    final senderRef = firestore.collection(usersCollection).doc(timeCapsule.userId);
+    await senderRef.update({
+      'sentTimeCapsuleIds': FieldValue.arrayRemove([timeCapsule.id]),
+    });
+
+    for (final receiverId in timeCapsule.receiversIds) {
+      final receiverRef = firestore.collection(usersCollection).doc(receiverId);
+      await receiverRef.update({
+        'receivedTimeCapsuleIds': FieldValue.arrayRemove([timeCapsule.id]),
+      });
+    }
   }
 }

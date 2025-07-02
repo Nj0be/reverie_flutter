@@ -59,30 +59,7 @@ class TimeCapsuleRepository {
     return getTimeCapsule(savedTimeCapsule.id);
   }
 
-  Future<void> deleteTimeCapsule(String timeCapsuleId) async {
-    final timeCapsule = await getTimeCapsule(timeCapsuleId);
-
-    // Remove from sender's sent capsules
-    final sendingUser = await _userRepository.getUser(timeCapsule.userId);
-    final updatedSentTimeCapsuleIds = List<String>.from(
-        sendingUser.sentTimeCapsuleIds)
-      ..remove(timeCapsuleId);
-    await _userRepository.updateUser(
-      sendingUser.copyWith(sentTimeCapsuleIds: updatedSentTimeCapsuleIds),
-    );
-
-    // Remove from each receiver's received capsules
-    for (final receiverId in timeCapsule.receiversIds) {
-      final user = await _userRepository.getUser(receiverId);
-      final updatedReceivedTimeCapsuleIds = List<String>.from(
-          user.receivedTimeCapsuleIds)
-        ..remove(timeCapsuleId);
-      await _userRepository.updateUser(
-        user.copyWith(receivedTimeCapsuleIds: updatedReceivedTimeCapsuleIds),
-      );
-    }
-
-    // Delete the time capsule from storage
-    await _storage.deleteTimeCapsule(timeCapsuleId);
+  Future<void> deleteTimeCapsule(TimeCapsule timeCapsule) async {
+    await _storage.deleteTimeCapsule(timeCapsule);
   }
 }
