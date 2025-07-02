@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reverie_flutter/data/model/diary.dart';
 import 'package:reverie_flutter/l10n/app_localizations.dart';
-import 'package:reverie_flutter/ui/screens/edit_profile_screen.dart';
 import '../../notifier/all_diaries_notifier.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:intl/intl.dart';
@@ -12,14 +11,12 @@ class AllDiariesScreen extends ConsumerWidget {
   static const String name = 'all_diaries';
   static const String path = '/';
 
-  final Diary? updatedDiary;
   final void Function(String) onNavigateToDiary;
-  final void Function(String) onNavigateToEditDiary;
-  final void Function() onNavigateToCreateDiary;
+  final Future<Diary> Function(String) onNavigateToEditDiary;
+  final Future<Diary> Function() onNavigateToCreateDiary;
 
   const AllDiariesScreen({
     super.key,
-    required this.updatedDiary,
     required this.onNavigateToDiary,
     required this.onNavigateToCreateDiary,
     required this.onNavigateToEditDiary,
@@ -63,6 +60,7 @@ class AllDiariesScreen extends ConsumerWidget {
 
     final controller = ref.watch(pageControllerProvider);
     final state = ref.watch(allDiariesNotifierProvider);
+    final notifier = ref.watch(allDiariesNotifierProvider.notifier);
     final currentIndex = ref.watch(currentDiaryPageIndexProvider);
 
     return state.when(
@@ -110,8 +108,9 @@ class AllDiariesScreen extends ConsumerWidget {
                                   children: [
                                     IconButton(
                                       icon: const Icon(Icons.edit),
-                                      onPressed: () {
-                                        onNavigateToEditDiary(diary.id);
+                                      onPressed: () async {
+                                        final updatedDiary = await onNavigateToEditDiary(diary.id);
+                                        notifier.overwriteDiary(updatedDiary);
                                       },
                                     ),
                                     IconButton(
@@ -173,8 +172,22 @@ class AllDiariesScreen extends ConsumerWidget {
             ],
           ),
           floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              onNavigateToCreateDiary();
+            onPressed: () async {
+              final updatedDiary = await onNavigateToCreateDiary();
+              notifier.overwriteDiary(updatedDiary);
+
+              final newState = ref.read(allDiariesNotifierProvider);
+              final newDiaries = newState.value!.diaries;
+
+              final newIndex = newDiaries.length - 1;
+              ref.read(currentDiaryPageIndexProvider.notifier).state = newIndex;
+
+              final controller = ref.read(pageControllerProvider);
+              controller.animateToPage(
+                newIndex,
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeInOut,
+              );
             },
             child: const Icon(Icons.add),
           ),

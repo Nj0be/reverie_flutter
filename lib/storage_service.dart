@@ -228,4 +228,12 @@ class StorageService {
   Future<void> deleteDiaryImage(String diaryImageId) async {
     await _firestore.collection(diaryImagesBucket).doc(diaryImageId).delete();
   }
+
+  Future<List<DiaryCover>> getAllDiaryCovers() async {
+    final querySnapshot = await _firestore.collection(diaryCoversCollection).get();
+
+    return querySnapshot.docs.map((doc) {
+      return DiaryCover.fromFirestore(doc);
+    }).toList();
+  }
 }

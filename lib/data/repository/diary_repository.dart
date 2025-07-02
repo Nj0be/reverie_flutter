@@ -143,4 +143,8 @@ class DiaryRepository {
 
     await _storage.deleteDiaryImage(diaryImageId);
   }
+
+  Future<List<DiaryCover>> getAllDiaryCovers() async {
+    return await _storage.getAllDiaryCovers();
+  }
 }

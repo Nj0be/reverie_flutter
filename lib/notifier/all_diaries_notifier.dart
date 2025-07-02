@@ -156,4 +156,38 @@ class AllDiariesNotifier
       state = AsyncValue.error(e, st);
     }
   }
+
+  Future<void> overwriteDiary(Diary? updatedDiary) async {
+    final currentState = state.value;
+    if (currentState == null) return;
+
+    if (updatedDiary == null) return;
+
+    final List<Diary> currentDiaries = List.from(currentState.diaries);
+    final Map<String, DiaryCover> diaryCoversMap = Map.from(currentState.diaryCoversMap);
+
+    final existingIndex = currentDiaries.indexWhere((d) => d.id == updatedDiary.id);
+    if (existingIndex == -1) {
+      // Diario nuovo: aggiungiamolo in fondo
+      currentDiaries.add(updatedDiary);
+    } else {
+      // Diario esistente: sostituiamolo
+      currentDiaries[existingIndex] = updatedDiary;
+    }
+
+    // Controlla se la cover del diario è già nella mappa
+    final diaryCoverId = updatedDiary.coverId;
+    if (!diaryCoversMap.containsKey(diaryCoverId)) {
+      final cover = await _repository.getDiaryCover(diaryCoverId);
+      diaryCoversMap[diaryCoverId] = cover;
+    }
+
+    // Aggiorna lo stato con la nuova lista e la mappa delle cover aggiornata
+    state = AsyncValue.data(
+      currentState.copyWith(
+        diaries: currentDiaries,
+        diaryCoversMap: diaryCoversMap,
+      ),
+    );
+  }
 }

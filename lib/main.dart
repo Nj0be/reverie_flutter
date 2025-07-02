@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_libphonenumber/flutter_libphonenumber.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:reverie_flutter/data/model/diary.dart';
 import 'package:reverie_flutter/data/model/time_capsule.dart';
 import 'package:reverie_flutter/data/model/user.dart';
 import 'package:reverie_flutter/notifier/all_time_capsules_notifier.dart';
@@ -19,6 +20,7 @@ import 'package:reverie_flutter/ui/screens/signup_screen.dart';
 import 'package:reverie_flutter/ui/screens/view_time_capsule_screen.dart';
 import 'package:reverie_flutter/ui/themes/colors.dart';
 import 'package:reverie_flutter/ui/screens/all_diaries_screen.dart';
+import 'package:reverie_flutter/ui/screens/edit_diary_screen.dart';
 import 'package:reverie_flutter/utils.dart';
 import '../firebase_options.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -60,10 +62,55 @@ final _router = GoRouter(
           builder: (context, state) {
             return ProviderScope(
               child: AllDiariesScreen(
-                updatedDiary: null,
                 onNavigateToDiary: (_) {},
-                onNavigateToEditDiary: (_) {},
-                onNavigateToCreateDiary: () {},
+                onNavigateToEditDiary: (diaryId) async {
+                  // return updated profile from editProfile
+                  return await context.pushNamed(
+                    EditDiaryScreen.editName,
+                    pathParameters: {'id': diaryId},
+                  ) as Diary;
+                },
+                onNavigateToCreateDiary: () async {
+                  // return updated profile from editProfile
+                  return await context.pushNamed(
+                    EditDiaryScreen.createName,
+                  ) as Diary;
+                },
+              ),
+            );
+          },
+        ),
+
+        // Route for editing a diary
+        GoRoute(
+          name: EditDiaryScreen.editName,
+          path: EditDiaryScreen.editPath,
+          builder: (context, state) {
+            final diaryId = state.pathParameters['id']!;
+            return ProviderScope(
+              child: EditDiaryScreen(
+                diaryId: diaryId,
+                onComplete: (updatedDiary) {
+                  // Navigate back to the profile page after editing
+                  // we send the updated profile
+                  context.pop(updatedDiary);
+                },
+              ),
+            );
+          },
+        ),
+        GoRoute(
+          name: EditDiaryScreen.createName,
+          path: EditDiaryScreen.createPath,
+          builder: (context, state) {
+            return ProviderScope(
+              child: EditDiaryScreen(
+                diaryId: '',
+                onComplete: (updatedDiary) {
+                  // Navigate back to the profile page after editing
+                  // we send the updated profile
+                  context.pop(updatedDiary);
+                },
               ),
             );
           },
