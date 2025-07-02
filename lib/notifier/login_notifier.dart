@@ -60,7 +60,7 @@ class LoginNotifier extends StateNotifier<LoginState> {
     state = state.copyWith(password: newPassword, passwordError: validatePassword(newPassword));
   }
 
-  void onLogin(void Function() onLoginSuccess) async {
+  Future<void> onLogin(void Function() onLoginSuccess) async {
     // Clear any form-wide errors
     // Validate individual inputs
     state = state.copyWith(

@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reverie_flutter/data/model/diary.dart';
 import 'package:reverie_flutter/data/model/diary_cover.dart';
+import 'package:reverie_flutter/data/model/diary_image.dart';
 import 'package:reverie_flutter/data/model/diary_page.dart';
 import 'package:reverie_flutter/data/model/diary_sub_page.dart';
 import 'package:reverie_flutter/data/model/time_capsule.dart';
@@ -130,12 +131,6 @@ class StorageService {
     }).toList();
   }
 
-  Future<Diary?> getDiary(String diaryId) async {
-    final doc = await _firestore.collection(diariesCollection).doc(diaryId).get();
-    if (!doc.exists) return null;
-    return Diary.fromFirestore(doc);
-  }
-
   Future<bool> isUsernameTaken(String username) async {
     final docSnapshot = await _firestore.collection(usernamesCollection).doc(username).get();
     return docSnapshot.data() != null;
@@ -167,16 +162,42 @@ class StorageService {
     return DiaryCover.fromFirestore(doc);
   }
 
+  Future<Diary?> getDiary(String diaryId) async {
+    final doc = await _firestore.collection(diariesCollection).doc(diaryId).get();
+    if (!doc.exists) return null;
+    return Diary.fromFirestore(doc);
+  }
+
+  Future<Diary> saveDiary(Diary diary) async {
+    final docRef = await _firestore.collection(diariesCollection).add(diary.toJson());
+    return diary.copyWith(id: docRef.id);
+  }
+
+  Future<void> updateDiary(Diary diary) async {
+    await _firestore.collection(diariesCollection).doc(diary.id).set(diary.toJson());
+  }
+
   Future<void> deleteDiary(String diaryId) async {
     await _firestore.collection(diariesCollection).doc(diaryId).delete();
   }
 
-  Future<void> deleteSubPage(String subPageId) async {
-    await _firestore.collection(subPagesCollection).doc(subPageId).delete();
+  Future<DiaryPage?> getPage(String pageId) async {
+    final doc = await _firestore.collection(pagesCollection).doc(pageId).get();
+    if (!doc.exists) return null;
+    return DiaryPage.fromFirestore(doc);
+  }
+
+  Future<DiaryPage> savePage(DiaryPage page) async {
+    final docRef = await _firestore.collection(pagesCollection).add(page.toJson());
+    return page.copyWith(id: docRef.id);
   }
 
   Future<void> updatePage(DiaryPage page) async {
     await _firestore.collection(pagesCollection).doc(page.id).set(page.toJson());
+  }
+
+  Future<void> deletePage(String pageId) async {
+    await _firestore.collection(pagesCollection).doc(pageId).delete();
   }
 
   Future<DiarySubPage?> getSubPage(String subPageId) async {
@@ -185,17 +206,26 @@ class StorageService {
     return DiarySubPage.fromFirestore(doc);
   }
 
-  Future<void> updateDiary(Diary diary) async {
-    await _firestore.collection(diariesCollection).doc(diary.id).set(diary.toJson());
+  Future<DiarySubPage> saveSubPage(DiarySubPage subPage) async {
+    final docRef = await _firestore.collection(subPagesCollection).add(subPage.toJson());
+    return subPage.copyWith(id: docRef.id);
   }
 
-  Future<void> deletePage(String pageId) async {
-    await _firestore.collection(pagesCollection).doc(pageId).delete();
+  Future<void> updateSubPage(DiarySubPage subPage) async {
+    await _firestore.collection(subPagesCollection).doc(subPage.id).set(subPage.toJson());
   }
 
-  Future<DiaryPage?> getPage(String pageId) async {
-    final doc = await _firestore.collection(pagesCollection).doc(pageId).get();
+  Future<void> deleteSubPage(String subPageId) async {
+    await _firestore.collection(subPagesCollection).doc(subPageId).delete();
+  }
+
+  Future<DiaryImage?> getDiaryImage(String diaryImageId) async {
+    final doc = await _firestore.collection(diaryImagesBucket).doc(diaryImageId).get();
     if (!doc.exists) return null;
-    return DiaryPage.fromFirestore(doc);
+    return DiaryImage.fromFirestore(doc);
+  }
+
+  Future<void> deleteDiaryImage(String diaryImageId) async {
+    await _firestore.collection(diaryImagesBucket).doc(diaryImageId).delete();
   }
 }

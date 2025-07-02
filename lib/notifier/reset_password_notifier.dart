@@ -51,7 +51,7 @@ class ResetPasswordNotifier extends StateNotifier<ResetPasswordState> {
     );
   }
 
-  void onResetPassword(void Function() onResetPasswordSuccess) async {
+  Future<void> onResetPassword(void Function() onResetPasswordSuccess) async {
     // Clear any form-wide errors
     // Validate individual inputs
     state = state.copyWith(
