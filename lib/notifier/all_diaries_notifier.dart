@@ -17,6 +17,7 @@ abstract class AllDiariesState with _$AllDiariesState {
     @Default([]) List<Diary> diaries,
     @Default({}) Map<String, DiaryCover> diaryCoversMap,
     @Default(false) bool deleteDialogState,
+    @Default(0) int currentIndex,
   }) = _AllDiariesState;
 }
 
@@ -182,7 +183,14 @@ class AllDiariesNotifier
       currentState.copyWith(
         diaries: currentDiaries,
         diaryCoversMap: diaryCoversMap,
+        currentIndex: existingIndex == -1 ? currentDiaries.length - 1 : existingIndex
       ),
     );
+  }
+
+  void onChangeIndex(int index) {
+    state = state.whenData((s) {
+      return s.copyWith(currentIndex: index);
+    });
   }
 }

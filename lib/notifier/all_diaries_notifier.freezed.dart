@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AllDiariesState {
 
- List<Diary> get diaries; Map<String, DiaryCover> get diaryCoversMap; bool get deleteDialogState;
+ List<Diary> get diaries; Map<String, DiaryCover> get diaryCoversMap; bool get deleteDialogState; int get currentIndex;
 /// Create a copy of AllDiariesState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -26,16 +26,16 @@ $AllDiariesStateCopyWith<AllDiariesState> get copyWith => _$AllDiariesStateCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AllDiariesState&&const DeepCollectionEquality().equals(other.diaries, diaries)&&const DeepCollectionEquality().equals(other.diaryCoversMap, diaryCoversMap)&&(identical(other.deleteDialogState, deleteDialogState) || other.deleteDialogState == deleteDialogState));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AllDiariesState&&const DeepCollectionEquality().equals(other.diaries, diaries)&&const DeepCollectionEquality().equals(other.diaryCoversMap, diaryCoversMap)&&(identical(other.deleteDialogState, deleteDialogState) || other.deleteDialogState == deleteDialogState)&&(identical(other.currentIndex, currentIndex) || other.currentIndex == currentIndex));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(diaries),const DeepCollectionEquality().hash(diaryCoversMap),deleteDialogState);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(diaries),const DeepCollectionEquality().hash(diaryCoversMap),deleteDialogState,currentIndex);
 
 @override
 String toString() {
-  return 'AllDiariesState(diaries: $diaries, diaryCoversMap: $diaryCoversMap, deleteDialogState: $deleteDialogState)';
+  return 'AllDiariesState(diaries: $diaries, diaryCoversMap: $diaryCoversMap, deleteDialogState: $deleteDialogState, currentIndex: $currentIndex)';
 }
 
 
@@ -46,7 +46,7 @@ abstract mixin class $AllDiariesStateCopyWith<$Res>  {
   factory $AllDiariesStateCopyWith(AllDiariesState value, $Res Function(AllDiariesState) _then) = _$AllDiariesStateCopyWithImpl;
 @useResult
 $Res call({
- List<Diary> diaries, Map<String, DiaryCover> diaryCoversMap, bool deleteDialogState
+ List<Diary> diaries, Map<String, DiaryCover> diaryCoversMap, bool deleteDialogState, int currentIndex
 });
 
 
@@ -63,12 +63,13 @@ class _$AllDiariesStateCopyWithImpl<$Res>
 
 /// Create a copy of AllDiariesState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? diaries = null,Object? diaryCoversMap = null,Object? deleteDialogState = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? diaries = null,Object? diaryCoversMap = null,Object? deleteDialogState = null,Object? currentIndex = null,}) {
   return _then(_self.copyWith(
 diaries: null == diaries ? _self.diaries : diaries // ignore: cast_nullable_to_non_nullable
 as List<Diary>,diaryCoversMap: null == diaryCoversMap ? _self.diaryCoversMap : diaryCoversMap // ignore: cast_nullable_to_non_nullable
 as Map<String, DiaryCover>,deleteDialogState: null == deleteDialogState ? _self.deleteDialogState : deleteDialogState // ignore: cast_nullable_to_non_nullable
-as bool,
+as bool,currentIndex: null == currentIndex ? _self.currentIndex : currentIndex // ignore: cast_nullable_to_non_nullable
+as int,
   ));
 }
 
@@ -79,7 +80,7 @@ as bool,
 
 
 class _AllDiariesState implements AllDiariesState {
-  const _AllDiariesState({final  List<Diary> diaries = const [], final  Map<String, DiaryCover> diaryCoversMap = const {}, this.deleteDialogState = false}): _diaries = diaries,_diaryCoversMap = diaryCoversMap;
+  const _AllDiariesState({final  List<Diary> diaries = const [], final  Map<String, DiaryCover> diaryCoversMap = const {}, this.deleteDialogState = false, this.currentIndex = 0}): _diaries = diaries,_diaryCoversMap = diaryCoversMap;
   
 
  final  List<Diary> _diaries;
@@ -97,6 +98,7 @@ class _AllDiariesState implements AllDiariesState {
 }
 
 @override@JsonKey() final  bool deleteDialogState;
+@override@JsonKey() final  int currentIndex;
 
 /// Create a copy of AllDiariesState
 /// with the given fields replaced by the non-null parameter values.
@@ -108,16 +110,16 @@ _$AllDiariesStateCopyWith<_AllDiariesState> get copyWith => __$AllDiariesStateCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AllDiariesState&&const DeepCollectionEquality().equals(other._diaries, _diaries)&&const DeepCollectionEquality().equals(other._diaryCoversMap, _diaryCoversMap)&&(identical(other.deleteDialogState, deleteDialogState) || other.deleteDialogState == deleteDialogState));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AllDiariesState&&const DeepCollectionEquality().equals(other._diaries, _diaries)&&const DeepCollectionEquality().equals(other._diaryCoversMap, _diaryCoversMap)&&(identical(other.deleteDialogState, deleteDialogState) || other.deleteDialogState == deleteDialogState)&&(identical(other.currentIndex, currentIndex) || other.currentIndex == currentIndex));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_diaries),const DeepCollectionEquality().hash(_diaryCoversMap),deleteDialogState);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_diaries),const DeepCollectionEquality().hash(_diaryCoversMap),deleteDialogState,currentIndex);
 
 @override
 String toString() {
-  return 'AllDiariesState(diaries: $diaries, diaryCoversMap: $diaryCoversMap, deleteDialogState: $deleteDialogState)';
+  return 'AllDiariesState(diaries: $diaries, diaryCoversMap: $diaryCoversMap, deleteDialogState: $deleteDialogState, currentIndex: $currentIndex)';
 }
 
 
@@ -128,7 +130,7 @@ abstract mixin class _$AllDiariesStateCopyWith<$Res> implements $AllDiariesState
   factory _$AllDiariesStateCopyWith(_AllDiariesState value, $Res Function(_AllDiariesState) _then) = __$AllDiariesStateCopyWithImpl;
 @override @useResult
 $Res call({
- List<Diary> diaries, Map<String, DiaryCover> diaryCoversMap, bool deleteDialogState
+ List<Diary> diaries, Map<String, DiaryCover> diaryCoversMap, bool deleteDialogState, int currentIndex
 });
 
 
@@ -145,12 +147,13 @@ class __$AllDiariesStateCopyWithImpl<$Res>
 
 /// Create a copy of AllDiariesState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? diaries = null,Object? diaryCoversMap = null,Object? deleteDialogState = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? diaries = null,Object? diaryCoversMap = null,Object? deleteDialogState = null,Object? currentIndex = null,}) {
   return _then(_AllDiariesState(
 diaries: null == diaries ? _self._diaries : diaries // ignore: cast_nullable_to_non_nullable
 as List<Diary>,diaryCoversMap: null == diaryCoversMap ? _self._diaryCoversMap : diaryCoversMap // ignore: cast_nullable_to_non_nullable
 as Map<String, DiaryCover>,deleteDialogState: null == deleteDialogState ? _self.deleteDialogState : deleteDialogState // ignore: cast_nullable_to_non_nullable
-as bool,
+as bool,currentIndex: null == currentIndex ? _self.currentIndex : currentIndex // ignore: cast_nullable_to_non_nullable
+as int,
   ));
 }
 

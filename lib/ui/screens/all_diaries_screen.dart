@@ -61,12 +61,13 @@ class AllDiariesScreen extends ConsumerWidget {
     final controller = ref.watch(pageControllerProvider);
     final state = ref.watch(allDiariesNotifierProvider);
     final notifier = ref.watch(allDiariesNotifierProvider.notifier);
-    final currentIndex = ref.watch(currentDiaryPageIndexProvider);
+
 
     return state.when(
       data: (data) {
         final diaries = data.diaries;
         final diaryCoversMap = data.diaryCoversMap;
+        final currentIndex = data.currentIndex;
 
         return Scaffold(
           body: Column(
@@ -74,9 +75,7 @@ class AllDiariesScreen extends ConsumerWidget {
               Flexible(
                 child: PageView.builder(
                   controller: controller,
-                  onPageChanged: (index) {
-                    ref.read(currentDiaryPageIndexProvider.notifier).state = index;
-                  },
+                  onPageChanged: notifier.onChangeIndex,
                   itemCount: diaries.length,
                   itemBuilder: (context, index) {
                     final diary = diaries[index];
@@ -175,18 +174,6 @@ class AllDiariesScreen extends ConsumerWidget {
             onPressed: () async {
               final updatedDiary = await onNavigateToCreateDiary();
               notifier.overwriteDiary(updatedDiary);
-
-              final newState = ref.read(allDiariesNotifierProvider);
-              final newDiaries = newState.value!.diaries;
-
-              final newIndex = newDiaries.length - 1;
-
-              // Aggiorna current index
-              ref.read(currentDiaryPageIndexProvider.notifier).state = newIndex;
-
-              // Ricrea il controller con la nuova pagina iniziale
-              final newController = PageController(initialPage: newIndex);
-              ref.read(pageControllerProvider.notifier).state = newController;
             },
             child: const Icon(Icons.add),
           ),
