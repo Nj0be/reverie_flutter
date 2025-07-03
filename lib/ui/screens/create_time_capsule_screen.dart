@@ -14,7 +14,7 @@ import 'package:reverie_flutter/utils.dart';
 
 class CreateTimeCapsuleScreen extends ConsumerWidget {
   static const String name = 'create_time_capsule';
-  static const String path = '/create_time_capsule';
+  static const String path = '/create';
 
   final void Function(TimeCapsule) onComplete;
 

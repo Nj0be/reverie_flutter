@@ -2,19 +2,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reverie_flutter/data/model/diary.dart';
-import 'package:reverie_flutter/data/model/diary_cover.dart';
 import 'package:reverie_flutter/l10n/app_localizations.dart';
 import 'package:reverie_flutter/ui/components/content_text_field.dart';
 import 'package:reverie_flutter/ui/components/single_field.dart';
 import '../../notifier/edit_diary_notifier.dart';
-import '../components/error_field.dart';
 
 
 class EditDiaryScreen extends ConsumerWidget {
   static const String editName = 'edit_diary';
-  static const String editPath = '/edit_diary/:id';
+  static const String editPath = '/edit/:id';
   static const String createName = 'create_diary';
-  static const String createPath = '/create_diary';
+  static const String createPath = '/create';
 
 
   final String diaryId;

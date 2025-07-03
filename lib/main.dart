@@ -36,7 +36,11 @@ Future<void> main() async {
   // initialize libphonenumberutil
   await init();
 
-  runApp(MyApp());
+  runApp(
+      ProviderScope(
+        child: MyApp(),
+      )
+  );
 }
 
 final _router = GoRouter(
@@ -59,70 +63,73 @@ final _router = GoRouter(
         GoRoute(
           name: AllDiariesScreen.name,
           path: AllDiariesScreen.path,
-          builder: (context, state) {
-            return ProviderScope(
-              child: AllDiariesScreen(
-                onNavigateToDiary: (_) {},
-                onNavigateToEditDiary: (diaryId) async {
-                  // return updated profile from editProfile
-                  return await context.pushNamed(
-                    EditDiaryScreen.editName,
-                    pathParameters: {'id': diaryId},
-                  ) as Diary;
-                },
-                onNavigateToCreateDiary: () async {
-                  // return updated profile from editProfile
-                  return await context.pushNamed(
-                    EditDiaryScreen.createName,
-                  ) as Diary;
-                },
+          pageBuilder: (context, state) => MaterialPage(
+            key: state.pageKey,
+            child: AllDiariesScreen(
+              onNavigateToDiary: (_) {},
+              onNavigateToEditDiary: (diaryId) async {
+                // return updated profile from editProfile
+                return await context.pushNamed(
+                  EditDiaryScreen.editName,
+                  pathParameters: {'id': diaryId},
+                ) as Diary;
+              },
+              onNavigateToCreateDiary: () async {
+                // return updated profile from editProfile
+                return await context.pushNamed(
+                  EditDiaryScreen.createName,
+                ) as Diary;
+              },
+            ),
+          ),
+          routes: [
+            // Route for editing a diary
+            GoRoute(
+              name: EditDiaryScreen.editName,
+              path: EditDiaryScreen.editPath,
+              pageBuilder: (context, state) {
+                final diaryId = state.pathParameters['id']!;
+                return MaterialPage(
+                  key: state.pageKey,
+                  child: EditDiaryScreen(
+                    diaryId: diaryId,
+                    onComplete: (updatedDiary) {
+                      // Navigate back to the profile page after editing
+                      // we send the updated profile
+                      context.pop(updatedDiary);
+                    },
+                  ),
+                );
+              },
+            ),
+
+            GoRoute(
+              name: EditDiaryScreen.createName,
+              path: EditDiaryScreen.createPath,
+              pageBuilder: (context, state) => MaterialPage(
+                key: state.pageKey,
+                child: EditDiaryScreen(
+                  diaryId: '',
+                  onComplete: (updatedDiary) {
+                    // Navigate back to the profile page after editing
+                    // we send the updated profile
+                    context.pop(updatedDiary);
+                  },
+                ),
               ),
-            );
-          },
+            ),
+          ]
         ),
 
-        // Route for editing a diary
-        GoRoute(
-          name: EditDiaryScreen.editName,
-          path: EditDiaryScreen.editPath,
-          builder: (context, state) {
-            final diaryId = state.pathParameters['id']!;
-            return ProviderScope(
-              child: EditDiaryScreen(
-                diaryId: diaryId,
-                onComplete: (updatedDiary) {
-                  // Navigate back to the profile page after editing
-                  // we send the updated profile
-                  context.pop(updatedDiary);
-                },
-              ),
-            );
-          },
-        ),
-        GoRoute(
-          name: EditDiaryScreen.createName,
-          path: EditDiaryScreen.createPath,
-          builder: (context, state) {
-            return ProviderScope(
-              child: EditDiaryScreen(
-                diaryId: '',
-                onComplete: (updatedDiary) {
-                  // Navigate back to the profile page after editing
-                  // we send the updated profile
-                  context.pop(updatedDiary);
-                },
-              ),
-            );
-          },
-        ),
 
         // Route for viewing a profile
         GoRoute(
           name: ProfileScreen.name,
           path: ProfileScreen.path,
-          builder: (context, state) {
+          pageBuilder: (context, state) {
             final profileId = state.pathParameters['id']!;
-            return ProviderScope(
+            return MaterialPage(
+              key: state.pageKey,
               child: ProfileScreen(
                 profileId: profileId,
                 onEditProfile: (id) async {
@@ -139,145 +146,144 @@ final _router = GoRouter(
               ),
             );
           },
-        ),
-
-        // Route for editing a profile
-        GoRoute(
-          name: EditProfileScreen.name,
-          path: EditProfileScreen.path,
-          builder: (context, state) {
-            final profileId = state.pathParameters['id']!;
-            return ProviderScope(
-              child: EditProfileScreen(
-                profileId: profileId,
-                onComplete: (updatedProfile) {
-                  // Navigate back to the profile page after editing
-                  // we send the updated profile
-                  context.pop(updatedProfile);
-                },
-              ),
-            );
-          },
+          routes: [
+            // Route for editing a profile
+            GoRoute(
+              name: EditProfileScreen.name,
+              path: EditProfileScreen.path,
+              pageBuilder: (context, state) {
+                final profileId = state.pathParameters['id']!;
+                return MaterialPage(
+                  key: state.pageKey,
+                  child: EditProfileScreen(
+                    profileId: profileId,
+                    onComplete: (updatedProfile) {
+                      // Navigate back to the profile page after editing
+                      // we send the updated profile
+                      context.pop(updatedProfile);
+                    },
+                  ),
+                );
+              },
+            ),
+          ]
         ),
 
         GoRoute(
           name: LoginScreen.name,
           path: LoginScreen.path,
-          builder: (context, state) {
-            return ProviderScope(
-              child: LoginScreen(
-                onLoginSuccess: () {
-                  // Navigate back to the profile page after editing
-                  context.goNamed(AllDiariesScreen.name);
-                },
-                onNavigateToSignup: (){
-                  context.goNamed(SignupScreen.name);
-                },
-                onNavigateToResetPassword: (){
-                  context.goNamed(ResetPasswordScreen.name);
-                },
-              ),
-            );
-          },
+          pageBuilder: (context, state) => MaterialPage(
+            key: state.pageKey,
+            child: LoginScreen(
+              onLoginSuccess: () {
+                // Navigate back to the profile page after editing
+                context.goNamed(AllDiariesScreen.name);
+              },
+              onNavigateToSignup: (){
+                context.goNamed(SignupScreen.name);
+              },
+              onNavigateToResetPassword: (){
+                context.goNamed(ResetPasswordScreen.name);
+              },
+            ),
+          ),
         ),
 
         GoRoute(
           name: SignupScreen.name,
           path: SignupScreen.path,
-          builder: (context, state) {
-            return ProviderScope(
-              child: SignupScreen(
-                onSignupSuccess: () {
-                  // handle signup success
-                  context.goNamed(
-                    LoginScreen.name,
-                  );
-                },
-                onNavigateToLogin: (){
-                  context.goNamed(
-                    LoginScreen.name,
-                  );
-                },
-              ),
-            );
-          },
+          pageBuilder: (context, state) => MaterialPage(
+            key: state.pageKey,
+            child: SignupScreen(
+              onSignupSuccess: () {
+                // handle signup success
+                context.goNamed(
+                  LoginScreen.name,
+                );
+              },
+              onNavigateToLogin: (){
+                context.goNamed(
+                  LoginScreen.name,
+                );
+              },
+            ),
+          ),
         ),
 
         GoRoute(
           name: ResetPasswordScreen.name,
           path: ResetPasswordScreen.path,
-          builder: (context, state) {
-            return ProviderScope(
-              child: ResetPasswordScreen(
-                onResetPasswordSuccess: () {
-                  // handle signup success
-                  context.goNamed(
-                    LoginScreen.name,
-                  );
-                },
-              ),
-            );
-          },
+          pageBuilder: (context, state) => MaterialPage(
+            key: state.pageKey,
+            child: ResetPasswordScreen(
+              onResetPasswordSuccess: () {
+                // handle signup success
+                context.goNamed(
+                  LoginScreen.name,
+                );
+              },
+            ),
+          ),
         ),
 
         GoRoute(
           name: AllTimeCapsulesScreen.name,
           path: AllTimeCapsulesScreen.path,
-          builder: (context, state) {
-            return ProviderScope(
-              child: AllTimeCapsulesScreen(
-                  onNavigateToCreateTimeCapsule: () async {
-                    return await context.pushNamed(
-                      CreateTimeCapsuleScreen.name
-                    ) as TimeCapsule;
-                  },
-                  onNavigateToViewTimeCapsule: (timeCapsuleId, timeCapsuleType) {
-                    context.pushNamed(
-                      ViewTimeCapsuleScreen.name,
-                      pathParameters: {'id': timeCapsuleId, 'type': timeCapsuleType.name }
-                    );
-                  },
-              )
-            );
-          },
-        ),
+          pageBuilder: (context, state) => MaterialPage(
+            key: state.pageKey,
+            child: AllTimeCapsulesScreen(
+              onNavigateToCreateTimeCapsule: () async {
+                return await context.pushNamed(
+                  CreateTimeCapsuleScreen.name
+                ) as TimeCapsule;
+              },
+              onNavigateToViewTimeCapsule: (timeCapsuleId, timeCapsuleType) {
+                context.pushNamed(
+                  ViewTimeCapsuleScreen.name,
+                  pathParameters: {'id': timeCapsuleId, 'type': timeCapsuleType.name }
+                );
+              },
+            )
+          ),
+          routes: [
+            GoRoute(
+              name: CreateTimeCapsuleScreen.name,
+              path: CreateTimeCapsuleScreen.path,
+              pageBuilder: (context, state) => MaterialPage(
+                  key: state.pageKey,
+                  child: CreateTimeCapsuleScreen(
+                    onComplete: (createdTimeCapsule) {
+                      context.pop(createdTimeCapsule);
+                    },
+                  )
+              ),
+            ),
 
-        GoRoute(
-          name: CreateTimeCapsuleScreen.name,
-          path: CreateTimeCapsuleScreen.path,
-          builder: (context, state) {
-            return ProviderScope(
-                child: CreateTimeCapsuleScreen(
-                  onComplete: (createdTimeCapsule) {
-                    context.pop(createdTimeCapsule);
-                  },
-                )
-            );
-          },
-        ),
-
-        GoRoute(
-          name: ViewTimeCapsuleScreen.name,
-          path: ViewTimeCapsuleScreen.path,
-          builder: (context, state) {
-            final timeCapsuleId = state.pathParameters['id']!;
-            final timeCapsuleTypeStr = state.pathParameters['type']!;
-            final timeCapsuleType = TimeCapsuleType.values.firstWhere(
-                  (e) => e.name == timeCapsuleTypeStr,
-              orElse: () => TimeCapsuleType.scheduled, // fallback
-            );
-            return ProviderScope(
-                child: ViewTimeCapsuleScreen(
-                  viewTimeCapsuleParams: ViewTimeCapsuleParams(timeCapsuleId: timeCapsuleId, timeCapsuleType: timeCapsuleType),
-                  onViewProfile: (profileId) {
-                    context.pushNamed(
-                        ProfileScreen.name,
-                      pathParameters: {'id': profileId}
-                    );
-                  },
-                )
-            );
-          },
+            GoRoute(
+              name: ViewTimeCapsuleScreen.name,
+              path: ViewTimeCapsuleScreen.path,
+              pageBuilder: (context, state) {
+                final timeCapsuleId = state.pathParameters['id']!;
+                final timeCapsuleTypeStr = state.pathParameters['type']!;
+                final timeCapsuleType = TimeCapsuleType.values.firstWhere(
+                      (e) => e.name == timeCapsuleTypeStr,
+                  orElse: () => TimeCapsuleType.scheduled, // fallback
+                );
+                return MaterialPage(
+                    key: state.pageKey,
+                    child: ViewTimeCapsuleScreen(
+                      viewTimeCapsuleParams: ViewTimeCapsuleParams(timeCapsuleId: timeCapsuleId, timeCapsuleType: timeCapsuleType),
+                      onViewProfile: (profileId) {
+                        context.pushNamed(
+                            ProfileScreen.name,
+                            pathParameters: {'id': profileId}
+                        );
+                      },
+                    )
+                );
+              },
+            ),
+          ]
         ),
       ],
     ),
@@ -294,6 +300,13 @@ class MyApp extends StatelessWidget {
       title: 'Reverie',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: AppColors.secondary),
+        useMaterial3: true,
+        pageTransitionsTheme: const PageTransitionsTheme(
+          builders: <TargetPlatform, PageTransitionsBuilder>{
+            // Set the predictive back transitions for Android.
+            TargetPlatform.android: PredictiveBackPageTransitionsBuilder(),
+          },
+        ),
       ),
       routerConfig: _router,
       localizationsDelegates: const [

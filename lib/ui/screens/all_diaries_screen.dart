@@ -9,7 +9,7 @@ import 'package:intl/intl.dart';
 
 class AllDiariesScreen extends ConsumerWidget {
   static const String name = 'all_diaries';
-  static const String path = '/';
+  static const String path = '/diaries';
 
   final void Function(String) onNavigateToDiary;
   final Future<Diary> Function(String) onNavigateToEditDiary;

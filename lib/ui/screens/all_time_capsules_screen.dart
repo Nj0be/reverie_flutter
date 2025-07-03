@@ -8,7 +8,7 @@ import 'package:reverie_flutter/ui/components/button_bar_widget.dart';
 
 class AllTimeCapsulesScreen extends ConsumerWidget {
   static const String name = 'all_time_capsules';
-  static const String path = '/all_time_capsules';
+  static const String path = '/time_capsules';
 
   final Future<TimeCapsule> Function() _onNavigateToCreateTimeCapsule;
   final void Function(String, TimeCapsuleType) _onNavigateToViewTimeCapsule;

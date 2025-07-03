@@ -29,54 +29,49 @@ class ProfileScreen extends ConsumerWidget {
         final profile = data.profile;
         final isOwner = data.isOwner;
 
-        return Scaffold(
-          body: Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    isOwner
-                        ? AppLocalizations.of(context)!.yourProfile
-                        : AppLocalizations.of(context)!.profile,
-                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 40),
-                  Text(
-                    '${AppLocalizations.of(context)!.username}: ${profile.username}',
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
-                  const SizedBox(height: 40),
-                  Text(
-                    '${AppLocalizations.of(context)!.name}: ${profile.name}',
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
-                  const SizedBox(height: 40),
-                  Text(
-                    '${AppLocalizations.of(context)!.surname}: ${profile.surname}',
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
-                  const SizedBox(height: 40),
-                  if (isOwner) ...[
-                    ElevatedButton(
-                      onPressed: () async {
-                        final updatedProfile = await onEditProfile(profile.id);
-                        notifier.overwriteProfile(updatedProfile);
-                      },
-                      child: Text(AppLocalizations.of(context)!.editProfile),
-                    ),
-                    const SizedBox(height: 24),
-                    ElevatedButton(
-                      onPressed: () => onLogout(),
-                      child: Text(AppLocalizations.of(context)!.logout),
-                    ),
-                  ],
-                ],
+        return Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                isOwner
+                    ? AppLocalizations.of(context)!.yourProfile
+                    : AppLocalizations.of(context)!.profile,
+                style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
+              const SizedBox(height: 40),
+              Text(
+                '${AppLocalizations.of(context)!.username}: ${profile.username}',
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+              const SizedBox(height: 40),
+              Text(
+                '${AppLocalizations.of(context)!.name}: ${profile.name}',
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+              const SizedBox(height: 40),
+              Text(
+                '${AppLocalizations.of(context)!.surname}: ${profile.surname}',
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+              const SizedBox(height: 40),
+              if (isOwner) ...[
+                ElevatedButton(
+                  onPressed: () async {
+                    final updatedProfile = await onEditProfile(profile.id);
+                    notifier.overwriteProfile(updatedProfile);
+                  },
+                  child: Text(AppLocalizations.of(context)!.editProfile),
+                ),
+                const SizedBox(height: 24),
+                ElevatedButton(
+                  onPressed: () => onLogout(),
+                  child: Text(AppLocalizations.of(context)!.logout),
+                ),
+              ],
+            ],
           ),
         );
       },

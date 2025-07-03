@@ -8,7 +8,7 @@ import '../../notifier/edit_profile_notifier.dart';
 
 class EditProfileScreen extends ConsumerWidget {
   static const String name = 'edit_profile';
-  static const String path = '/profile/:id/edit';
+  static const String path = '/edit';
 
   final String profileId;
   final void Function(User) onComplete;
@@ -27,59 +27,56 @@ class EditProfileScreen extends ConsumerWidget {
 
     return state.when(
       data: (data) {
-        return Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                localizations.editProfile,
-                // o usa localization
-                style: Theme
-                    .of(context)
-                    .textTheme
-                    .headlineMedium
-                    ?.copyWith(fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 32),
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              localizations.editProfile,
+              // o usa localization
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .headlineMedium
+                  ?.copyWith(fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 32),
 
-              SingleLineFieldWithError(
-                value: data.username,
-                errorMessage: data.usernameError,
-                onNewValue: notifier.onUsernameChange,
-                label: localizations.username,
-              ),
+            SingleLineFieldWithError(
+              value: data.username,
+              errorMessage: data.usernameError,
+              onNewValue: notifier.onUsernameChange,
+              label: localizations.username,
+            ),
 
-              const SizedBox(height: 16),
+            const SizedBox(height: 16),
 
-              SingleLineFieldWithError(
-                value: data.profile.name,
-                errorMessage: data.nameError,
-                onNewValue: notifier.onNameChange,
-                label: localizations.name,
-              ),
+            SingleLineFieldWithError(
+              value: data.profile.name,
+              errorMessage: data.nameError,
+              onNewValue: notifier.onNameChange,
+              label: localizations.name,
+            ),
 
-              const SizedBox(height: 16),
+            const SizedBox(height: 16),
 
-              SingleLineFieldWithError(
-                value: data.profile.surname,
-                errorMessage: data.surnameError,
-                onNewValue: notifier.onSurnameChange,
-                label: localizations.surname,
-              ),
+            SingleLineFieldWithError(
+              value: data.profile.surname,
+              errorMessage: data.surnameError,
+              onNewValue: notifier.onSurnameChange,
+              label: localizations.surname,
+            ),
 
-              const SizedBox(height: 32),
+            const SizedBox(height: 32),
 
-              ElevatedButton(
-                onPressed: () => notifier.onSaveProfile(onComplete),
-                child: Text(localizations.save),
-              ),
+            ElevatedButton(
+              onPressed: () => notifier.onSaveProfile(onComplete),
+              child: Text(localizations.save),
+            ),
 
-              if (data.formError.isNotEmpty) ErrorField(
-                  errorMessage: data.formError),
-            ],
-          ),
+            if (data.formError.isNotEmpty) ErrorField(
+                errorMessage: data.formError),
+          ],
         );
       },
       error: (error, _) {
