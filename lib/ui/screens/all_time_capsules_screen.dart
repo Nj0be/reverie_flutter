@@ -5,6 +5,7 @@ import 'package:reverie_flutter/data/model/time_capsule.dart';
 import 'package:reverie_flutter/l10n/app_localizations.dart';
 import 'package:reverie_flutter/notifier/all_time_capsules_notifier.dart';
 import 'package:reverie_flutter/ui/components/button_bar_widget.dart';
+import 'package:reverie_flutter/ui/themes/colors.dart';
 
 class AllTimeCapsulesScreen extends ConsumerWidget {
   static const String name = 'all_time_capsules';
@@ -56,20 +57,20 @@ class AllTimeCapsulesScreen extends ConsumerWidget {
               final newCapsule = await _onNavigateToCreateTimeCapsule();
               notifier.addNewTimeCapsule(newCapsule);
             },
-            backgroundColor: Theme.of(context).colorScheme.secondary,
-            child: Icon(Icons.add, color: Theme.of(context).colorScheme.primary),
+            backgroundColor: AppColors.secondary,
+            child: Icon(Icons.add, color: AppColors.primary),
           ),
           body: SafeArea(
             child: ListView(
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 16),
                   child: Card(
-                    color: Colors.white,
+                    elevation: 8,
                     child: Column(
                       children: [
                         const Padding(
-                          padding: EdgeInsets.all(8.0),
+                          padding: EdgeInsets.symmetric(horizontal: 40.0),
                           child: Image(
                             image: NetworkImage(
                                 'https://wjecfnvsxxnvgheqdnpx.supabase.co/storage/v1/object/sign/time-capsules/letter.png?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8xNTIwYmQ5Yy05ZTUxLTQ5MjMtODRmMy1kNzFiNTRkNTNjZjUiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJ0aW1lLWNhcHN1bGVzL2xldHRlci5wbmciLCJpYXQiOjE3NTA3NTc1MDQsImV4cCI6MTc4MjI5MzUwNH0.RTnD7Gu7q2mF6MlXhHmZXgn-xN4QJ3CVxUt4xf48s98'
@@ -88,7 +89,6 @@ class AllTimeCapsulesScreen extends ConsumerWidget {
                                   fontSize: 18,
                                 ),
                               ),
-                              const SizedBox(height: 8),
                               Text(
                                 localizations.letterForTheFutureDescription,
                                 textAlign: TextAlign.center,
@@ -96,7 +96,7 @@ class AllTimeCapsulesScreen extends ConsumerWidget {
                             ],
                           ),
                         ),
-                        const SizedBox(height: 16),
+                        const SizedBox(height: 32),
                       ],
                     ),
                   ),
@@ -169,7 +169,7 @@ class AllTimeCapsulesScreen extends ConsumerWidget {
               },
               child: Text(
                 l10n.delete,
-                style: TextStyle(color: Theme.of(context).colorScheme.error),
+                style: TextStyle(color: AppColors.error),
               ),
             ),
           ],
@@ -247,7 +247,7 @@ class TimeCapsuleCard extends StatelessWidget {
             if (timeCapsuleType == TimeCapsuleType.scheduled && onOpenDeleteTimeCapsuleDialog != null)
               IconButton(
                 icon: const Icon(Icons.delete_outline),
-                color: Theme.of(context).colorScheme.primary,
+                color: AppColors.primary,
                 onPressed: onOpenDeleteTimeCapsuleDialog,
               ),
           ],

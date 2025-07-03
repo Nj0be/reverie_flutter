@@ -40,7 +40,14 @@ class CreateTimeCapsuleScreen extends ConsumerWidget {
         children: [
           Padding(
             padding: EdgeInsets.all(8),
-            child: Text(localizations.createTimeCapsuleMessage),
+            child: Text(
+              localizations.createTimeCapsuleMessage,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
+            ),
           ),
 
           SizedBox(height: 8),

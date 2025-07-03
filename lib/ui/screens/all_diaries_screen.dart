@@ -78,29 +78,32 @@ class AllDiariesScreen extends ConsumerWidget {
                   itemBuilder: (context, index) {
                     final diary = diaries[index];
                     return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 8),
+                      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
                       child: GestureDetector(
                         onTap: () => onNavigateToDiary(diary.id), // Naviga a visualizza diario
                         child: Card(
                           elevation: 8,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              DiaryCoverWidget(imageUrl: diaryCoversMap[diary.coverId]!.url),
-                              Text(
-                                diary.title,
-                                style: const TextStyle(fontWeight: FontWeight.bold),
-                                textAlign: TextAlign.center,
-                              ),
-                              if (diary.description.isNotEmpty)
+                          child: Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                DiaryCoverWidget(imageUrl: diaryCoversMap[diary.coverId]!.url),
                                 Text(
-                                  diary.description,
+                                  diary.title,
                                   textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                  ),
                                 ),
-                              Padding(
-                                padding: const EdgeInsets.all(8),
-                                child: Row(
+                                if (diary.description.isNotEmpty)
+                                  Text(
+                                    diary.description,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     IconButton(
@@ -118,8 +121,8 @@ class AllDiariesScreen extends ConsumerWidget {
                                     ),
                                   ],
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),

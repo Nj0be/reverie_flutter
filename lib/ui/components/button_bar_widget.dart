@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reverie_flutter/ui/themes/colors.dart';
 
 class ButtonBarWidget<T> extends StatelessWidget {
   final T buttonState;
@@ -14,15 +15,12 @@ class ButtonBarWidget<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Card(
       elevation: 8,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
       ),
-      color: Colors.white,
-      margin: const EdgeInsets.all(16),
+      margin: const EdgeInsets.symmetric(horizontal:16, vertical: 16),
       child: Row(
         mainAxisSize: MainAxisSize.max,
         children: buttonElements.map((item) {
@@ -32,9 +30,9 @@ class ButtonBarWidget<T> extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
               onTap: () => onButtonStateUpdate(item),
               child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 10),
+                padding: const EdgeInsets.symmetric(vertical: 16),
                 decoration: BoxDecoration(
-                  color: isSelected ? theme.colorScheme.secondary : Colors.transparent,
+                  color: isSelected ? AppColors.secondary : Colors.transparent,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 alignment: Alignment.center,
@@ -42,7 +40,7 @@ class ButtonBarWidget<T> extends StatelessWidget {
                   _displayName(item),
                   style: TextStyle(
                     fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                    color: theme.colorScheme.primary,
+                    color: AppColors.primary,
                   ),
                 ),
               ),
