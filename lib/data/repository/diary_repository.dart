@@ -150,8 +150,6 @@ class DiaryRepository {
   }
 
   Future<void> deleteDiaryImage(DiaryImage diaryImage) async {
-    try { diaryImage = await getDiaryImage(diaryImage.id); } catch (_) { return; }
-
     await _storage.deleteDiaryImage(diaryImage);
   }
 
