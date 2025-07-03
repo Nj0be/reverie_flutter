@@ -4,11 +4,13 @@ import 'package:reverie_flutter/data/model/user.dart';
 import 'package:reverie_flutter/l10n/app_localizations.dart';
 import 'package:reverie_flutter/ui/components/error_field.dart';
 import 'package:reverie_flutter/ui/components/single_field.dart';
+import 'package:reverie_flutter/ui/screens/profile_screen.dart';
 import '../../notifier/edit_profile_notifier.dart';
 
 class EditProfileScreen extends ConsumerWidget {
   static const String name = 'edit_profile';
   static const String path = '/edit';
+  static const String fullPath = ProfileScreen.path + path;
 
   final String profileId;
   final void Function(User) onComplete;
