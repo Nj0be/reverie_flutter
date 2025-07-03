@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AllDiariesState {
 
- List<Diary> get diaries; Map<String, DiaryCover> get diaryCoversMap; bool get deleteDialogState; int get currentIndex;
+ PageController get pageController; List<Diary> get diaries; Map<String, DiaryCover> get diaryCoversMap; bool get deleteDialogState; int get currentIndex;
 /// Create a copy of AllDiariesState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -26,16 +26,16 @@ $AllDiariesStateCopyWith<AllDiariesState> get copyWith => _$AllDiariesStateCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AllDiariesState&&const DeepCollectionEquality().equals(other.diaries, diaries)&&const DeepCollectionEquality().equals(other.diaryCoversMap, diaryCoversMap)&&(identical(other.deleteDialogState, deleteDialogState) || other.deleteDialogState == deleteDialogState)&&(identical(other.currentIndex, currentIndex) || other.currentIndex == currentIndex));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AllDiariesState&&(identical(other.pageController, pageController) || other.pageController == pageController)&&const DeepCollectionEquality().equals(other.diaries, diaries)&&const DeepCollectionEquality().equals(other.diaryCoversMap, diaryCoversMap)&&(identical(other.deleteDialogState, deleteDialogState) || other.deleteDialogState == deleteDialogState)&&(identical(other.currentIndex, currentIndex) || other.currentIndex == currentIndex));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(diaries),const DeepCollectionEquality().hash(diaryCoversMap),deleteDialogState,currentIndex);
+int get hashCode => Object.hash(runtimeType,pageController,const DeepCollectionEquality().hash(diaries),const DeepCollectionEquality().hash(diaryCoversMap),deleteDialogState,currentIndex);
 
 @override
 String toString() {
-  return 'AllDiariesState(diaries: $diaries, diaryCoversMap: $diaryCoversMap, deleteDialogState: $deleteDialogState, currentIndex: $currentIndex)';
+  return 'AllDiariesState(pageController: $pageController, diaries: $diaries, diaryCoversMap: $diaryCoversMap, deleteDialogState: $deleteDialogState, currentIndex: $currentIndex)';
 }
 
 
@@ -46,7 +46,7 @@ abstract mixin class $AllDiariesStateCopyWith<$Res>  {
   factory $AllDiariesStateCopyWith(AllDiariesState value, $Res Function(AllDiariesState) _then) = _$AllDiariesStateCopyWithImpl;
 @useResult
 $Res call({
- List<Diary> diaries, Map<String, DiaryCover> diaryCoversMap, bool deleteDialogState, int currentIndex
+ List<Diary> diaries, Map<String, DiaryCover> diaryCoversMap, bool deleteDialogState, int currentIndex, PageController? pageController
 });
 
 
@@ -63,13 +63,14 @@ class _$AllDiariesStateCopyWithImpl<$Res>
 
 /// Create a copy of AllDiariesState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? diaries = null,Object? diaryCoversMap = null,Object? deleteDialogState = null,Object? currentIndex = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? diaries = null,Object? diaryCoversMap = null,Object? deleteDialogState = null,Object? currentIndex = null,Object? pageController = freezed,}) {
   return _then(_self.copyWith(
 diaries: null == diaries ? _self.diaries : diaries // ignore: cast_nullable_to_non_nullable
 as List<Diary>,diaryCoversMap: null == diaryCoversMap ? _self.diaryCoversMap : diaryCoversMap // ignore: cast_nullable_to_non_nullable
 as Map<String, DiaryCover>,deleteDialogState: null == deleteDialogState ? _self.deleteDialogState : deleteDialogState // ignore: cast_nullable_to_non_nullable
 as bool,currentIndex: null == currentIndex ? _self.currentIndex : currentIndex // ignore: cast_nullable_to_non_nullable
-as int,
+as int,pageController: freezed == pageController ? _self.pageController! : pageController // ignore: cast_nullable_to_non_nullable
+as PageController?,
   ));
 }
 
@@ -79,8 +80,8 @@ as int,
 /// @nodoc
 
 
-class _AllDiariesState implements AllDiariesState {
-  const _AllDiariesState({final  List<Diary> diaries = const [], final  Map<String, DiaryCover> diaryCoversMap = const {}, this.deleteDialogState = false, this.currentIndex = 0}): _diaries = diaries,_diaryCoversMap = diaryCoversMap;
+class _AllDiariesState extends AllDiariesState {
+   _AllDiariesState({final  List<Diary> diaries = const [], final  Map<String, DiaryCover> diaryCoversMap = const {}, this.deleteDialogState = false, this.currentIndex = 0, final  PageController? pageController}): _diaries = diaries,_diaryCoversMap = diaryCoversMap,super._(pageController: pageController);
   
 
  final  List<Diary> _diaries;
@@ -110,16 +111,16 @@ _$AllDiariesStateCopyWith<_AllDiariesState> get copyWith => __$AllDiariesStateCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AllDiariesState&&const DeepCollectionEquality().equals(other._diaries, _diaries)&&const DeepCollectionEquality().equals(other._diaryCoversMap, _diaryCoversMap)&&(identical(other.deleteDialogState, deleteDialogState) || other.deleteDialogState == deleteDialogState)&&(identical(other.currentIndex, currentIndex) || other.currentIndex == currentIndex));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AllDiariesState&&const DeepCollectionEquality().equals(other._diaries, _diaries)&&const DeepCollectionEquality().equals(other._diaryCoversMap, _diaryCoversMap)&&(identical(other.deleteDialogState, deleteDialogState) || other.deleteDialogState == deleteDialogState)&&(identical(other.currentIndex, currentIndex) || other.currentIndex == currentIndex)&&(identical(other.pageController, pageController) || other.pageController == pageController));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_diaries),const DeepCollectionEquality().hash(_diaryCoversMap),deleteDialogState,currentIndex);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_diaries),const DeepCollectionEquality().hash(_diaryCoversMap),deleteDialogState,currentIndex,pageController);
 
 @override
 String toString() {
-  return 'AllDiariesState(diaries: $diaries, diaryCoversMap: $diaryCoversMap, deleteDialogState: $deleteDialogState, currentIndex: $currentIndex)';
+  return 'AllDiariesState(diaries: $diaries, diaryCoversMap: $diaryCoversMap, deleteDialogState: $deleteDialogState, currentIndex: $currentIndex, pageController: $pageController)';
 }
 
 
@@ -130,7 +131,7 @@ abstract mixin class _$AllDiariesStateCopyWith<$Res> implements $AllDiariesState
   factory _$AllDiariesStateCopyWith(_AllDiariesState value, $Res Function(_AllDiariesState) _then) = __$AllDiariesStateCopyWithImpl;
 @override @useResult
 $Res call({
- List<Diary> diaries, Map<String, DiaryCover> diaryCoversMap, bool deleteDialogState, int currentIndex
+ List<Diary> diaries, Map<String, DiaryCover> diaryCoversMap, bool deleteDialogState, int currentIndex, PageController? pageController
 });
 
 
@@ -147,13 +148,14 @@ class __$AllDiariesStateCopyWithImpl<$Res>
 
 /// Create a copy of AllDiariesState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? diaries = null,Object? diaryCoversMap = null,Object? deleteDialogState = null,Object? currentIndex = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? diaries = null,Object? diaryCoversMap = null,Object? deleteDialogState = null,Object? currentIndex = null,Object? pageController = freezed,}) {
   return _then(_AllDiariesState(
 diaries: null == diaries ? _self._diaries : diaries // ignore: cast_nullable_to_non_nullable
 as List<Diary>,diaryCoversMap: null == diaryCoversMap ? _self._diaryCoversMap : diaryCoversMap // ignore: cast_nullable_to_non_nullable
 as Map<String, DiaryCover>,deleteDialogState: null == deleteDialogState ? _self.deleteDialogState : deleteDialogState // ignore: cast_nullable_to_non_nullable
 as bool,currentIndex: null == currentIndex ? _self.currentIndex : currentIndex // ignore: cast_nullable_to_non_nullable
-as int,
+as int,pageController: freezed == pageController ? _self.pageController : pageController // ignore: cast_nullable_to_non_nullable
+as PageController?,
   ));
 }
 

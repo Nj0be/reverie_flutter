@@ -28,8 +28,7 @@ class AllDiariesScreen extends ConsumerWidget {
     ref.listen<AsyncValue<AllDiariesState>>(allDiariesNotifierProvider, (previous, next) {
       next.whenData((data) {
         if (data.deleteDialogState) {
-          final currentIndex = ref.read(currentDiaryPageIndexProvider);
-          final currentDiaryId = data.diaries[currentIndex].id;
+          final currentDiaryId = data.diaries[data.currentIndex].id;
 
           showDialog(
             context: context,
@@ -58,16 +57,15 @@ class AllDiariesScreen extends ConsumerWidget {
       });
     });
 
-    final controller = ref.watch(pageControllerProvider);
     final state = ref.watch(allDiariesNotifierProvider);
     final notifier = ref.watch(allDiariesNotifierProvider.notifier);
-
 
     return state.when(
       data: (data) {
         final diaries = data.diaries;
         final diaryCoversMap = data.diaryCoversMap;
         final currentIndex = data.currentIndex;
+        final controller = data.pageController;
 
         return Scaffold(
           body: Column(

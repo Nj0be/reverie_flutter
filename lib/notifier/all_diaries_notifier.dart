@@ -13,11 +13,18 @@ part 'all_diaries_notifier.freezed.dart';
 
 @freezed
 abstract class AllDiariesState with _$AllDiariesState {
-  const factory AllDiariesState({
+  @override
+  final PageController pageController;
+
+  AllDiariesState._({PageController? pageController})
+      : pageController = pageController ?? PageController(initialPage: 0);
+
+  factory AllDiariesState({
     @Default([]) List<Diary> diaries,
     @Default({}) Map<String, DiaryCover> diaryCoversMap,
     @Default(false) bool deleteDialogState,
     @Default(0) int currentIndex,
+    PageController? pageController,
   }) = _AllDiariesState;
 }
 
@@ -29,28 +36,7 @@ final allDiariesNotifierProvider = StateNotifierProvider<
   final auth = ref.read(firebaseAuthInstanceProvider);
   final localizations = ref.read(appLocalizationsProvider);
 
-  return AllDiariesNotifier(repository: repository, auth: auth, localizations: localizations, ref: ref);
-});
-
-final currentDiaryPageIndexProvider = StateProvider<int>((ref) => 0);
-
-final pageControllerProvider = StateProvider.autoDispose<PageController>((ref) {
-  final initialPage = ref.read(currentDiaryPageIndexProvider);
-  final controller = PageController(initialPage: initialPage);
-
-  ref.listen<int>(currentDiaryPageIndexProvider, (previous, next) {
-    if (controller.hasClients && previous != next) {
-      controller.animateToPage(
-        next,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
-      );
-    }
-  });
-
-  ref.onDispose(() => controller.dispose());
-
-  return controller;
+  return AllDiariesNotifier(repository: repository, auth: auth, localizations: localizations);
 });
 
 class AllDiariesNotifier
@@ -58,18 +44,15 @@ class AllDiariesNotifier
   final DiaryRepository _repository;
   final FirebaseAuth _auth;
   final AppLocalizations _localizations;
-  final Ref _ref;
 
   AllDiariesNotifier({
     required DiaryRepository repository,
     required FirebaseAuth auth,
     required AppLocalizations localizations,
-    required Ref ref,
   })
       : _auth = auth,
         _repository = repository,
         _localizations = localizations,
-        _ref = ref,
         super(const AsyncLoading()) {
     _loadDiaries();
   }
@@ -135,17 +118,21 @@ class AllDiariesNotifier
       await _repository.deleteDiary(diary);
       final updatedDiaries = List<Diary>.from(currentState.diaries)..removeWhere((d) => d.id == diaryId);
 
-      final currentIndex = _ref.read(currentDiaryPageIndexProvider);
-      final newIndex = (currentIndex > 0) ? currentIndex - 1 : 0;
-      _ref.read(currentDiaryPageIndexProvider.notifier).state = newIndex;
+      final newIndex = (currentState.currentIndex > 0) ? currentState.currentIndex - 1 : 0;
 
       // Aggiorna stato con diario eliminato e chiudi dialog
       state = AsyncValue.data(
         currentState.copyWith(
           diaries: updatedDiaries,
           deleteDialogState: false,
-          // eventualmente aggiorna anche diaryCoversMap se serve
+          currentIndex: newIndex
         ),
+      );
+
+      currentState.pageController.animateToPage(
+        newIndex,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
       );
 
     } catch (e, st) {
@@ -178,13 +165,20 @@ class AllDiariesNotifier
       diaryCoversMap[diaryCoverId] = cover;
     }
 
+    final currentIndex = existingIndex == -1 ? currentDiaries.length - 1 : existingIndex;
+
     // Aggiorna lo stato con la nuova lista e la mappa delle cover aggiornata
     state = AsyncValue.data(
       currentState.copyWith(
         diaries: currentDiaries,
         diaryCoversMap: diaryCoversMap,
-        currentIndex: existingIndex == -1 ? currentDiaries.length - 1 : existingIndex
+        currentIndex: currentIndex
       ),
+    );
+    currentState.pageController.animateToPage(
+      currentIndex,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
     );
   }
 
