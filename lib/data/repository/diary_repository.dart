@@ -124,7 +124,6 @@ class DiaryRepository {
     final savedSubPage = await _storage.saveSubPage(subPage);
 
     final page = await getPage(subPage.pageId);
-    if (page == null) return DiarySubPage();
 
     final subPageIds = List<String>.from(page.subPageIds);
     subPageIds.add(savedSubPage.id);
@@ -140,7 +139,7 @@ class DiaryRepository {
 
   Future<void> deleteSubPage(DiarySubPage subPage) async {
     for (final imageId in subPage.imageIds) {
-      await deleteDiaryImage(imageId);
+      await deleteDiaryImage(await getDiaryImage(imageId));
     }
 
     await _storage.deleteSubPage(subPage);
@@ -150,17 +149,10 @@ class DiaryRepository {
     return await _storage.getDiaryImage(diaryImageId) ?? (throw Exception('DiaryImage with ID $diaryImageId does not exist'));
   }
 
-  Future<void> deleteDiaryImage(String diaryImageId) async {
-    DiaryImage? diaryImage;
-    try { diaryImage = await getDiaryImage(diaryImageId); } catch (_) { return; }
+  Future<void> deleteDiaryImage(DiaryImage diaryImage) async {
+    try { diaryImage = await getDiaryImage(diaryImage.id); } catch (_) { return; }
 
-    final subPage = await getSubPage(diaryImage.subPageId);
-    final imageIds = List<String>.from(subPage.imageIds);
-    imageIds.remove(diaryImageId);
-
-    await updateSubPage(subPage.copyWith(imageIds: imageIds));
-
-    await _storage.deleteDiaryImage(diaryImageId);
+    await _storage.deleteDiaryImage(diaryImage);
   }
 
   Future<List<DiaryCover>> getAllDiaryCovers() async {

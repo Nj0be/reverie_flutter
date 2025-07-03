@@ -221,8 +221,8 @@ class StorageService {
   Future<void> deleteSubPage(DiarySubPage subPage) async {
     await _firestore.collection(subPagesCollection).doc(subPage.id).delete();
 
-    final userRef = FirebaseFirestore.instance.collection(pagesCollection).doc(subPage.pageId);
-    await userRef.update({
+    final pageRef = FirebaseFirestore.instance.collection(pagesCollection).doc(subPage.pageId);
+    await pageRef.update({
       'subPageIds': FieldValue.arrayRemove([subPage.id]),
     });
   }
@@ -233,8 +233,13 @@ class StorageService {
     return DiaryImage.fromFirestore(doc);
   }
 
-  Future<void> deleteDiaryImage(String diaryImageId) async {
-    await _firestore.collection(diaryImagesCollection).doc(diaryImageId).delete();
+  Future<void> deleteDiaryImage(DiaryImage diaryImage) async {
+    await _firestore.collection(diaryImagesCollection).doc(diaryImage.id).delete();
+
+    final subPageRef = FirebaseFirestore.instance.collection(subPagesCollection).doc(diaryImage.subPageId);
+    await subPageRef.update({
+      'imageIds': FieldValue.arrayRemove([diaryImage.id]),
+    });
   }
 
   Future<List<DiaryCover>> getAllDiaryCovers() async {
@@ -253,15 +258,13 @@ class StorageService {
   Future<void> deleteTimeCapsule(TimeCapsule timeCapsule) async {
     await _firestore.collection(timeCapsulesCollection).doc(timeCapsule.id).delete();
 
-    final firestore = FirebaseFirestore.instance;
-
-    final senderRef = firestore.collection(usersCollection).doc(timeCapsule.userId);
+    final senderRef = _firestore.collection(usersCollection).doc(timeCapsule.userId);
     await senderRef.update({
       'sentTimeCapsuleIds': FieldValue.arrayRemove([timeCapsule.id]),
     });
 
     for (final receiverId in timeCapsule.receiversIds) {
-      final receiverRef = firestore.collection(usersCollection).doc(receiverId);
+      final receiverRef = _firestore.collection(usersCollection).doc(receiverId);
       await receiverRef.update({
         'receivedTimeCapsuleIds': FieldValue.arrayRemove([timeCapsule.id]),
       });
