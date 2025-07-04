@@ -1,0 +1,97 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:reverie_flutter/data/model/time_capsule.dart';
+import 'package:reverie_flutter/data/repository/time_capsule_repository.dart';
+import 'package:reverie_flutter/l10n/app_localizations.dart';
+import 'package:reverie_flutter/notifier/all_time_capsules_notifier.dart';
+import 'package:mockito/mockito.dart';
+import 'package:reverie_flutter/ui/screens/all_time_capsules_screen.dart';
+
+import '../mocks.mocks.dart';
+
+class MockRepo extends Mock implements TimeCapsuleRepository {}
+class MockAuth extends Mock implements FirebaseAuth {}
+class MockLoc extends Mock implements AppLocalizations {}
+
+void main() {
+  late MockTimeCapsuleRepository mockRepo;
+  late MockFirebaseAuth mockAuth;
+  late MockUser mockUser;
+  late MockAppLocalizations mockLoc;
+
+  setUp(() {
+    mockRepo = MockTimeCapsuleRepository();
+    mockAuth = MockFirebaseAuth();
+    mockUser = MockUser();
+    mockLoc = MockAppLocalizations();
+
+    when(mockAuth.currentUser).thenReturn(mockUser);
+    when(mockUser.uid).thenReturn('test-user-id');
+
+    when(mockLoc.confirmDiaryDeletion).thenReturn('delete');
+    when(mockLoc.letterForTheFuture).thenReturn('letterTitle');
+    when(mockLoc.letterForTheFutureDescription).thenReturn('letterDescription');
+    when(mockLoc.error).thenReturn('error');
+  });
+
+  testWidgets('Visualizza titolo delle time capsule', (tester) async {
+    final fakeTimeCapsule = TimeCapsule(
+      id: '1',
+      userId: 'test-user-id',
+      title: 'Messaggio per il futuro',
+      content: 'Ciao futuro me! Spero che tu abbia raggiunto i tuoi sogni.',
+      deadline: Timestamp.fromDate(DateTime(2030, 1, 1)),
+      emails: [],
+      phones: [],
+      receiversIds: ['test-user-id'],
+      creationDate: Timestamp.fromDate(DateTime(2029, 1, 1)),
+      isSent: false,
+    );
+
+    final fakeState = AsyncValue.data(
+      AllTimeCapsulesState(
+        sentTimeCapsules: {'1': fakeTimeCapsule},
+        receivedTimeCapsules: {},
+        buttonState: TimeCapsuleType.scheduled,
+      ),
+    );
+
+    final notifier = AllTimeCapsulesNotifier(
+      repository: mockRepo,
+      auth: mockAuth,
+      localizations: mockLoc,
+    );
+
+    notifier.state = fakeState;
+
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          allTimeCapsulesNotifierProvider.overrideWith((_) => notifier),
+        ],
+        child: MaterialApp(
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            DefaultWidgetsLocalizations.delegate,
+            DefaultMaterialLocalizations.delegate,
+          ],
+          home: AllTimeCapsulesScreen(
+            onNavigateToCreateTimeCapsule: () async => fakeTimeCapsule,
+            onNavigateToViewTimeCapsule: (_, __) {},
+          ),
+        ),
+      ),
+    );
+
+    await tester.pumpAndSettle();
+
+    // Controlla che il titolo della capsula sia visibile
+    expect(find.text('Messaggio per il futuro'), findsOneWidget);
+
+    // Verifica che il FloatingActionButton esista
+    expect(find.byType(FloatingActionButton), findsOneWidget);
+  });
+}

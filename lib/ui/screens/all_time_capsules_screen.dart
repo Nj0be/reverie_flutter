@@ -57,8 +57,7 @@ class AllTimeCapsulesScreen extends ConsumerWidget {
               final newCapsule = await _onNavigateToCreateTimeCapsule();
               notifier.addNewTimeCapsule(newCapsule);
             },
-            backgroundColor: AppColors.secondary,
-            child: Icon(Icons.add, color: AppColors.primary),
+            child: Icon(Icons.add),
           ),
           body: SafeArea(
             child: ListView(
@@ -218,6 +217,9 @@ class TimeCapsuleCard extends StatelessWidget {
                   width: 80,
                   height: 80,
                   fit: BoxFit.contain,
+                  errorBuilder: (context, error, stackTrace) {
+                    return const Icon(Icons.error); // fallback in caso di errore
+                  },
                 ),
               ),
             ),
