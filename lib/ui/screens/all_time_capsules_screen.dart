@@ -11,12 +11,12 @@ class AllTimeCapsulesScreen extends ConsumerWidget {
   static const String name = 'all_time_capsules';
   static const String path = '/time_capsules';
 
-  final Future<TimeCapsule> Function() _onNavigateToCreateTimeCapsule;
+  final Future<TimeCapsule?> Function() _onNavigateToCreateTimeCapsule;
   final void Function(String, TimeCapsuleType) _onNavigateToViewTimeCapsule;
 
   const AllTimeCapsulesScreen({
     super.key,
-    required Future<TimeCapsule> Function() onNavigateToCreateTimeCapsule,
+    required Future<TimeCapsule?> Function() onNavigateToCreateTimeCapsule,
     required void Function(String, TimeCapsuleType) onNavigateToViewTimeCapsule,
   }) : _onNavigateToCreateTimeCapsule = onNavigateToCreateTimeCapsule,
        _onNavigateToViewTimeCapsule = onNavigateToViewTimeCapsule;

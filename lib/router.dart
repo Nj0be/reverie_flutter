@@ -62,11 +62,11 @@ final router = GoRouter(
                 return await context.pushNamed(
                   EditDiaryScreen.editName,
                   pathParameters: {'diaryId': diaryId},
-                ) as Diary;
+                ) as Diary?;
               },
               onNavigateToCreateDiary: () async {
                 // return updated profile from editProfile
-                return await context.pushNamed(EditDiaryScreen.createName) as Diary;
+                return await context.pushNamed(EditDiaryScreen.createName) as Diary?;
               },
             ),
           ),
@@ -124,7 +124,7 @@ final router = GoRouter(
                             'diaryId': diaryId,
                             'pageId': pageId
                           },
-                        ) as DiaryPage;
+                        ) as DiaryPage?;
                       },
                       onComplete: () {
                         context.pop();
@@ -162,7 +162,7 @@ final router = GoRouter(
             child: AllTimeCapsulesScreen(
               onNavigateToCreateTimeCapsule: () async {
                 return await context.pushNamed(CreateTimeCapsuleScreen.name)
-                as TimeCapsule;
+                as TimeCapsule?;
               },
               onNavigateToViewTimeCapsule: (timeCapsuleId, timeCapsuleType) {
                 context.pushNamed(
@@ -235,7 +235,7 @@ final router = GoRouter(
                     EditProfileScreen.name,
                     pathParameters: {'profileId': id},
                   )
-                  as User;
+                  as User?;
                 },
                 onLogout: () {
                   logout();

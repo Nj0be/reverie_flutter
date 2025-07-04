@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ViewDiaryState {
 
- Diary get diary; PageController get pageController; Map<String, DiaryPage> get pagesMap; int get currentSubPage; Size get pageSize; TextStyle get textStyle;
+ Diary get diary; PageController get pageController; Map<String, DiaryPage> get pagesMap; Size get pageSize; TextStyle get textStyle;
 /// Create a copy of ViewDiaryState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -26,16 +26,16 @@ $ViewDiaryStateCopyWith<ViewDiaryState> get copyWith => _$ViewDiaryStateCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ViewDiaryState&&(identical(other.diary, diary) || other.diary == diary)&&(identical(other.pageController, pageController) || other.pageController == pageController)&&const DeepCollectionEquality().equals(other.pagesMap, pagesMap)&&(identical(other.currentSubPage, currentSubPage) || other.currentSubPage == currentSubPage)&&(identical(other.pageSize, pageSize) || other.pageSize == pageSize)&&(identical(other.textStyle, textStyle) || other.textStyle == textStyle));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ViewDiaryState&&(identical(other.diary, diary) || other.diary == diary)&&(identical(other.pageController, pageController) || other.pageController == pageController)&&const DeepCollectionEquality().equals(other.pagesMap, pagesMap)&&(identical(other.pageSize, pageSize) || other.pageSize == pageSize)&&(identical(other.textStyle, textStyle) || other.textStyle == textStyle));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,diary,pageController,const DeepCollectionEquality().hash(pagesMap),currentSubPage,pageSize,textStyle);
+int get hashCode => Object.hash(runtimeType,diary,pageController,const DeepCollectionEquality().hash(pagesMap),pageSize,textStyle);
 
 @override
 String toString() {
-  return 'ViewDiaryState(diary: $diary, pageController: $pageController, pagesMap: $pagesMap, currentSubPage: $currentSubPage, pageSize: $pageSize, textStyle: $textStyle)';
+  return 'ViewDiaryState(diary: $diary, pageController: $pageController, pagesMap: $pagesMap, pageSize: $pageSize, textStyle: $textStyle)';
 }
 
 
@@ -46,7 +46,7 @@ abstract mixin class $ViewDiaryStateCopyWith<$Res>  {
   factory $ViewDiaryStateCopyWith(ViewDiaryState value, $Res Function(ViewDiaryState) _then) = _$ViewDiaryStateCopyWithImpl;
 @useResult
 $Res call({
- Diary? diary, Map<String, DiaryPage> pagesMap, int currentSubPage, PageController? pageController, Size pageSize, TextStyle textStyle
+ Diary? diary, Map<String, DiaryPage> pagesMap, PageController? pageController, Size pageSize, TextStyle textStyle
 });
 
 
@@ -63,12 +63,11 @@ class _$ViewDiaryStateCopyWithImpl<$Res>
 
 /// Create a copy of ViewDiaryState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? diary = freezed,Object? pagesMap = null,Object? currentSubPage = null,Object? pageController = freezed,Object? pageSize = null,Object? textStyle = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? diary = freezed,Object? pagesMap = null,Object? pageController = freezed,Object? pageSize = null,Object? textStyle = null,}) {
   return _then(_self.copyWith(
 diary: freezed == diary ? _self.diary! : diary // ignore: cast_nullable_to_non_nullable
 as Diary?,pagesMap: null == pagesMap ? _self.pagesMap : pagesMap // ignore: cast_nullable_to_non_nullable
-as Map<String, DiaryPage>,currentSubPage: null == currentSubPage ? _self.currentSubPage : currentSubPage // ignore: cast_nullable_to_non_nullable
-as int,pageController: freezed == pageController ? _self.pageController! : pageController // ignore: cast_nullable_to_non_nullable
+as Map<String, DiaryPage>,pageController: freezed == pageController ? _self.pageController! : pageController // ignore: cast_nullable_to_non_nullable
 as PageController?,pageSize: null == pageSize ? _self.pageSize : pageSize // ignore: cast_nullable_to_non_nullable
 as Size,textStyle: null == textStyle ? _self.textStyle : textStyle // ignore: cast_nullable_to_non_nullable
 as TextStyle,
@@ -94,7 +93,7 @@ $DiaryCopyWith<$Res>? get diary {
 
 @override
 class _ViewDiaryState extends ViewDiaryState {
-   _ViewDiaryState({final  Diary? diary, final  Map<String, DiaryPage> pagesMap = const {}, this.currentSubPage = 0, final  PageController? pageController, this.pageSize = const Size(0, 0), this.textStyle = const TextStyle(fontSize: 25, color: Colors.black)}): _pagesMap = pagesMap,super._(diary: diary, pageController: pageController);
+   _ViewDiaryState({final  Diary? diary, final  Map<String, DiaryPage> pagesMap = const {}, final  PageController? pageController, this.pageSize = const Size(0, 0), this.textStyle = const TextStyle(fontSize: 25, color: Colors.black)}): _pagesMap = pagesMap,super._(diary: diary, pageController: pageController);
   
 
  final  Map<String, DiaryPage> _pagesMap;
@@ -104,7 +103,6 @@ class _ViewDiaryState extends ViewDiaryState {
   return EqualUnmodifiableMapView(_pagesMap);
 }
 
-@override@JsonKey() final  int currentSubPage;
 @override@JsonKey() final  Size pageSize;
 @override@JsonKey() final  TextStyle textStyle;
 
@@ -118,16 +116,16 @@ _$ViewDiaryStateCopyWith<_ViewDiaryState> get copyWith => __$ViewDiaryStateCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ViewDiaryState&&(identical(other.diary, diary) || other.diary == diary)&&const DeepCollectionEquality().equals(other._pagesMap, _pagesMap)&&(identical(other.currentSubPage, currentSubPage) || other.currentSubPage == currentSubPage)&&(identical(other.pageController, pageController) || other.pageController == pageController)&&(identical(other.pageSize, pageSize) || other.pageSize == pageSize)&&(identical(other.textStyle, textStyle) || other.textStyle == textStyle));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ViewDiaryState&&(identical(other.diary, diary) || other.diary == diary)&&const DeepCollectionEquality().equals(other._pagesMap, _pagesMap)&&(identical(other.pageController, pageController) || other.pageController == pageController)&&(identical(other.pageSize, pageSize) || other.pageSize == pageSize)&&(identical(other.textStyle, textStyle) || other.textStyle == textStyle));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,diary,const DeepCollectionEquality().hash(_pagesMap),currentSubPage,pageController,pageSize,textStyle);
+int get hashCode => Object.hash(runtimeType,diary,const DeepCollectionEquality().hash(_pagesMap),pageController,pageSize,textStyle);
 
 @override
 String toString() {
-  return 'ViewDiaryState(diary: $diary, pagesMap: $pagesMap, currentSubPage: $currentSubPage, pageController: $pageController, pageSize: $pageSize, textStyle: $textStyle)';
+  return 'ViewDiaryState(diary: $diary, pagesMap: $pagesMap, pageController: $pageController, pageSize: $pageSize, textStyle: $textStyle)';
 }
 
 
@@ -138,7 +136,7 @@ abstract mixin class _$ViewDiaryStateCopyWith<$Res> implements $ViewDiaryStateCo
   factory _$ViewDiaryStateCopyWith(_ViewDiaryState value, $Res Function(_ViewDiaryState) _then) = __$ViewDiaryStateCopyWithImpl;
 @override @useResult
 $Res call({
- Diary? diary, Map<String, DiaryPage> pagesMap, int currentSubPage, PageController? pageController, Size pageSize, TextStyle textStyle
+ Diary? diary, Map<String, DiaryPage> pagesMap, PageController? pageController, Size pageSize, TextStyle textStyle
 });
 
 
@@ -155,12 +153,11 @@ class __$ViewDiaryStateCopyWithImpl<$Res>
 
 /// Create a copy of ViewDiaryState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? diary = freezed,Object? pagesMap = null,Object? currentSubPage = null,Object? pageController = freezed,Object? pageSize = null,Object? textStyle = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? diary = freezed,Object? pagesMap = null,Object? pageController = freezed,Object? pageSize = null,Object? textStyle = null,}) {
   return _then(_ViewDiaryState(
 diary: freezed == diary ? _self.diary : diary // ignore: cast_nullable_to_non_nullable
 as Diary?,pagesMap: null == pagesMap ? _self._pagesMap : pagesMap // ignore: cast_nullable_to_non_nullable
-as Map<String, DiaryPage>,currentSubPage: null == currentSubPage ? _self.currentSubPage : currentSubPage // ignore: cast_nullable_to_non_nullable
-as int,pageController: freezed == pageController ? _self.pageController : pageController // ignore: cast_nullable_to_non_nullable
+as Map<String, DiaryPage>,pageController: freezed == pageController ? _self.pageController : pageController // ignore: cast_nullable_to_non_nullable
 as PageController?,pageSize: null == pageSize ? _self.pageSize : pageSize // ignore: cast_nullable_to_non_nullable
 as Size,textStyle: null == textStyle ? _self.textStyle : textStyle // ignore: cast_nullable_to_non_nullable
 as TextStyle,

@@ -4,6 +4,7 @@ import 'package:reverie_flutter/data/model/diary_page.dart';
 import 'package:reverie_flutter/l10n/app_localizations.dart';
 import 'package:reverie_flutter/notifier/view_diary_notifier.dart';
 import 'package:reverie_flutter/ui/screens/all_diaries_screen.dart';
+import 'package:reverie_flutter/utils.dart';
 
 class ViewDiaryScreen extends ConsumerStatefulWidget {
   static const String name = 'view_diary';
@@ -11,7 +12,7 @@ class ViewDiaryScreen extends ConsumerStatefulWidget {
   static const String fullPath = AllDiariesScreen.path + path;
 
   final String diaryId;
-  final Future<DiaryPage> Function(String) onNavigateToEditDiaryPage;
+  final Future<DiaryPage?> Function(String) onNavigateToEditDiaryPage;
   final void Function() onComplete;
 
   const ViewDiaryScreen({
@@ -51,13 +52,14 @@ class _ViewDiaryScreenState extends ConsumerState<ViewDiaryScreen> {
         return state.when(
           data: (data) => Column(
             children: [
+              Text(formatDate(data.currentPage.timestamp.toDate(), pattern: 'dd MMMM')),
               Expanded(
                 child: Container(
                   color: Colors.yellowAccent.withValues(alpha: 0.2),
                   child: PageView.builder(
                     controller: data.pageController,
                     itemCount: data.splitPages.length,
-                    onPageChanged: notifier.changeSubPage,
+                    onPageChanged: (_) { notifier.refreshState(); },
                     itemBuilder: (context, index) => Padding(
                       padding: const EdgeInsets.all(12),
                       child: Text(data.splitPages[index], style: data.textStyle),
@@ -65,7 +67,7 @@ class _ViewDiaryScreenState extends ConsumerState<ViewDiaryScreen> {
                   ),
                 ),
               ),
-              _pageControls(data.currentSubPage, data.splitPages.length, data.pageController),
+              _pageControls(data, notifier),
               IconButton(
                 icon: const Icon(Icons.edit),
                 onPressed: () async {
@@ -84,32 +86,26 @@ class _ViewDiaryScreenState extends ConsumerState<ViewDiaryScreen> {
     );
   }
 
-  Widget _pageControls(int currentSubPage, int pagesLength, PageController pageController) {
+  Widget _pageControls(ViewDiaryState state, ViewDiaryNotifier notifier) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         IconButton(
           icon: const Icon(Icons.first_page),
-          onPressed: () => pageController.jumpToPage(0),
+          onPressed: () => notifier.jumpToFirstPage(),
         ),
         IconButton(
           icon: const Icon(Icons.navigate_before),
-          onPressed: () => pageController.previousPage(
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeInOut,
-          ),
+          onPressed: () => notifier.jumpToPreviousPage(),
         ),
-        Text('${currentSubPage + 1}/$pagesLength'),
+        Text('${state.currentSubPageIndex + 1}/${state.splitPages.length}'),
         IconButton(
           icon: const Icon(Icons.navigate_next),
-          onPressed: () => pageController.nextPage(
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeInOut,
-          ),
+          onPressed: () => notifier.jumpToNextPage(),
         ),
         IconButton(
           icon: const Icon(Icons.last_page),
-          onPressed: () => pageController.jumpToPage(pagesLength - 1),
+          onPressed: () => notifier.jumpToLastPage(),
         ),
       ],
     );

@@ -12,8 +12,8 @@ class AllDiariesScreen extends ConsumerWidget {
   static const String path = '/diaries';
 
   final void Function(String) onNavigateToDiary;
-  final Future<Diary> Function(String) onNavigateToEditDiary;
-  final Future<Diary> Function() onNavigateToCreateDiary;
+  final Future<Diary?> Function(String) onNavigateToEditDiary;
+  final Future<Diary?> Function() onNavigateToCreateDiary;
 
   const AllDiariesScreen({
     super.key,

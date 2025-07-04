@@ -9,7 +9,7 @@ class ProfileScreen extends ConsumerWidget {
   static const String path = '/profile/:profileId';
 
   final String profileId;
-  final Future<User> Function(String) onEditProfile;
+  final Future<User?> Function(String) onEditProfile;
   final void Function() onLogout;
 
   const ProfileScreen({

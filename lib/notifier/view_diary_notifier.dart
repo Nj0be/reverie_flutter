@@ -21,12 +21,12 @@ abstract class ViewDiaryState with _$ViewDiaryState {
   factory ViewDiaryState({
     Diary? diary,
     @Default({}) Map<String, DiaryPage> pagesMap,
-    @Default(0) int currentSubPage,
     PageController? pageController,
     @Default(Size(0, 0)) Size pageSize,
     @Default(TextStyle(fontSize: 25, color: Colors.black)) TextStyle textStyle,
   }) = _ViewDiaryState;
 
+  int get currentSubPageIndex => pageController.hasClients ? (pageController.page?.round() ?? lastSubPageIndex) : lastSubPageIndex;
   List<DiaryPage> get pages => diary.pageIds.map((pageId) => pagesMap[pageId]).whereType<DiaryPage>().toList();
   List<List<String>> get splitPagesList => pages.map((p) => p.content).toList().map((text) => splitText(
     text: text,
@@ -34,11 +34,10 @@ abstract class ViewDiaryState with _$ViewDiaryState {
     pageSize: pageSize,
   )).toList();
   List<String> get splitPages => splitPagesList.expand((e) => e).toList();
-  List<int> get subPagesPerPage => splitPagesList.map((pagesList) => pagesList.length).toList();
-  int get currentPageIndex => subPagesPerPage.indexWhere((i) =>
-    currentSubPage < subPagesPerPage.take(i + 1).fold(0, (a, b) => a + b)
-  );
+  List<int> get pagePerSubPage => splitPagesList.asMap().entries.expand((entry) => List.filled(entry.value.length, entry.key)).toList();
+  int get currentPageIndex => pagePerSubPage[currentSubPageIndex];
   DiaryPage get currentPage => pages[currentPageIndex];
+  int get lastSubPageIndex => splitPages.length - 1;
 }
 
 @freezed
@@ -78,31 +77,47 @@ class ViewDiaryNotifier extends StateNotifier<AsyncValue<ViewDiaryState>> {
     };
 
     state = AsyncData(
-        ViewDiaryState(
-            diary: diary,
-          pagesMap: pagesMap,
-          pageSize: pageSize
-        )
+        ViewDiaryState(diary: diary, pagesMap: pagesMap, pageSize: pageSize)
+    );
+    state = state.whenData((s) => s.copyWith(pageController: PageController(initialPage: s.lastSubPageIndex)));
+  }
+
+  void jumpToFirstPage() {
+    state.asData?.value.pageController.jumpTo(0);
+  }
+
+  void jumpToPreviousPage() {
+    state.asData?.value.pageController.previousPage(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
     );
   }
 
-  void overwritePage(DiaryPage page) {
-    final currentState = state.value;
-    if (currentState == null) return;
+  void jumpToNextPage() {
+    state.asData?.value.pageController.nextPage(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
+  }
 
-    debugPrint(page.toString());
+  void jumpToLastPage() {
+    final s = state.asData?.value;
+    s?.pageController.jumpToPage(s.lastSubPageIndex);
+  }
 
-    final pagesMap = Map<String, DiaryPage>.from(currentState.pagesMap);
-
-    pagesMap[page.id] = page;
+  void overwritePage(DiaryPage? page) {
+    if (page == null) return;
 
     state = state.whenData((s) {
+      final pagesMap = Map<String, DiaryPage>.from(s.pagesMap);
+
+      pagesMap[page.id] = page;
       return s.copyWith(pagesMap: pagesMap);
     });
   }
 
-  void changeSubPage(int index) {
-    state = state.whenData((s) => s.copyWith(currentSubPage: index));
+  void refreshState() {
+    state = state.whenData((s) => s);
   }
 }
 
