@@ -36,63 +36,75 @@ class _ViewDiaryScreenState extends ConsumerState<ViewDiaryScreen> {
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
 
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final pageSize = Size(constraints.maxWidth, constraints.maxHeight);
+    final pageSize = Size(0, 0);
 
-        final state = ref.watch(viewDiaryNotifierProvider(
-          ViewDiaryParams(diaryId: widget.diaryId, pageSize: pageSize),
-        ));
-        final notifier = ref.read(viewDiaryNotifierProvider(
-          ViewDiaryParams(diaryId: widget.diaryId, pageSize: pageSize),
-        ).notifier);
+    final state = ref.watch(viewDiaryNotifierProvider(
+      ViewDiaryParams(diaryId: widget.diaryId, pageSize: pageSize),
+    ));
+    final notifier = ref.read(viewDiaryNotifierProvider(
+      ViewDiaryParams(diaryId: widget.diaryId, pageSize: pageSize),
+    ).notifier);
 
-        //debugPrint("${splitText(text: '', textStyle: TextStyle(), pageSize: pageSize)}");
+    // TODO: bad (?) but it works
+    var lastPageSize = state.asData?.value.pageSize;
+    var lastCurrentSubPageIndex = state.asData?.value.currentSubPageIndex;
 
-        return state.when(
-          data: (data) => Padding(
-            padding: EdgeInsetsGeometry.symmetric(horizontal: 16, vertical: 16),
-            child: Column(
-              children: [
-                Text(
-                  formatDate(data.currentPage.timestamp.toDate(), pattern: 'dd MMMM'),
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    color: Colors.yellowAccent.withValues(alpha: 0.2),
-                    child: PageView.builder(
-                      controller: data.pageController,
-                      itemCount: data.splitPages.length,
-                      onPageChanged: (_) { notifier.refreshState(); },
-                      itemBuilder: (context, index) => Padding(
-                        padding: const EdgeInsets.all(12),
-                        child: Text(data.splitPages[index], style: data.textStyle),
-                      ),
-                    ),
-                  ),
-                ),
-                _pageControls(data, notifier),
-                IconButton(
-                  icon: const Icon(Icons.edit),
-                  onPressed: () async {
-                    final updatedPage = await widget.onNavigateToEditDiaryPage(data.currentPage.id);
-                    notifier.overwritePage(updatedPage);
-                  },
-                ),
-              ],
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final newLastPageSize = state.asData?.value.pageSize;
+      final newLastCurrentSubPageIndex = state.asData?.value.currentSubPageIndex;
+      if (lastPageSize != newLastPageSize || lastCurrentSubPageIndex != newLastCurrentSubPageIndex) {
+        lastPageSize = newLastPageSize;
+        lastCurrentSubPageIndex = newLastCurrentSubPageIndex;
+        notifier.refreshState();
+      }
+    });
+
+    return state.when(
+      data: (data) => Padding(
+        padding: EdgeInsetsGeometry.symmetric(horizontal: 16, vertical: 16),
+        child: Column(
+          children: [
+            Text(
+              formatDate(data.currentPage.timestamp.toDate(), pattern: 'dd MMMM'),
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
             ),
-          ),
-          error: (error, _) => Center(
-            child: Text('${localizations.error}: ${error.toString()}'),
-          ),
-          loading: () => const Center(child: CircularProgressIndicator()),
-        );
-      },
+            Expanded(
+              child: Container(
+                color: Colors.yellowAccent.withValues(alpha: 0.2),
+                child: Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: PageView.builder(
+                    key: data.pageKey,
+                    controller: data.pageController,
+                    itemCount: data.splitPages.length,
+                    onPageChanged: (_) { notifier.refreshState(); },
+                    itemBuilder: (context, index) => Text(
+                        data.splitPages[index],
+                        style: data.textStyle
+                    ),
+                ),
+                )
+              ),
+            ),
+            _pageControls(data, notifier),
+            IconButton(
+              icon: const Icon(Icons.edit),
+              onPressed: () async {
+                final updatedPage = await widget.onNavigateToEditDiaryPage(data.currentPage.id);
+                notifier.overwritePage(updatedPage);
+              },
+            ),
+          ],
+        ),
+      ),
+      error: (error, _) => Center(
+        child: Text('${localizations.error}: ${error.toString()}'),
+      ),
+      loading: () => const Center(child: CircularProgressIndicator()),
     );
   }
 

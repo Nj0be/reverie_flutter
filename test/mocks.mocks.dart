@@ -1310,6 +1310,17 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
           as String);
 
   @override
+  String get description =>
+      (super.noSuchMethod(
+            Invocation.getter(#description),
+            returnValue: _i12.dummyValue<String>(
+              this,
+              Invocation.getter(#description),
+            ),
+          )
+          as String);
+
+  @override
   String get page =>
       (super.noSuchMethod(
             Invocation.getter(#page),
@@ -1577,6 +1588,17 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
             returnValue: _i12.dummyValue<String>(
               this,
               Invocation.getter(#titleMandatory),
+            ),
+          )
+          as String);
+
+  @override
+  String get descriptionMandatory =>
+      (super.noSuchMethod(
+            Invocation.getter(#descriptionMandatory),
+            returnValue: _i12.dummyValue<String>(
+              this,
+              Invocation.getter(#descriptionMandatory),
             ),
           )
           as String);

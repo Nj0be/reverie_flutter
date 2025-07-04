@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reverie_flutter/data/model/diary.dart';
@@ -13,21 +15,31 @@ abstract class ViewDiaryState with _$ViewDiaryState {
   final Diary diary;
   @override
   final PageController pageController;
+  @override
+  final GlobalKey<State<StatefulWidget>> pageKey;
 
-  ViewDiaryState._({Diary? diary, PageController? pageController})
-      : diary = diary ?? Diary(), pageController = pageController ?? PageController();
+  ViewDiaryState._({Diary? diary, PageController? pageController, GlobalKey<State<StatefulWidget>>? pageKey})
+      : diary = diary ?? Diary(), pageController = pageController ?? PageController(), pageKey = pageKey ?? GlobalKey();
 
   @override
   factory ViewDiaryState({
     Diary? diary,
     @Default({}) Map<String, DiaryPage> pagesMap,
     PageController? pageController,
-    @Default(Size(0, 0)) Size pageSize,
     @Default(TextStyle(fontSize: 25, color: Colors.black)) TextStyle textStyle,
+    GlobalKey<State<StatefulWidget>>? pageKey,
   }) = _ViewDiaryState;
 
   int get currentSubPageIndex => pageController.hasClients ? (pageController.page?.round() ?? lastSubPageIndex) : lastSubPageIndex;
   List<DiaryPage> get pages => diary.pageIds.map((pageId) => pagesMap[pageId]).whereType<DiaryPage>().toList();
+  Size get pageSize => (){
+    final renderBox = pageKey.currentContext?.findRenderObject() as RenderBox?;
+
+    if (renderBox != null && renderBox.hasSize) {
+      return renderBox.size;
+    }
+    return Size(0, 0);
+  }();
   List<List<String>> get splitPagesList => pages.map((p) => p.content).toList().map((text) => splitText(
     text: text,
     textStyle: textStyle,
@@ -35,7 +47,7 @@ abstract class ViewDiaryState with _$ViewDiaryState {
   )).toList();
   List<String> get splitPages => splitPagesList.expand((e) => e).toList();
   List<int> get pagePerSubPage => splitPagesList.asMap().entries.expand((entry) => List.filled(entry.value.length, entry.key)).toList();
-  int get currentPageIndex => pagePerSubPage[currentSubPageIndex];
+  int get currentPageIndex => pagePerSubPage[min(currentSubPageIndex, lastSubPageIndex)];
   DiaryPage get currentPage => pages[currentPageIndex];
   int get lastSubPageIndex => splitPages.length - 1;
 }
@@ -77,7 +89,7 @@ class ViewDiaryNotifier extends StateNotifier<AsyncValue<ViewDiaryState>> {
     };
 
     state = AsyncData(
-        ViewDiaryState(diary: diary, pagesMap: pagesMap, pageSize: pageSize)
+        ViewDiaryState(diary: diary, pagesMap: pagesMap)
     );
     state = state.whenData((s) => s.copyWith(pageController: PageController(initialPage: s.lastSubPageIndex)));
   }
