@@ -5,14 +5,17 @@ import 'package:reverie_flutter/data/model/diary.dart';
 import 'package:reverie_flutter/l10n/app_localizations.dart';
 import 'package:reverie_flutter/ui/components/content_text_field.dart';
 import 'package:reverie_flutter/ui/components/single_field.dart';
+import 'package:reverie_flutter/ui/screens/all_diaries_screen.dart';
 import '../../notifier/edit_diary_notifier.dart';
 
 
 class EditDiaryScreen extends ConsumerWidget {
   static const String editName = 'edit_diary';
   static const String editPath = '/edit/:id';
+  static const String editFullPath = AllDiariesScreen.path + editPath;
   static const String createName = 'create_diary';
   static const String createPath = '/create';
+  static const String createFullPath = AllDiariesScreen.path + createPath;
 
 
   final String diaryId;

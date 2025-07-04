@@ -5,7 +5,6 @@ import 'package:reverie_flutter/data/model/diary.dart';
 import 'package:reverie_flutter/data/model/diary_page.dart';
 import 'package:reverie_flutter/data/model/diary_sub_page.dart';
 import 'package:reverie_flutter/data/repository/diary_repository.dart';
-import 'package:reverie_flutter/data/repository/user_repository.dart';
 
 part 'view_diary_notifier.freezed.dart';
 
@@ -28,26 +27,22 @@ abstract class ViewDiaryState with _$ViewDiaryState {
   List<DiarySubPage> get subPages => pages.expand((page) => page.subPageIds).map((subPageId) => subPagesMap[subPageId]).whereType<DiarySubPage>().toList();
 }
 
-final viewTimeCapsuleNotifierProvider = StateNotifierProvider.family<ViewDiaryNotifier, AsyncValue<ViewDiaryState>, String>((ref, diaryId) {
+final viewDiaryNotifierProvider = StateNotifierProvider.family<ViewDiaryNotifier, AsyncValue<ViewDiaryState>, String>((ref, diaryId) {
   final repository = ref.read(diaryRepositoryProvider);
-  final userRepository = ref.read(userRepositoryProvider);
 
   return ViewDiaryNotifier(
     repository: repository,
-    userRepository: userRepository,
     diaryId: diaryId,
   );
 });
 
 class ViewDiaryNotifier extends StateNotifier<AsyncValue<ViewDiaryState>> {
   final DiaryRepository _repository;
-  final UserRepository _userRepository;
 
   ViewDiaryNotifier({
     required DiaryRepository repository,
-    required UserRepository userRepository,
     required String diaryId,
-  }) : _userRepository = userRepository, _repository = repository, super(AsyncLoading()) {
+  }) : _repository = repository, super(AsyncLoading()) {
     _onStart(diaryId);
   }
 
@@ -62,7 +57,7 @@ class ViewDiaryNotifier extends StateNotifier<AsyncValue<ViewDiaryState>> {
         subPageId : await _repository.getSubPage(subPageId)
     };
 
-    state = AsyncValue.data(
+    state = AsyncData(
         ViewDiaryState(
             diary: diary,
           pagesMap: pagesMap,

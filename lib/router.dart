@@ -14,6 +14,7 @@ import 'package:reverie_flutter/ui/screens/login_screen.dart';
 import 'package:reverie_flutter/ui/screens/profile_screen.dart';
 import 'package:reverie_flutter/ui/screens/reset_password_screen.dart';
 import 'package:reverie_flutter/ui/screens/signup_screen.dart';
+import 'package:reverie_flutter/ui/screens/view_diary_screen.dart';
 import 'package:reverie_flutter/ui/screens/view_time_capsule_screen.dart';
 import 'package:reverie_flutter/ui/screens/all_diaries_screen.dart';
 import 'package:reverie_flutter/ui/screens/edit_diary_screen.dart';
@@ -48,19 +49,22 @@ final router = GoRouter(
           pageBuilder: (context, state) => MaterialPage(
             key: state.pageKey,
             child: AllDiariesScreen(
-              onNavigateToDiary: (_) {},
+              onNavigateToDiary: (diaryId) {
+                context.pushNamed(
+                  ViewDiaryScreen.name,
+                  pathParameters: {'id': diaryId},
+                );
+              },
               onNavigateToEditDiary: (diaryId) async {
                 // return updated profile from editProfile
                 return await context.pushNamed(
                   EditDiaryScreen.editName,
                   pathParameters: {'id': diaryId},
-                )
-                as Diary;
+                ) as Diary;
               },
               onNavigateToCreateDiary: () async {
                 // return updated profile from editProfile
-                return await context.pushNamed(EditDiaryScreen.createName)
-                as Diary;
+                return await context.pushNamed(EditDiaryScreen.createName) as Diary;
               },
             ),
           ),
@@ -99,6 +103,28 @@ final router = GoRouter(
                   },
                 ),
               ),
+            ),
+
+            GoRoute(
+              name: ViewDiaryScreen.name,
+              path: ViewDiaryScreen.path,
+              pageBuilder: (context, state) {
+                final diaryId = state.pathParameters['id']!;
+                return MaterialPage(
+                  key: state.pageKey,
+                  child: ViewDiaryScreen(
+                      diaryId: diaryId,
+/*
+                      onNavigateToEditDiaryPage: (_) {
+
+                      },
+                    onComplete: () {
+
+                    },
+*/
+                  ),
+                );
+              }
             ),
           ],
         ),

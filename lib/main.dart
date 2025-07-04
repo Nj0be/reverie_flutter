@@ -24,7 +24,11 @@ Future<void> main() async {
   // initialize libphonenumberutil
   await init();
 
-  runApp(ProviderScope(child: MyApp()));
+  runApp(
+      ProviderScope(
+          child: MyApp()
+      )
+  );
 }
 
 class MyApp extends StatelessWidget {
