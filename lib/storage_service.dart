@@ -44,7 +44,7 @@ class StorageService {
   final String usersCollection = 'users';
   final String diariesCollection = 'diaries';
   final String pagesCollection = 'pages';
-  final String subPagesCollection = 'subpages';
+  final String subPagesCollection = 'subPages';
   final String diaryCoversCollection = 'diaryCovers';
   final String usernamesCollection = 'usernames';
   final String emailsCollection = 'emails';
