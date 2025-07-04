@@ -3,24 +3,31 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i11;
+import 'dart:async' as _i13;
 
+import 'package:cloud_firestore/cloud_firestore.dart' as _i20;
 import 'package:firebase_auth/firebase_auth.dart' as _i4;
 import 'package:firebase_auth_platform_interface/firebase_auth_platform_interface.dart'
     as _i3;
 import 'package:firebase_core/firebase_core.dart' as _i2;
+import 'package:flutter_riverpod/flutter_riverpod.dart' as _i19;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:mockito/src/dummies.dart' as _i12;
-import 'package:reverie_flutter/data/model/diary.dart' as _i5;
-import 'package:reverie_flutter/data/model/diary_cover.dart' as _i6;
-import 'package:reverie_flutter/data/model/diary_image.dart' as _i9;
-import 'package:reverie_flutter/data/model/diary_page.dart' as _i7;
-import 'package:reverie_flutter/data/model/diary_sub_page.dart' as _i8;
-import 'package:reverie_flutter/data/model/time_capsule.dart' as _i10;
-import 'package:reverie_flutter/data/repository/diary_repository.dart' as _i13;
+import 'package:mockito/src/dummies.dart' as _i14;
+import 'package:reverie_flutter/data/model/diary.dart' as _i6;
+import 'package:reverie_flutter/data/model/diary_cover.dart' as _i7;
+import 'package:reverie_flutter/data/model/diary_image.dart' as _i10;
+import 'package:reverie_flutter/data/model/diary_page.dart' as _i8;
+import 'package:reverie_flutter/data/model/diary_sub_page.dart' as _i9;
+import 'package:reverie_flutter/data/model/time_capsule.dart' as _i11;
+import 'package:reverie_flutter/data/model/user.dart' as _i5;
+import 'package:reverie_flutter/data/repository/diary_repository.dart' as _i16;
 import 'package:reverie_flutter/data/repository/time_capsule_repository.dart'
-    as _i14;
-import 'package:reverie_flutter/l10n/app_localizations.dart' as _i15;
+    as _i17;
+import 'package:reverie_flutter/data/repository/user_repository.dart' as _i15;
+import 'package:reverie_flutter/l10n/app_localizations.dart' as _i18;
+import 'package:reverie_flutter/notifier/create_time_capsule_notifier.dart'
+    as _i12;
+import 'package:state_notifier/state_notifier.dart' as _i21;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -59,53 +66,64 @@ class _FakeConfirmationResult_3 extends _i1.SmartFake
     : super(parent, parentInvocation);
 }
 
-class _FakeDiary_4 extends _i1.SmartFake implements _i5.Diary {
-  _FakeDiary_4(Object parent, Invocation parentInvocation)
+class _FakeUser_4 extends _i1.SmartFake implements _i5.User {
+  _FakeUser_4(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeDiaryCover_5 extends _i1.SmartFake implements _i6.DiaryCover {
-  _FakeDiaryCover_5(Object parent, Invocation parentInvocation)
+class _FakeDiary_5 extends _i1.SmartFake implements _i6.Diary {
+  _FakeDiary_5(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeDiaryPage_6 extends _i1.SmartFake implements _i7.DiaryPage {
-  _FakeDiaryPage_6(Object parent, Invocation parentInvocation)
+class _FakeDiaryCover_6 extends _i1.SmartFake implements _i7.DiaryCover {
+  _FakeDiaryCover_6(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeDiarySubPage_7 extends _i1.SmartFake implements _i8.DiarySubPage {
-  _FakeDiarySubPage_7(Object parent, Invocation parentInvocation)
+class _FakeDiaryPage_7 extends _i1.SmartFake implements _i8.DiaryPage {
+  _FakeDiaryPage_7(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeDiaryImage_8 extends _i1.SmartFake implements _i9.DiaryImage {
-  _FakeDiaryImage_8(Object parent, Invocation parentInvocation)
+class _FakeDiarySubPage_8 extends _i1.SmartFake implements _i9.DiarySubPage {
+  _FakeDiarySubPage_8(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeTimeCapsule_9 extends _i1.SmartFake implements _i10.TimeCapsule {
-  _FakeTimeCapsule_9(Object parent, Invocation parentInvocation)
+class _FakeDiaryImage_9 extends _i1.SmartFake implements _i10.DiaryImage {
+  _FakeDiaryImage_9(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeUserMetadata_10 extends _i1.SmartFake implements _i3.UserMetadata {
-  _FakeUserMetadata_10(Object parent, Invocation parentInvocation)
+class _FakeTimeCapsule_10 extends _i1.SmartFake implements _i11.TimeCapsule {
+  _FakeTimeCapsule_10(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeMultiFactor_11 extends _i1.SmartFake implements _i4.MultiFactor {
-  _FakeMultiFactor_11(Object parent, Invocation parentInvocation)
+class _FakeUserMetadata_11 extends _i1.SmartFake implements _i3.UserMetadata {
+  _FakeUserMetadata_11(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeIdTokenResult_12 extends _i1.SmartFake implements _i3.IdTokenResult {
-  _FakeIdTokenResult_12(Object parent, Invocation parentInvocation)
+class _FakeMultiFactor_12 extends _i1.SmartFake implements _i4.MultiFactor {
+  _FakeMultiFactor_12(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-class _FakeUser_13 extends _i1.SmartFake implements _i4.User {
-  _FakeUser_13(Object parent, Invocation parentInvocation)
+class _FakeIdTokenResult_13 extends _i1.SmartFake implements _i3.IdTokenResult {
+  _FakeIdTokenResult_13(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeUser_14 extends _i1.SmartFake implements _i4.User {
+  _FakeUser_14(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeCreateTimeCapsuleState_15 extends _i1.SmartFake
+    implements _i12.CreateTimeCapsuleState {
+  _FakeCreateTimeCapsuleState_15(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
@@ -152,7 +170,7 @@ class MockFirebaseAuth extends _i1.Mock implements _i4.FirebaseAuth {
           as Map<dynamic, dynamic>);
 
   @override
-  _i11.Future<void> useAuthEmulator(
+  _i13.Future<void> useAuthEmulator(
     String? host,
     int? port, {
     bool? automaticHostMapping = true,
@@ -163,35 +181,35 @@ class MockFirebaseAuth extends _i1.Mock implements _i4.FirebaseAuth {
               [host, port],
               {#automaticHostMapping: automaticHostMapping},
             ),
-            returnValue: _i11.Future<void>.value(),
-            returnValueForMissingStub: _i11.Future<void>.value(),
+            returnValue: _i13.Future<void>.value(),
+            returnValueForMissingStub: _i13.Future<void>.value(),
           )
-          as _i11.Future<void>);
+          as _i13.Future<void>);
 
   @override
-  _i11.Future<void> applyActionCode(String? code) =>
+  _i13.Future<void> applyActionCode(String? code) =>
       (super.noSuchMethod(
             Invocation.method(#applyActionCode, [code]),
-            returnValue: _i11.Future<void>.value(),
-            returnValueForMissingStub: _i11.Future<void>.value(),
+            returnValue: _i13.Future<void>.value(),
+            returnValueForMissingStub: _i13.Future<void>.value(),
           )
-          as _i11.Future<void>);
+          as _i13.Future<void>);
 
   @override
-  _i11.Future<_i3.ActionCodeInfo> checkActionCode(String? code) =>
+  _i13.Future<_i3.ActionCodeInfo> checkActionCode(String? code) =>
       (super.noSuchMethod(
             Invocation.method(#checkActionCode, [code]),
-            returnValue: _i11.Future<_i3.ActionCodeInfo>.value(
+            returnValue: _i13.Future<_i3.ActionCodeInfo>.value(
               _FakeActionCodeInfo_1(
                 this,
                 Invocation.method(#checkActionCode, [code]),
               ),
             ),
           )
-          as _i11.Future<_i3.ActionCodeInfo>);
+          as _i13.Future<_i3.ActionCodeInfo>);
 
   @override
-  _i11.Future<void> confirmPasswordReset({
+  _i13.Future<void> confirmPasswordReset({
     required String? code,
     required String? newPassword,
   }) =>
@@ -200,13 +218,13 @@ class MockFirebaseAuth extends _i1.Mock implements _i4.FirebaseAuth {
               #code: code,
               #newPassword: newPassword,
             }),
-            returnValue: _i11.Future<void>.value(),
-            returnValueForMissingStub: _i11.Future<void>.value(),
+            returnValue: _i13.Future<void>.value(),
+            returnValueForMissingStub: _i13.Future<void>.value(),
           )
-          as _i11.Future<void>);
+          as _i13.Future<void>);
 
   @override
-  _i11.Future<_i4.UserCredential> createUserWithEmailAndPassword({
+  _i13.Future<_i4.UserCredential> createUserWithEmailAndPassword({
     required String? email,
     required String? password,
   }) =>
@@ -215,7 +233,7 @@ class MockFirebaseAuth extends _i1.Mock implements _i4.FirebaseAuth {
               #email: email,
               #password: password,
             }),
-            returnValue: _i11.Future<_i4.UserCredential>.value(
+            returnValue: _i13.Future<_i4.UserCredential>.value(
               _FakeUserCredential_2(
                 this,
                 Invocation.method(#createUserWithEmailAndPassword, [], {
@@ -225,28 +243,28 @@ class MockFirebaseAuth extends _i1.Mock implements _i4.FirebaseAuth {
               ),
             ),
           )
-          as _i11.Future<_i4.UserCredential>);
+          as _i13.Future<_i4.UserCredential>);
 
   @override
-  _i11.Future<List<String>> fetchSignInMethodsForEmail(String? email) =>
+  _i13.Future<List<String>> fetchSignInMethodsForEmail(String? email) =>
       (super.noSuchMethod(
             Invocation.method(#fetchSignInMethodsForEmail, [email]),
-            returnValue: _i11.Future<List<String>>.value(<String>[]),
+            returnValue: _i13.Future<List<String>>.value(<String>[]),
           )
-          as _i11.Future<List<String>>);
+          as _i13.Future<List<String>>);
 
   @override
-  _i11.Future<_i4.UserCredential> getRedirectResult() =>
+  _i13.Future<_i4.UserCredential> getRedirectResult() =>
       (super.noSuchMethod(
             Invocation.method(#getRedirectResult, []),
-            returnValue: _i11.Future<_i4.UserCredential>.value(
+            returnValue: _i13.Future<_i4.UserCredential>.value(
               _FakeUserCredential_2(
                 this,
                 Invocation.method(#getRedirectResult, []),
               ),
             ),
           )
-          as _i11.Future<_i4.UserCredential>);
+          as _i13.Future<_i4.UserCredential>);
 
   @override
   bool isSignInWithEmailLink(String? emailLink) =>
@@ -257,31 +275,31 @@ class MockFirebaseAuth extends _i1.Mock implements _i4.FirebaseAuth {
           as bool);
 
   @override
-  _i11.Stream<_i4.User?> authStateChanges() =>
+  _i13.Stream<_i4.User?> authStateChanges() =>
       (super.noSuchMethod(
             Invocation.method(#authStateChanges, []),
-            returnValue: _i11.Stream<_i4.User?>.empty(),
+            returnValue: _i13.Stream<_i4.User?>.empty(),
           )
-          as _i11.Stream<_i4.User?>);
+          as _i13.Stream<_i4.User?>);
 
   @override
-  _i11.Stream<_i4.User?> idTokenChanges() =>
+  _i13.Stream<_i4.User?> idTokenChanges() =>
       (super.noSuchMethod(
             Invocation.method(#idTokenChanges, []),
-            returnValue: _i11.Stream<_i4.User?>.empty(),
+            returnValue: _i13.Stream<_i4.User?>.empty(),
           )
-          as _i11.Stream<_i4.User?>);
+          as _i13.Stream<_i4.User?>);
 
   @override
-  _i11.Stream<_i4.User?> userChanges() =>
+  _i13.Stream<_i4.User?> userChanges() =>
       (super.noSuchMethod(
             Invocation.method(#userChanges, []),
-            returnValue: _i11.Stream<_i4.User?>.empty(),
+            returnValue: _i13.Stream<_i4.User?>.empty(),
           )
-          as _i11.Stream<_i4.User?>);
+          as _i13.Stream<_i4.User?>);
 
   @override
-  _i11.Future<void> sendPasswordResetEmail({
+  _i13.Future<void> sendPasswordResetEmail({
     required String? email,
     _i3.ActionCodeSettings? actionCodeSettings,
   }) =>
@@ -290,13 +308,13 @@ class MockFirebaseAuth extends _i1.Mock implements _i4.FirebaseAuth {
               #email: email,
               #actionCodeSettings: actionCodeSettings,
             }),
-            returnValue: _i11.Future<void>.value(),
-            returnValueForMissingStub: _i11.Future<void>.value(),
+            returnValue: _i13.Future<void>.value(),
+            returnValueForMissingStub: _i13.Future<void>.value(),
           )
-          as _i11.Future<void>);
+          as _i13.Future<void>);
 
   @override
-  _i11.Future<void> sendSignInLinkToEmail({
+  _i13.Future<void> sendSignInLinkToEmail({
     required String? email,
     required _i3.ActionCodeSettings? actionCodeSettings,
   }) =>
@@ -305,22 +323,22 @@ class MockFirebaseAuth extends _i1.Mock implements _i4.FirebaseAuth {
               #email: email,
               #actionCodeSettings: actionCodeSettings,
             }),
-            returnValue: _i11.Future<void>.value(),
-            returnValueForMissingStub: _i11.Future<void>.value(),
+            returnValue: _i13.Future<void>.value(),
+            returnValueForMissingStub: _i13.Future<void>.value(),
           )
-          as _i11.Future<void>);
+          as _i13.Future<void>);
 
   @override
-  _i11.Future<void> setLanguageCode(String? languageCode) =>
+  _i13.Future<void> setLanguageCode(String? languageCode) =>
       (super.noSuchMethod(
             Invocation.method(#setLanguageCode, [languageCode]),
-            returnValue: _i11.Future<void>.value(),
-            returnValueForMissingStub: _i11.Future<void>.value(),
+            returnValue: _i13.Future<void>.value(),
+            returnValueForMissingStub: _i13.Future<void>.value(),
           )
-          as _i11.Future<void>);
+          as _i13.Future<void>);
 
   @override
-  _i11.Future<void> setSettings({
+  _i13.Future<void> setSettings({
     bool? appVerificationDisabledForTesting = false,
     String? userAccessGroup,
     String? phoneNumber,
@@ -336,63 +354,63 @@ class MockFirebaseAuth extends _i1.Mock implements _i4.FirebaseAuth {
               #smsCode: smsCode,
               #forceRecaptchaFlow: forceRecaptchaFlow,
             }),
-            returnValue: _i11.Future<void>.value(),
-            returnValueForMissingStub: _i11.Future<void>.value(),
+            returnValue: _i13.Future<void>.value(),
+            returnValueForMissingStub: _i13.Future<void>.value(),
           )
-          as _i11.Future<void>);
+          as _i13.Future<void>);
 
   @override
-  _i11.Future<void> setPersistence(_i3.Persistence? persistence) =>
+  _i13.Future<void> setPersistence(_i3.Persistence? persistence) =>
       (super.noSuchMethod(
             Invocation.method(#setPersistence, [persistence]),
-            returnValue: _i11.Future<void>.value(),
-            returnValueForMissingStub: _i11.Future<void>.value(),
+            returnValue: _i13.Future<void>.value(),
+            returnValueForMissingStub: _i13.Future<void>.value(),
           )
-          as _i11.Future<void>);
+          as _i13.Future<void>);
 
   @override
-  _i11.Future<_i4.UserCredential> signInAnonymously() =>
+  _i13.Future<_i4.UserCredential> signInAnonymously() =>
       (super.noSuchMethod(
             Invocation.method(#signInAnonymously, []),
-            returnValue: _i11.Future<_i4.UserCredential>.value(
+            returnValue: _i13.Future<_i4.UserCredential>.value(
               _FakeUserCredential_2(
                 this,
                 Invocation.method(#signInAnonymously, []),
               ),
             ),
           )
-          as _i11.Future<_i4.UserCredential>);
+          as _i13.Future<_i4.UserCredential>);
 
   @override
-  _i11.Future<_i4.UserCredential> signInWithCredential(
+  _i13.Future<_i4.UserCredential> signInWithCredential(
     _i3.AuthCredential? credential,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#signInWithCredential, [credential]),
-            returnValue: _i11.Future<_i4.UserCredential>.value(
+            returnValue: _i13.Future<_i4.UserCredential>.value(
               _FakeUserCredential_2(
                 this,
                 Invocation.method(#signInWithCredential, [credential]),
               ),
             ),
           )
-          as _i11.Future<_i4.UserCredential>);
+          as _i13.Future<_i4.UserCredential>);
 
   @override
-  _i11.Future<_i4.UserCredential> signInWithCustomToken(String? token) =>
+  _i13.Future<_i4.UserCredential> signInWithCustomToken(String? token) =>
       (super.noSuchMethod(
             Invocation.method(#signInWithCustomToken, [token]),
-            returnValue: _i11.Future<_i4.UserCredential>.value(
+            returnValue: _i13.Future<_i4.UserCredential>.value(
               _FakeUserCredential_2(
                 this,
                 Invocation.method(#signInWithCustomToken, [token]),
               ),
             ),
           )
-          as _i11.Future<_i4.UserCredential>);
+          as _i13.Future<_i4.UserCredential>);
 
   @override
-  _i11.Future<_i4.UserCredential> signInWithEmailAndPassword({
+  _i13.Future<_i4.UserCredential> signInWithEmailAndPassword({
     required String? email,
     required String? password,
   }) =>
@@ -401,7 +419,7 @@ class MockFirebaseAuth extends _i1.Mock implements _i4.FirebaseAuth {
               #email: email,
               #password: password,
             }),
-            returnValue: _i11.Future<_i4.UserCredential>.value(
+            returnValue: _i13.Future<_i4.UserCredential>.value(
               _FakeUserCredential_2(
                 this,
                 Invocation.method(#signInWithEmailAndPassword, [], {
@@ -411,10 +429,10 @@ class MockFirebaseAuth extends _i1.Mock implements _i4.FirebaseAuth {
               ),
             ),
           )
-          as _i11.Future<_i4.UserCredential>);
+          as _i13.Future<_i4.UserCredential>);
 
   @override
-  _i11.Future<_i4.UserCredential> signInWithEmailLink({
+  _i13.Future<_i4.UserCredential> signInWithEmailLink({
     required String? email,
     required String? emailLink,
   }) =>
@@ -423,7 +441,7 @@ class MockFirebaseAuth extends _i1.Mock implements _i4.FirebaseAuth {
               #email: email,
               #emailLink: emailLink,
             }),
-            returnValue: _i11.Future<_i4.UserCredential>.value(
+            returnValue: _i13.Future<_i4.UserCredential>.value(
               _FakeUserCredential_2(
                 this,
                 Invocation.method(#signInWithEmailLink, [], {
@@ -433,31 +451,31 @@ class MockFirebaseAuth extends _i1.Mock implements _i4.FirebaseAuth {
               ),
             ),
           )
-          as _i11.Future<_i4.UserCredential>);
+          as _i13.Future<_i4.UserCredential>);
 
   @override
-  _i11.Future<_i4.UserCredential> signInWithProvider(
+  _i13.Future<_i4.UserCredential> signInWithProvider(
     _i3.AuthProvider? provider,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#signInWithProvider, [provider]),
-            returnValue: _i11.Future<_i4.UserCredential>.value(
+            returnValue: _i13.Future<_i4.UserCredential>.value(
               _FakeUserCredential_2(
                 this,
                 Invocation.method(#signInWithProvider, [provider]),
               ),
             ),
           )
-          as _i11.Future<_i4.UserCredential>);
+          as _i13.Future<_i4.UserCredential>);
 
   @override
-  _i11.Future<_i4.ConfirmationResult> signInWithPhoneNumber(
+  _i13.Future<_i4.ConfirmationResult> signInWithPhoneNumber(
     String? phoneNumber, [
     _i4.RecaptchaVerifier? verifier,
   ]) =>
       (super.noSuchMethod(
             Invocation.method(#signInWithPhoneNumber, [phoneNumber, verifier]),
-            returnValue: _i11.Future<_i4.ConfirmationResult>.value(
+            returnValue: _i13.Future<_i4.ConfirmationResult>.value(
               _FakeConfirmationResult_3(
                 this,
                 Invocation.method(#signInWithPhoneNumber, [
@@ -467,54 +485,54 @@ class MockFirebaseAuth extends _i1.Mock implements _i4.FirebaseAuth {
               ),
             ),
           )
-          as _i11.Future<_i4.ConfirmationResult>);
+          as _i13.Future<_i4.ConfirmationResult>);
 
   @override
-  _i11.Future<_i4.UserCredential> signInWithPopup(_i3.AuthProvider? provider) =>
+  _i13.Future<_i4.UserCredential> signInWithPopup(_i3.AuthProvider? provider) =>
       (super.noSuchMethod(
             Invocation.method(#signInWithPopup, [provider]),
-            returnValue: _i11.Future<_i4.UserCredential>.value(
+            returnValue: _i13.Future<_i4.UserCredential>.value(
               _FakeUserCredential_2(
                 this,
                 Invocation.method(#signInWithPopup, [provider]),
               ),
             ),
           )
-          as _i11.Future<_i4.UserCredential>);
+          as _i13.Future<_i4.UserCredential>);
 
   @override
-  _i11.Future<void> signInWithRedirect(_i3.AuthProvider? provider) =>
+  _i13.Future<void> signInWithRedirect(_i3.AuthProvider? provider) =>
       (super.noSuchMethod(
             Invocation.method(#signInWithRedirect, [provider]),
-            returnValue: _i11.Future<void>.value(),
-            returnValueForMissingStub: _i11.Future<void>.value(),
+            returnValue: _i13.Future<void>.value(),
+            returnValueForMissingStub: _i13.Future<void>.value(),
           )
-          as _i11.Future<void>);
+          as _i13.Future<void>);
 
   @override
-  _i11.Future<void> signOut() =>
+  _i13.Future<void> signOut() =>
       (super.noSuchMethod(
             Invocation.method(#signOut, []),
-            returnValue: _i11.Future<void>.value(),
-            returnValueForMissingStub: _i11.Future<void>.value(),
+            returnValue: _i13.Future<void>.value(),
+            returnValueForMissingStub: _i13.Future<void>.value(),
           )
-          as _i11.Future<void>);
+          as _i13.Future<void>);
 
   @override
-  _i11.Future<String> verifyPasswordResetCode(String? code) =>
+  _i13.Future<String> verifyPasswordResetCode(String? code) =>
       (super.noSuchMethod(
             Invocation.method(#verifyPasswordResetCode, [code]),
-            returnValue: _i11.Future<String>.value(
-              _i12.dummyValue<String>(
+            returnValue: _i13.Future<String>.value(
+              _i14.dummyValue<String>(
                 this,
                 Invocation.method(#verifyPasswordResetCode, [code]),
               ),
             ),
           )
-          as _i11.Future<String>);
+          as _i13.Future<String>);
 
   @override
-  _i11.Future<void> verifyPhoneNumber({
+  _i13.Future<void> verifyPhoneNumber({
     String? phoneNumber,
     _i3.PhoneMultiFactorInfo? multiFactorInfo,
     required _i3.PhoneVerificationCompleted? verificationCompleted,
@@ -539,283 +557,360 @@ class MockFirebaseAuth extends _i1.Mock implements _i4.FirebaseAuth {
               #forceResendingToken: forceResendingToken,
               #multiFactorSession: multiFactorSession,
             }),
-            returnValue: _i11.Future<void>.value(),
-            returnValueForMissingStub: _i11.Future<void>.value(),
+            returnValue: _i13.Future<void>.value(),
+            returnValueForMissingStub: _i13.Future<void>.value(),
           )
-          as _i11.Future<void>);
+          as _i13.Future<void>);
 
   @override
-  _i11.Future<void> revokeTokenWithAuthorizationCode(
+  _i13.Future<void> revokeTokenWithAuthorizationCode(
     String? authorizationCode,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#revokeTokenWithAuthorizationCode, [
               authorizationCode,
             ]),
-            returnValue: _i11.Future<void>.value(),
-            returnValueForMissingStub: _i11.Future<void>.value(),
+            returnValue: _i13.Future<void>.value(),
+            returnValueForMissingStub: _i13.Future<void>.value(),
           )
-          as _i11.Future<void>);
+          as _i13.Future<void>);
 
   @override
-  _i11.Future<void> initializeRecaptchaConfig() =>
+  _i13.Future<void> initializeRecaptchaConfig() =>
       (super.noSuchMethod(
             Invocation.method(#initializeRecaptchaConfig, []),
-            returnValue: _i11.Future<void>.value(),
-            returnValueForMissingStub: _i11.Future<void>.value(),
+            returnValue: _i13.Future<void>.value(),
+            returnValueForMissingStub: _i13.Future<void>.value(),
           )
-          as _i11.Future<void>);
+          as _i13.Future<void>);
+}
+
+/// A class which mocks [UserRepository].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockUserRepository extends _i1.Mock implements _i15.UserRepository {
+  MockUserRepository() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i13.Future<_i5.User> getUser(String? userId) =>
+      (super.noSuchMethod(
+            Invocation.method(#getUser, [userId]),
+            returnValue: _i13.Future<_i5.User>.value(
+              _FakeUser_4(this, Invocation.method(#getUser, [userId])),
+            ),
+          )
+          as _i13.Future<_i5.User>);
+
+  @override
+  _i13.Future<bool> isUsernameTaken(String? username) =>
+      (super.noSuchMethod(
+            Invocation.method(#isUsernameTaken, [username]),
+            returnValue: _i13.Future<bool>.value(false),
+          )
+          as _i13.Future<bool>);
+
+  @override
+  _i13.Future<bool> isEmailTaken(String? email) =>
+      (super.noSuchMethod(
+            Invocation.method(#isEmailTaken, [email]),
+            returnValue: _i13.Future<bool>.value(false),
+          )
+          as _i13.Future<bool>);
+
+  @override
+  _i13.Future<void> updateUser(_i5.User? user) =>
+      (super.noSuchMethod(
+            Invocation.method(#updateUser, [user]),
+            returnValue: _i13.Future<void>.value(),
+            returnValueForMissingStub: _i13.Future<void>.value(),
+          )
+          as _i13.Future<void>);
+
+  @override
+  _i13.Future<bool> authenticate(String? email, String? password) =>
+      (super.noSuchMethod(
+            Invocation.method(#authenticate, [email, password]),
+            returnValue: _i13.Future<bool>.value(false),
+          )
+          as _i13.Future<bool>);
+
+  @override
+  _i13.Future<_i5.User?> createAccount(_i5.User? user, String? password) =>
+      (super.noSuchMethod(
+            Invocation.method(#createAccount, [user, password]),
+            returnValue: _i13.Future<_i5.User?>.value(),
+          )
+          as _i13.Future<_i5.User?>);
+
+  @override
+  Null sendPasswordResetEmail(String? email) =>
+      (super.noSuchMethod(Invocation.method(#sendPasswordResetEmail, [email]))
+          as Null);
+
+  @override
+  _i13.Future<List<_i5.User>> getUsersMatchingPartialUsername(
+    String? partialUsername,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#getUsersMatchingPartialUsername, [
+              partialUsername,
+            ]),
+            returnValue: _i13.Future<List<_i5.User>>.value(<_i5.User>[]),
+          )
+          as _i13.Future<List<_i5.User>>);
 }
 
 /// A class which mocks [DiaryRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockDiaryRepository extends _i1.Mock implements _i13.DiaryRepository {
+class MockDiaryRepository extends _i1.Mock implements _i16.DiaryRepository {
   MockDiaryRepository() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i11.Future<_i5.Diary> getDiary(String? diaryId) =>
+  _i13.Future<_i6.Diary> getDiary(String? diaryId) =>
       (super.noSuchMethod(
             Invocation.method(#getDiary, [diaryId]),
-            returnValue: _i11.Future<_i5.Diary>.value(
-              _FakeDiary_4(this, Invocation.method(#getDiary, [diaryId])),
+            returnValue: _i13.Future<_i6.Diary>.value(
+              _FakeDiary_5(this, Invocation.method(#getDiary, [diaryId])),
             ),
           )
-          as _i11.Future<_i5.Diary>);
+          as _i13.Future<_i6.Diary>);
 
   @override
-  _i11.Future<List<_i5.Diary>> getUserDiaries(String? userId) =>
+  _i13.Future<List<_i6.Diary>> getUserDiaries(String? userId) =>
       (super.noSuchMethod(
             Invocation.method(#getUserDiaries, [userId]),
-            returnValue: _i11.Future<List<_i5.Diary>>.value(<_i5.Diary>[]),
+            returnValue: _i13.Future<List<_i6.Diary>>.value(<_i6.Diary>[]),
           )
-          as _i11.Future<List<_i5.Diary>>);
+          as _i13.Future<List<_i6.Diary>>);
 
   @override
-  _i11.Future<_i5.Diary> saveDiary(_i5.Diary? diary) =>
+  _i13.Future<_i6.Diary> saveDiary(_i6.Diary? diary) =>
       (super.noSuchMethod(
             Invocation.method(#saveDiary, [diary]),
-            returnValue: _i11.Future<_i5.Diary>.value(
-              _FakeDiary_4(this, Invocation.method(#saveDiary, [diary])),
+            returnValue: _i13.Future<_i6.Diary>.value(
+              _FakeDiary_5(this, Invocation.method(#saveDiary, [diary])),
             ),
           )
-          as _i11.Future<_i5.Diary>);
+          as _i13.Future<_i6.Diary>);
 
   @override
-  _i11.Future<void> updateDiary(_i5.Diary? diary) =>
+  _i13.Future<void> updateDiary(_i6.Diary? diary) =>
       (super.noSuchMethod(
             Invocation.method(#updateDiary, [diary]),
-            returnValue: _i11.Future<void>.value(),
-            returnValueForMissingStub: _i11.Future<void>.value(),
+            returnValue: _i13.Future<void>.value(),
+            returnValueForMissingStub: _i13.Future<void>.value(),
           )
-          as _i11.Future<void>);
+          as _i13.Future<void>);
 
   @override
-  _i11.Future<void> deleteDiary(_i5.Diary? diary) =>
+  _i13.Future<void> deleteDiary(_i6.Diary? diary) =>
       (super.noSuchMethod(
             Invocation.method(#deleteDiary, [diary]),
-            returnValue: _i11.Future<void>.value(),
-            returnValueForMissingStub: _i11.Future<void>.value(),
+            returnValue: _i13.Future<void>.value(),
+            returnValueForMissingStub: _i13.Future<void>.value(),
           )
-          as _i11.Future<void>);
+          as _i13.Future<void>);
 
   @override
-  _i11.Future<_i6.DiaryCover> getDiaryCover(String? diaryCoverId) =>
+  _i13.Future<_i7.DiaryCover> getDiaryCover(String? diaryCoverId) =>
       (super.noSuchMethod(
             Invocation.method(#getDiaryCover, [diaryCoverId]),
-            returnValue: _i11.Future<_i6.DiaryCover>.value(
-              _FakeDiaryCover_5(
+            returnValue: _i13.Future<_i7.DiaryCover>.value(
+              _FakeDiaryCover_6(
                 this,
                 Invocation.method(#getDiaryCover, [diaryCoverId]),
               ),
             ),
           )
-          as _i11.Future<_i6.DiaryCover>);
+          as _i13.Future<_i7.DiaryCover>);
 
   @override
-  _i11.Future<_i7.DiaryPage> getPage(String? pageId) =>
+  _i13.Future<_i8.DiaryPage> getPage(String? pageId) =>
       (super.noSuchMethod(
             Invocation.method(#getPage, [pageId]),
-            returnValue: _i11.Future<_i7.DiaryPage>.value(
-              _FakeDiaryPage_6(this, Invocation.method(#getPage, [pageId])),
+            returnValue: _i13.Future<_i8.DiaryPage>.value(
+              _FakeDiaryPage_7(this, Invocation.method(#getPage, [pageId])),
             ),
           )
-          as _i11.Future<_i7.DiaryPage>);
+          as _i13.Future<_i8.DiaryPage>);
 
   @override
-  _i11.Future<_i7.DiaryPage> savePage(_i7.DiaryPage? page) =>
+  _i13.Future<_i8.DiaryPage> savePage(_i8.DiaryPage? page) =>
       (super.noSuchMethod(
             Invocation.method(#savePage, [page]),
-            returnValue: _i11.Future<_i7.DiaryPage>.value(
-              _FakeDiaryPage_6(this, Invocation.method(#savePage, [page])),
+            returnValue: _i13.Future<_i8.DiaryPage>.value(
+              _FakeDiaryPage_7(this, Invocation.method(#savePage, [page])),
             ),
           )
-          as _i11.Future<_i7.DiaryPage>);
+          as _i13.Future<_i8.DiaryPage>);
 
   @override
-  _i11.Future<void> updatePage(_i7.DiaryPage? page) =>
+  _i13.Future<void> updatePage(_i8.DiaryPage? page) =>
       (super.noSuchMethod(
             Invocation.method(#updatePage, [page]),
-            returnValue: _i11.Future<void>.value(),
-            returnValueForMissingStub: _i11.Future<void>.value(),
+            returnValue: _i13.Future<void>.value(),
+            returnValueForMissingStub: _i13.Future<void>.value(),
           )
-          as _i11.Future<void>);
+          as _i13.Future<void>);
 
   @override
-  _i11.Future<void> deletePage(_i7.DiaryPage? page) =>
+  _i13.Future<void> deletePage(_i8.DiaryPage? page) =>
       (super.noSuchMethod(
             Invocation.method(#deletePage, [page]),
-            returnValue: _i11.Future<void>.value(),
-            returnValueForMissingStub: _i11.Future<void>.value(),
+            returnValue: _i13.Future<void>.value(),
+            returnValueForMissingStub: _i13.Future<void>.value(),
           )
-          as _i11.Future<void>);
+          as _i13.Future<void>);
 
   @override
-  _i11.Future<_i8.DiarySubPage> getSubPage(String? subPageId) =>
+  _i13.Future<_i9.DiarySubPage> getSubPage(String? subPageId) =>
       (super.noSuchMethod(
             Invocation.method(#getSubPage, [subPageId]),
-            returnValue: _i11.Future<_i8.DiarySubPage>.value(
-              _FakeDiarySubPage_7(
+            returnValue: _i13.Future<_i9.DiarySubPage>.value(
+              _FakeDiarySubPage_8(
                 this,
                 Invocation.method(#getSubPage, [subPageId]),
               ),
             ),
           )
-          as _i11.Future<_i8.DiarySubPage>);
+          as _i13.Future<_i9.DiarySubPage>);
 
   @override
-  _i11.Future<_i8.DiarySubPage> saveSubPage(_i8.DiarySubPage? subPage) =>
+  _i13.Future<_i9.DiarySubPage> saveSubPage(_i9.DiarySubPage? subPage) =>
       (super.noSuchMethod(
             Invocation.method(#saveSubPage, [subPage]),
-            returnValue: _i11.Future<_i8.DiarySubPage>.value(
-              _FakeDiarySubPage_7(
+            returnValue: _i13.Future<_i9.DiarySubPage>.value(
+              _FakeDiarySubPage_8(
                 this,
                 Invocation.method(#saveSubPage, [subPage]),
               ),
             ),
           )
-          as _i11.Future<_i8.DiarySubPage>);
+          as _i13.Future<_i9.DiarySubPage>);
 
   @override
-  _i11.Future<void> updateSubPage(_i8.DiarySubPage? subPage) =>
+  _i13.Future<void> updateSubPage(_i9.DiarySubPage? subPage) =>
       (super.noSuchMethod(
             Invocation.method(#updateSubPage, [subPage]),
-            returnValue: _i11.Future<void>.value(),
-            returnValueForMissingStub: _i11.Future<void>.value(),
+            returnValue: _i13.Future<void>.value(),
+            returnValueForMissingStub: _i13.Future<void>.value(),
           )
-          as _i11.Future<void>);
+          as _i13.Future<void>);
 
   @override
-  _i11.Future<void> deleteSubPage(_i8.DiarySubPage? subPage) =>
+  _i13.Future<void> deleteSubPage(_i9.DiarySubPage? subPage) =>
       (super.noSuchMethod(
             Invocation.method(#deleteSubPage, [subPage]),
-            returnValue: _i11.Future<void>.value(),
-            returnValueForMissingStub: _i11.Future<void>.value(),
+            returnValue: _i13.Future<void>.value(),
+            returnValueForMissingStub: _i13.Future<void>.value(),
           )
-          as _i11.Future<void>);
+          as _i13.Future<void>);
 
   @override
-  _i11.Future<_i9.DiaryImage> getDiaryImage(String? diaryImageId) =>
+  _i13.Future<_i10.DiaryImage> getDiaryImage(String? diaryImageId) =>
       (super.noSuchMethod(
             Invocation.method(#getDiaryImage, [diaryImageId]),
-            returnValue: _i11.Future<_i9.DiaryImage>.value(
-              _FakeDiaryImage_8(
+            returnValue: _i13.Future<_i10.DiaryImage>.value(
+              _FakeDiaryImage_9(
                 this,
                 Invocation.method(#getDiaryImage, [diaryImageId]),
               ),
             ),
           )
-          as _i11.Future<_i9.DiaryImage>);
+          as _i13.Future<_i10.DiaryImage>);
 
   @override
-  _i11.Future<void> deleteDiaryImage(_i9.DiaryImage? diaryImage) =>
+  _i13.Future<void> deleteDiaryImage(_i10.DiaryImage? diaryImage) =>
       (super.noSuchMethod(
             Invocation.method(#deleteDiaryImage, [diaryImage]),
-            returnValue: _i11.Future<void>.value(),
-            returnValueForMissingStub: _i11.Future<void>.value(),
+            returnValue: _i13.Future<void>.value(),
+            returnValueForMissingStub: _i13.Future<void>.value(),
           )
-          as _i11.Future<void>);
+          as _i13.Future<void>);
 
   @override
-  _i11.Future<List<_i6.DiaryCover>> getAllDiaryCovers() =>
+  _i13.Future<List<_i7.DiaryCover>> getAllDiaryCovers() =>
       (super.noSuchMethod(
             Invocation.method(#getAllDiaryCovers, []),
-            returnValue: _i11.Future<List<_i6.DiaryCover>>.value(
-              <_i6.DiaryCover>[],
+            returnValue: _i13.Future<List<_i7.DiaryCover>>.value(
+              <_i7.DiaryCover>[],
             ),
           )
-          as _i11.Future<List<_i6.DiaryCover>>);
+          as _i13.Future<List<_i7.DiaryCover>>);
 }
 
 /// A class which mocks [TimeCapsuleRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockTimeCapsuleRepository extends _i1.Mock
-    implements _i14.TimeCapsuleRepository {
+    implements _i17.TimeCapsuleRepository {
   MockTimeCapsuleRepository() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i11.Future<List<_i10.TimeCapsule>> getUserSentTimeCapsules(String? userId) =>
+  _i13.Future<List<_i11.TimeCapsule>> getUserSentTimeCapsules(String? userId) =>
       (super.noSuchMethod(
             Invocation.method(#getUserSentTimeCapsules, [userId]),
-            returnValue: _i11.Future<List<_i10.TimeCapsule>>.value(
-              <_i10.TimeCapsule>[],
+            returnValue: _i13.Future<List<_i11.TimeCapsule>>.value(
+              <_i11.TimeCapsule>[],
             ),
           )
-          as _i11.Future<List<_i10.TimeCapsule>>);
+          as _i13.Future<List<_i11.TimeCapsule>>);
 
   @override
-  _i11.Future<List<_i10.TimeCapsule>> getUserReceivedTimeCapsules(
+  _i13.Future<List<_i11.TimeCapsule>> getUserReceivedTimeCapsules(
     String? userId,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#getUserReceivedTimeCapsules, [userId]),
-            returnValue: _i11.Future<List<_i10.TimeCapsule>>.value(
-              <_i10.TimeCapsule>[],
+            returnValue: _i13.Future<List<_i11.TimeCapsule>>.value(
+              <_i11.TimeCapsule>[],
             ),
           )
-          as _i11.Future<List<_i10.TimeCapsule>>);
+          as _i13.Future<List<_i11.TimeCapsule>>);
 
   @override
-  _i11.Future<_i10.TimeCapsule> getTimeCapsule(String? timeCapsuleId) =>
+  _i13.Future<_i11.TimeCapsule> getTimeCapsule(String? timeCapsuleId) =>
       (super.noSuchMethod(
             Invocation.method(#getTimeCapsule, [timeCapsuleId]),
-            returnValue: _i11.Future<_i10.TimeCapsule>.value(
-              _FakeTimeCapsule_9(
+            returnValue: _i13.Future<_i11.TimeCapsule>.value(
+              _FakeTimeCapsule_10(
                 this,
                 Invocation.method(#getTimeCapsule, [timeCapsuleId]),
               ),
             ),
           )
-          as _i11.Future<_i10.TimeCapsule>);
+          as _i13.Future<_i11.TimeCapsule>);
 
   @override
-  _i11.Future<_i10.TimeCapsule> saveTimeCapsule(
-    _i10.TimeCapsule? timeCapsule,
+  _i13.Future<_i11.TimeCapsule> saveTimeCapsule(
+    _i11.TimeCapsule? timeCapsule,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#saveTimeCapsule, [timeCapsule]),
-            returnValue: _i11.Future<_i10.TimeCapsule>.value(
-              _FakeTimeCapsule_9(
+            returnValue: _i13.Future<_i11.TimeCapsule>.value(
+              _FakeTimeCapsule_10(
                 this,
                 Invocation.method(#saveTimeCapsule, [timeCapsule]),
               ),
             ),
           )
-          as _i11.Future<_i10.TimeCapsule>);
+          as _i13.Future<_i11.TimeCapsule>);
 
   @override
-  _i11.Future<void> deleteTimeCapsule(_i10.TimeCapsule? timeCapsule) =>
+  _i13.Future<void> deleteTimeCapsule(_i11.TimeCapsule? timeCapsule) =>
       (super.noSuchMethod(
             Invocation.method(#deleteTimeCapsule, [timeCapsule]),
-            returnValue: _i11.Future<void>.value(),
-            returnValueForMissingStub: _i11.Future<void>.value(),
+            returnValue: _i13.Future<void>.value(),
+            returnValueForMissingStub: _i13.Future<void>.value(),
           )
-          as _i11.Future<void>);
+          as _i13.Future<void>);
 }
 
 /// A class which mocks [User].
@@ -840,7 +935,7 @@ class MockUser extends _i1.Mock implements _i4.User {
   _i3.UserMetadata get metadata =>
       (super.noSuchMethod(
             Invocation.getter(#metadata),
-            returnValue: _FakeUserMetadata_10(
+            returnValue: _FakeUserMetadata_11(
               this,
               Invocation.getter(#metadata),
             ),
@@ -859,7 +954,7 @@ class MockUser extends _i1.Mock implements _i4.User {
   String get uid =>
       (super.noSuchMethod(
             Invocation.getter(#uid),
-            returnValue: _i12.dummyValue<String>(this, Invocation.getter(#uid)),
+            returnValue: _i14.dummyValue<String>(this, Invocation.getter(#uid)),
           )
           as String);
 
@@ -867,7 +962,7 @@ class MockUser extends _i1.Mock implements _i4.User {
   _i4.MultiFactor get multiFactor =>
       (super.noSuchMethod(
             Invocation.getter(#multiFactor),
-            returnValue: _FakeMultiFactor_11(
+            returnValue: _FakeMultiFactor_12(
               this,
               Invocation.getter(#multiFactor),
             ),
@@ -875,136 +970,136 @@ class MockUser extends _i1.Mock implements _i4.User {
           as _i4.MultiFactor);
 
   @override
-  _i11.Future<void> delete() =>
+  _i13.Future<void> delete() =>
       (super.noSuchMethod(
             Invocation.method(#delete, []),
-            returnValue: _i11.Future<void>.value(),
-            returnValueForMissingStub: _i11.Future<void>.value(),
+            returnValue: _i13.Future<void>.value(),
+            returnValueForMissingStub: _i13.Future<void>.value(),
           )
-          as _i11.Future<void>);
+          as _i13.Future<void>);
 
   @override
-  _i11.Future<String?> getIdToken([bool? forceRefresh = false]) =>
+  _i13.Future<String?> getIdToken([bool? forceRefresh = false]) =>
       (super.noSuchMethod(
             Invocation.method(#getIdToken, [forceRefresh]),
-            returnValue: _i11.Future<String?>.value(),
+            returnValue: _i13.Future<String?>.value(),
           )
-          as _i11.Future<String?>);
+          as _i13.Future<String?>);
 
   @override
-  _i11.Future<_i3.IdTokenResult> getIdTokenResult([
+  _i13.Future<_i3.IdTokenResult> getIdTokenResult([
     bool? forceRefresh = false,
   ]) =>
       (super.noSuchMethod(
             Invocation.method(#getIdTokenResult, [forceRefresh]),
-            returnValue: _i11.Future<_i3.IdTokenResult>.value(
-              _FakeIdTokenResult_12(
+            returnValue: _i13.Future<_i3.IdTokenResult>.value(
+              _FakeIdTokenResult_13(
                 this,
                 Invocation.method(#getIdTokenResult, [forceRefresh]),
               ),
             ),
           )
-          as _i11.Future<_i3.IdTokenResult>);
+          as _i13.Future<_i3.IdTokenResult>);
 
   @override
-  _i11.Future<_i4.UserCredential> linkWithCredential(
+  _i13.Future<_i4.UserCredential> linkWithCredential(
     _i3.AuthCredential? credential,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#linkWithCredential, [credential]),
-            returnValue: _i11.Future<_i4.UserCredential>.value(
+            returnValue: _i13.Future<_i4.UserCredential>.value(
               _FakeUserCredential_2(
                 this,
                 Invocation.method(#linkWithCredential, [credential]),
               ),
             ),
           )
-          as _i11.Future<_i4.UserCredential>);
+          as _i13.Future<_i4.UserCredential>);
 
   @override
-  _i11.Future<_i4.UserCredential> linkWithProvider(
+  _i13.Future<_i4.UserCredential> linkWithProvider(
     _i3.AuthProvider? provider,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#linkWithProvider, [provider]),
-            returnValue: _i11.Future<_i4.UserCredential>.value(
+            returnValue: _i13.Future<_i4.UserCredential>.value(
               _FakeUserCredential_2(
                 this,
                 Invocation.method(#linkWithProvider, [provider]),
               ),
             ),
           )
-          as _i11.Future<_i4.UserCredential>);
+          as _i13.Future<_i4.UserCredential>);
 
   @override
-  _i11.Future<_i4.UserCredential> reauthenticateWithProvider(
+  _i13.Future<_i4.UserCredential> reauthenticateWithProvider(
     _i3.AuthProvider? provider,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#reauthenticateWithProvider, [provider]),
-            returnValue: _i11.Future<_i4.UserCredential>.value(
+            returnValue: _i13.Future<_i4.UserCredential>.value(
               _FakeUserCredential_2(
                 this,
                 Invocation.method(#reauthenticateWithProvider, [provider]),
               ),
             ),
           )
-          as _i11.Future<_i4.UserCredential>);
+          as _i13.Future<_i4.UserCredential>);
 
   @override
-  _i11.Future<_i4.UserCredential> reauthenticateWithPopup(
+  _i13.Future<_i4.UserCredential> reauthenticateWithPopup(
     _i3.AuthProvider? provider,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#reauthenticateWithPopup, [provider]),
-            returnValue: _i11.Future<_i4.UserCredential>.value(
+            returnValue: _i13.Future<_i4.UserCredential>.value(
               _FakeUserCredential_2(
                 this,
                 Invocation.method(#reauthenticateWithPopup, [provider]),
               ),
             ),
           )
-          as _i11.Future<_i4.UserCredential>);
+          as _i13.Future<_i4.UserCredential>);
 
   @override
-  _i11.Future<void> reauthenticateWithRedirect(_i3.AuthProvider? provider) =>
+  _i13.Future<void> reauthenticateWithRedirect(_i3.AuthProvider? provider) =>
       (super.noSuchMethod(
             Invocation.method(#reauthenticateWithRedirect, [provider]),
-            returnValue: _i11.Future<void>.value(),
-            returnValueForMissingStub: _i11.Future<void>.value(),
+            returnValue: _i13.Future<void>.value(),
+            returnValueForMissingStub: _i13.Future<void>.value(),
           )
-          as _i11.Future<void>);
+          as _i13.Future<void>);
 
   @override
-  _i11.Future<_i4.UserCredential> linkWithPopup(_i3.AuthProvider? provider) =>
+  _i13.Future<_i4.UserCredential> linkWithPopup(_i3.AuthProvider? provider) =>
       (super.noSuchMethod(
             Invocation.method(#linkWithPopup, [provider]),
-            returnValue: _i11.Future<_i4.UserCredential>.value(
+            returnValue: _i13.Future<_i4.UserCredential>.value(
               _FakeUserCredential_2(
                 this,
                 Invocation.method(#linkWithPopup, [provider]),
               ),
             ),
           )
-          as _i11.Future<_i4.UserCredential>);
+          as _i13.Future<_i4.UserCredential>);
 
   @override
-  _i11.Future<void> linkWithRedirect(_i3.AuthProvider? provider) =>
+  _i13.Future<void> linkWithRedirect(_i3.AuthProvider? provider) =>
       (super.noSuchMethod(
             Invocation.method(#linkWithRedirect, [provider]),
-            returnValue: _i11.Future<void>.value(),
-            returnValueForMissingStub: _i11.Future<void>.value(),
+            returnValue: _i13.Future<void>.value(),
+            returnValueForMissingStub: _i13.Future<void>.value(),
           )
-          as _i11.Future<void>);
+          as _i13.Future<void>);
 
   @override
-  _i11.Future<_i4.ConfirmationResult> linkWithPhoneNumber(
+  _i13.Future<_i4.ConfirmationResult> linkWithPhoneNumber(
     String? phoneNumber, [
     _i4.RecaptchaVerifier? verifier,
   ]) =>
       (super.noSuchMethod(
             Invocation.method(#linkWithPhoneNumber, [phoneNumber, verifier]),
-            returnValue: _i11.Future<_i4.ConfirmationResult>.value(
+            returnValue: _i13.Future<_i4.ConfirmationResult>.value(
               _FakeConfirmationResult_3(
                 this,
                 Invocation.method(#linkWithPhoneNumber, [
@@ -1014,114 +1109,114 @@ class MockUser extends _i1.Mock implements _i4.User {
               ),
             ),
           )
-          as _i11.Future<_i4.ConfirmationResult>);
+          as _i13.Future<_i4.ConfirmationResult>);
 
   @override
-  _i11.Future<_i4.UserCredential> reauthenticateWithCredential(
+  _i13.Future<_i4.UserCredential> reauthenticateWithCredential(
     _i3.AuthCredential? credential,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#reauthenticateWithCredential, [credential]),
-            returnValue: _i11.Future<_i4.UserCredential>.value(
+            returnValue: _i13.Future<_i4.UserCredential>.value(
               _FakeUserCredential_2(
                 this,
                 Invocation.method(#reauthenticateWithCredential, [credential]),
               ),
             ),
           )
-          as _i11.Future<_i4.UserCredential>);
+          as _i13.Future<_i4.UserCredential>);
 
   @override
-  _i11.Future<void> reload() =>
+  _i13.Future<void> reload() =>
       (super.noSuchMethod(
             Invocation.method(#reload, []),
-            returnValue: _i11.Future<void>.value(),
-            returnValueForMissingStub: _i11.Future<void>.value(),
+            returnValue: _i13.Future<void>.value(),
+            returnValueForMissingStub: _i13.Future<void>.value(),
           )
-          as _i11.Future<void>);
+          as _i13.Future<void>);
 
   @override
-  _i11.Future<void> sendEmailVerification([
+  _i13.Future<void> sendEmailVerification([
     _i3.ActionCodeSettings? actionCodeSettings,
   ]) =>
       (super.noSuchMethod(
             Invocation.method(#sendEmailVerification, [actionCodeSettings]),
-            returnValue: _i11.Future<void>.value(),
-            returnValueForMissingStub: _i11.Future<void>.value(),
+            returnValue: _i13.Future<void>.value(),
+            returnValueForMissingStub: _i13.Future<void>.value(),
           )
-          as _i11.Future<void>);
+          as _i13.Future<void>);
 
   @override
-  _i11.Future<_i4.User> unlink(String? providerId) =>
+  _i13.Future<_i4.User> unlink(String? providerId) =>
       (super.noSuchMethod(
             Invocation.method(#unlink, [providerId]),
-            returnValue: _i11.Future<_i4.User>.value(
-              _FakeUser_13(this, Invocation.method(#unlink, [providerId])),
+            returnValue: _i13.Future<_i4.User>.value(
+              _FakeUser_14(this, Invocation.method(#unlink, [providerId])),
             ),
           )
-          as _i11.Future<_i4.User>);
+          as _i13.Future<_i4.User>);
 
   @override
-  _i11.Future<void> updateEmail(String? newEmail) =>
+  _i13.Future<void> updateEmail(String? newEmail) =>
       (super.noSuchMethod(
             Invocation.method(#updateEmail, [newEmail]),
-            returnValue: _i11.Future<void>.value(),
-            returnValueForMissingStub: _i11.Future<void>.value(),
+            returnValue: _i13.Future<void>.value(),
+            returnValueForMissingStub: _i13.Future<void>.value(),
           )
-          as _i11.Future<void>);
+          as _i13.Future<void>);
 
   @override
-  _i11.Future<void> updatePassword(String? newPassword) =>
+  _i13.Future<void> updatePassword(String? newPassword) =>
       (super.noSuchMethod(
             Invocation.method(#updatePassword, [newPassword]),
-            returnValue: _i11.Future<void>.value(),
-            returnValueForMissingStub: _i11.Future<void>.value(),
+            returnValue: _i13.Future<void>.value(),
+            returnValueForMissingStub: _i13.Future<void>.value(),
           )
-          as _i11.Future<void>);
+          as _i13.Future<void>);
 
   @override
-  _i11.Future<void> updatePhoneNumber(
+  _i13.Future<void> updatePhoneNumber(
     _i3.PhoneAuthCredential? phoneCredential,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#updatePhoneNumber, [phoneCredential]),
-            returnValue: _i11.Future<void>.value(),
-            returnValueForMissingStub: _i11.Future<void>.value(),
+            returnValue: _i13.Future<void>.value(),
+            returnValueForMissingStub: _i13.Future<void>.value(),
           )
-          as _i11.Future<void>);
+          as _i13.Future<void>);
 
   @override
-  _i11.Future<void> updateDisplayName(String? displayName) =>
+  _i13.Future<void> updateDisplayName(String? displayName) =>
       (super.noSuchMethod(
             Invocation.method(#updateDisplayName, [displayName]),
-            returnValue: _i11.Future<void>.value(),
-            returnValueForMissingStub: _i11.Future<void>.value(),
+            returnValue: _i13.Future<void>.value(),
+            returnValueForMissingStub: _i13.Future<void>.value(),
           )
-          as _i11.Future<void>);
+          as _i13.Future<void>);
 
   @override
-  _i11.Future<void> updatePhotoURL(String? photoURL) =>
+  _i13.Future<void> updatePhotoURL(String? photoURL) =>
       (super.noSuchMethod(
             Invocation.method(#updatePhotoURL, [photoURL]),
-            returnValue: _i11.Future<void>.value(),
-            returnValueForMissingStub: _i11.Future<void>.value(),
+            returnValue: _i13.Future<void>.value(),
+            returnValueForMissingStub: _i13.Future<void>.value(),
           )
-          as _i11.Future<void>);
+          as _i13.Future<void>);
 
   @override
-  _i11.Future<void> updateProfile({String? displayName, String? photoURL}) =>
+  _i13.Future<void> updateProfile({String? displayName, String? photoURL}) =>
       (super.noSuchMethod(
             Invocation.method(#updateProfile, [], {
               #displayName: displayName,
               #photoURL: photoURL,
             }),
-            returnValue: _i11.Future<void>.value(),
-            returnValueForMissingStub: _i11.Future<void>.value(),
+            returnValue: _i13.Future<void>.value(),
+            returnValueForMissingStub: _i13.Future<void>.value(),
           )
-          as _i11.Future<void>);
+          as _i13.Future<void>);
 
   @override
-  _i11.Future<void> verifyBeforeUpdateEmail(
+  _i13.Future<void> verifyBeforeUpdateEmail(
     String? newEmail, [
     _i3.ActionCodeSettings? actionCodeSettings,
   ]) =>
@@ -1130,16 +1225,16 @@ class MockUser extends _i1.Mock implements _i4.User {
               newEmail,
               actionCodeSettings,
             ]),
-            returnValue: _i11.Future<void>.value(),
-            returnValueForMissingStub: _i11.Future<void>.value(),
+            returnValue: _i13.Future<void>.value(),
+            returnValueForMissingStub: _i13.Future<void>.value(),
           )
-          as _i11.Future<void>);
+          as _i13.Future<void>);
 }
 
 /// A class which mocks [AppLocalizations].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
+class MockAppLocalizations extends _i1.Mock implements _i18.AppLocalizations {
   MockAppLocalizations() {
     _i1.throwOnMissingStub(this);
   }
@@ -1148,7 +1243,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get localeName =>
       (super.noSuchMethod(
             Invocation.getter(#localeName),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#localeName),
             ),
@@ -1159,7 +1254,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get appName =>
       (super.noSuchMethod(
             Invocation.getter(#appName),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#appName),
             ),
@@ -1170,7 +1265,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get allDiaries =>
       (super.noSuchMethod(
             Invocation.getter(#allDiaries),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#allDiaries),
             ),
@@ -1181,7 +1276,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get diary =>
       (super.noSuchMethod(
             Invocation.getter(#diary),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#diary),
             ),
@@ -1192,7 +1287,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get timeCapsule =>
       (super.noSuchMethod(
             Invocation.getter(#timeCapsule),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#timeCapsule),
             ),
@@ -1203,7 +1298,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get navigationDrawer =>
       (super.noSuchMethod(
             Invocation.getter(#navigationDrawer),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#navigationDrawer),
             ),
@@ -1214,7 +1309,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get account =>
       (super.noSuchMethod(
             Invocation.getter(#account),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#account),
             ),
@@ -1225,7 +1320,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get email =>
       (super.noSuchMethod(
             Invocation.getter(#email),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#email),
             ),
@@ -1236,7 +1331,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get username =>
       (super.noSuchMethod(
             Invocation.getter(#username),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#username),
             ),
@@ -1247,7 +1342,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get password =>
       (super.noSuchMethod(
             Invocation.getter(#password),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#password),
             ),
@@ -1258,7 +1353,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get confirmPassword =>
       (super.noSuchMethod(
             Invocation.getter(#confirmPassword),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#confirmPassword),
             ),
@@ -1269,7 +1364,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get login =>
       (super.noSuchMethod(
             Invocation.getter(#login),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#login),
             ),
@@ -1280,7 +1375,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get logout =>
       (super.noSuchMethod(
             Invocation.getter(#logout),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#logout),
             ),
@@ -1291,7 +1386,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get signup =>
       (super.noSuchMethod(
             Invocation.getter(#signup),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#signup),
             ),
@@ -1302,7 +1397,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get title =>
       (super.noSuchMethod(
             Invocation.getter(#title),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#title),
             ),
@@ -1313,7 +1408,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get description =>
       (super.noSuchMethod(
             Invocation.getter(#description),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#description),
             ),
@@ -1324,7 +1419,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get page =>
       (super.noSuchMethod(
             Invocation.getter(#page),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#page),
             ),
@@ -1335,7 +1430,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get subPage =>
       (super.noSuchMethod(
             Invocation.getter(#subPage),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#subPage),
             ),
@@ -1346,7 +1441,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get day =>
       (super.noSuchMethod(
             Invocation.getter(#day),
-            returnValue: _i12.dummyValue<String>(this, Invocation.getter(#day)),
+            returnValue: _i14.dummyValue<String>(this, Invocation.getter(#day)),
           )
           as String);
 
@@ -1354,7 +1449,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get delete =>
       (super.noSuchMethod(
             Invocation.getter(#delete),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#delete),
             ),
@@ -1365,7 +1460,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get cancel =>
       (super.noSuchMethod(
             Invocation.getter(#cancel),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#cancel),
             ),
@@ -1376,7 +1471,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get moveUp =>
       (super.noSuchMethod(
             Invocation.getter(#moveUp),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#moveUp),
             ),
@@ -1387,7 +1482,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get moveDown =>
       (super.noSuchMethod(
             Invocation.getter(#moveDown),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#moveDown),
             ),
@@ -1398,7 +1493,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get newDiary =>
       (super.noSuchMethod(
             Invocation.getter(#newDiary),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#newDiary),
             ),
@@ -1409,7 +1504,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get create =>
       (super.noSuchMethod(
             Invocation.getter(#create),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#create),
             ),
@@ -1420,7 +1515,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get save =>
       (super.noSuchMethod(
             Invocation.getter(#save),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#save),
             ),
@@ -1431,7 +1526,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get createDiaryMessage =>
       (super.noSuchMethod(
             Invocation.getter(#createDiaryMessage),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#createDiaryMessage),
             ),
@@ -1442,7 +1537,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get editDiaryPageMessage =>
       (super.noSuchMethod(
             Invocation.getter(#editDiaryPageMessage),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#editDiaryPageMessage),
             ),
@@ -1453,7 +1548,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get createDiary =>
       (super.noSuchMethod(
             Invocation.getter(#createDiary),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#createDiary),
             ),
@@ -1464,7 +1559,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get editDiaryMessage =>
       (super.noSuchMethod(
             Invocation.getter(#editDiaryMessage),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#editDiaryMessage),
             ),
@@ -1475,7 +1570,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get createTimeCapsuleMessage =>
       (super.noSuchMethod(
             Invocation.getter(#createTimeCapsuleMessage),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#createTimeCapsuleMessage),
             ),
@@ -1486,7 +1581,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get content =>
       (super.noSuchMethod(
             Invocation.getter(#content),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#content),
             ),
@@ -1497,7 +1592,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get yourProfile =>
       (super.noSuchMethod(
             Invocation.getter(#yourProfile),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#yourProfile),
             ),
@@ -1508,7 +1603,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get name =>
       (super.noSuchMethod(
             Invocation.getter(#name),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#name),
             ),
@@ -1519,7 +1614,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get surname =>
       (super.noSuchMethod(
             Invocation.getter(#surname),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#surname),
             ),
@@ -1530,7 +1625,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get editProfile =>
       (super.noSuchMethod(
             Invocation.getter(#editProfile),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#editProfile),
             ),
@@ -1541,7 +1636,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get emailMandatory =>
       (super.noSuchMethod(
             Invocation.getter(#emailMandatory),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#emailMandatory),
             ),
@@ -1552,7 +1647,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get usernameMandatory =>
       (super.noSuchMethod(
             Invocation.getter(#usernameMandatory),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#usernameMandatory),
             ),
@@ -1563,7 +1658,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get nameMandatory =>
       (super.noSuchMethod(
             Invocation.getter(#nameMandatory),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#nameMandatory),
             ),
@@ -1574,7 +1669,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get surnameMandatory =>
       (super.noSuchMethod(
             Invocation.getter(#surnameMandatory),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#surnameMandatory),
             ),
@@ -1585,7 +1680,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get titleMandatory =>
       (super.noSuchMethod(
             Invocation.getter(#titleMandatory),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#titleMandatory),
             ),
@@ -1596,7 +1691,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get descriptionMandatory =>
       (super.noSuchMethod(
             Invocation.getter(#descriptionMandatory),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#descriptionMandatory),
             ),
@@ -1607,7 +1702,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get contentMandatory =>
       (super.noSuchMethod(
             Invocation.getter(#contentMandatory),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#contentMandatory),
             ),
@@ -1618,7 +1713,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get passwordMandatory =>
       (super.noSuchMethod(
             Invocation.getter(#passwordMandatory),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#passwordMandatory),
             ),
@@ -1629,7 +1724,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get passwordsDontMatch =>
       (super.noSuchMethod(
             Invocation.getter(#passwordsDontMatch),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#passwordsDontMatch),
             ),
@@ -1640,7 +1735,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get passwordLength =>
       (super.noSuchMethod(
             Invocation.getter(#passwordLength),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#passwordLength),
             ),
@@ -1651,7 +1746,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get usernameLength =>
       (super.noSuchMethod(
             Invocation.getter(#usernameLength),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#usernameLength),
             ),
@@ -1662,7 +1757,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get sendResetPasswordEmail =>
       (super.noSuchMethod(
             Invocation.getter(#sendResetPasswordEmail),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#sendResetPasswordEmail),
             ),
@@ -1673,7 +1768,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get goBackToLogin =>
       (super.noSuchMethod(
             Invocation.getter(#goBackToLogin),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#goBackToLogin),
             ),
@@ -1684,7 +1779,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get resetPassword =>
       (super.noSuchMethod(
             Invocation.getter(#resetPassword),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#resetPassword),
             ),
@@ -1695,7 +1790,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get resetPasswordEmailSent =>
       (super.noSuchMethod(
             Invocation.getter(#resetPasswordEmailSent),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#resetPasswordEmailSent),
             ),
@@ -1706,7 +1801,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get resetPasswordEmailError =>
       (super.noSuchMethod(
             Invocation.getter(#resetPasswordEmailError),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#resetPasswordEmailError),
             ),
@@ -1717,7 +1812,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get goToSignup =>
       (super.noSuchMethod(
             Invocation.getter(#goToSignup),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#goToSignup),
             ),
@@ -1728,7 +1823,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get forgotPassword =>
       (super.noSuchMethod(
             Invocation.getter(#forgotPassword),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#forgotPassword),
             ),
@@ -1739,7 +1834,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get alreadyHaveAccount =>
       (super.noSuchMethod(
             Invocation.getter(#alreadyHaveAccount),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#alreadyHaveAccount),
             ),
@@ -1750,7 +1845,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get signupSuccessful =>
       (super.noSuchMethod(
             Invocation.getter(#signupSuccessful),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#signupSuccessful),
             ),
@@ -1761,7 +1856,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get signupError =>
       (super.noSuchMethod(
             Invocation.getter(#signupError),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#signupError),
             ),
@@ -1772,7 +1867,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get loginError =>
       (super.noSuchMethod(
             Invocation.getter(#loginError),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#loginError),
             ),
@@ -1783,7 +1878,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get noDateSelected =>
       (super.noSuchMethod(
             Invocation.getter(#noDateSelected),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#noDateSelected),
             ),
@@ -1794,7 +1889,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get date =>
       (super.noSuchMethod(
             Invocation.getter(#date),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#date),
             ),
@@ -1805,7 +1900,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get selectDate =>
       (super.noSuchMethod(
             Invocation.getter(#selectDate),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#selectDate),
             ),
@@ -1816,7 +1911,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get error =>
       (super.noSuchMethod(
             Invocation.getter(#error),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#error),
             ),
@@ -1827,7 +1922,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get usernameAlreadyTaken =>
       (super.noSuchMethod(
             Invocation.getter(#usernameAlreadyTaken),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#usernameAlreadyTaken),
             ),
@@ -1838,7 +1933,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get emailAlreadyTaken =>
       (super.noSuchMethod(
             Invocation.getter(#emailAlreadyTaken),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#emailAlreadyTaken),
             ),
@@ -1849,7 +1944,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get selectADate =>
       (super.noSuchMethod(
             Invocation.getter(#selectADate),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#selectADate),
             ),
@@ -1860,7 +1955,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get emailNotValid =>
       (super.noSuchMethod(
             Invocation.getter(#emailNotValid),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#emailNotValid),
             ),
@@ -1871,7 +1966,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get saveChanges =>
       (super.noSuchMethod(
             Invocation.getter(#saveChanges),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#saveChanges),
             ),
@@ -1882,7 +1977,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get updateError =>
       (super.noSuchMethod(
             Invocation.getter(#updateError),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#updateError),
             ),
@@ -1893,7 +1988,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get confirmDiaryDeletion =>
       (super.noSuchMethod(
             Invocation.getter(#confirmDiaryDeletion),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#confirmDiaryDeletion),
             ),
@@ -1904,7 +1999,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get deleteDiary =>
       (super.noSuchMethod(
             Invocation.getter(#deleteDiary),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#deleteDiary),
             ),
@@ -1915,7 +2010,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get confirmPageDeletion =>
       (super.noSuchMethod(
             Invocation.getter(#confirmPageDeletion),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#confirmPageDeletion),
             ),
@@ -1926,7 +2021,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get deletePage =>
       (super.noSuchMethod(
             Invocation.getter(#deletePage),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#deletePage),
             ),
@@ -1937,7 +2032,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get movePrevSubpage =>
       (super.noSuchMethod(
             Invocation.getter(#movePrevSubpage),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#movePrevSubpage),
             ),
@@ -1948,7 +2043,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get moveNextSubpage =>
       (super.noSuchMethod(
             Invocation.getter(#moveNextSubpage),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#moveNextSubpage),
             ),
@@ -1959,7 +2054,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get receiverMandatory =>
       (super.noSuchMethod(
             Invocation.getter(#receiverMandatory),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#receiverMandatory),
             ),
@@ -1970,7 +2065,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get deadlineMandatory =>
       (super.noSuchMethod(
             Invocation.getter(#deadlineMandatory),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#deadlineMandatory),
             ),
@@ -1981,7 +2076,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get missingPhonePrefix =>
       (super.noSuchMethod(
             Invocation.getter(#missingPhonePrefix),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#missingPhonePrefix),
             ),
@@ -1992,7 +2087,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get phoneNumberNotValid =>
       (super.noSuchMethod(
             Invocation.getter(#phoneNumberNotValid),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#phoneNumberNotValid),
             ),
@@ -2003,7 +2098,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get phoneNumber =>
       (super.noSuchMethod(
             Invocation.getter(#phoneNumber),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#phoneNumber),
             ),
@@ -2014,7 +2109,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get phoneNumberAlreadySelected =>
       (super.noSuchMethod(
             Invocation.getter(#phoneNumberAlreadySelected),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#phoneNumberAlreadySelected),
             ),
@@ -2025,7 +2120,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get emailAlreadySelected =>
       (super.noSuchMethod(
             Invocation.getter(#emailAlreadySelected),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#emailAlreadySelected),
             ),
@@ -2036,7 +2131,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get editDiary =>
       (super.noSuchMethod(
             Invocation.getter(#editDiary),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#editDiary),
             ),
@@ -2047,7 +2142,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get selectImage =>
       (super.noSuchMethod(
             Invocation.getter(#selectImage),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#selectImage),
             ),
@@ -2058,7 +2153,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get arrivalDate =>
       (super.noSuchMethod(
             Invocation.getter(#arrivalDate),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#arrivalDate),
             ),
@@ -2069,7 +2164,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get creationDate =>
       (super.noSuchMethod(
             Invocation.getter(#creationDate),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#creationDate),
             ),
@@ -2080,7 +2175,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get receiver =>
       (super.noSuchMethod(
             Invocation.getter(#receiver),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#receiver),
             ),
@@ -2091,7 +2186,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get receivers =>
       (super.noSuchMethod(
             Invocation.getter(#receivers),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#receivers),
             ),
@@ -2102,7 +2197,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get sender =>
       (super.noSuchMethod(
             Invocation.getter(#sender),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#sender),
             ),
@@ -2113,7 +2208,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get contentNotAvailable =>
       (super.noSuchMethod(
             Invocation.getter(#contentNotAvailable),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#contentNotAvailable),
             ),
@@ -2124,7 +2219,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get letterContent =>
       (super.noSuchMethod(
             Invocation.getter(#letterContent),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#letterContent),
             ),
@@ -2135,7 +2230,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get profile =>
       (super.noSuchMethod(
             Invocation.getter(#profile),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#profile),
             ),
@@ -2146,7 +2241,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get pageNumber =>
       (super.noSuchMethod(
             Invocation.getter(#pageNumber),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#pageNumber),
             ),
@@ -2157,7 +2252,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get createTimeCapsule =>
       (super.noSuchMethod(
             Invocation.getter(#createTimeCapsule),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#createTimeCapsule),
             ),
@@ -2168,7 +2263,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get letterForTheFuture =>
       (super.noSuchMethod(
             Invocation.getter(#letterForTheFuture),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#letterForTheFuture),
             ),
@@ -2179,7 +2274,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get letterForTheFutureDescription =>
       (super.noSuchMethod(
             Invocation.getter(#letterForTheFutureDescription),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#letterForTheFutureDescription),
             ),
@@ -2190,7 +2285,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get createdOn =>
       (super.noSuchMethod(
             Invocation.getter(#createdOn),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#createdOn),
             ),
@@ -2201,7 +2296,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get arrivingOn =>
       (super.noSuchMethod(
             Invocation.getter(#arrivingOn),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#arrivingOn),
             ),
@@ -2212,7 +2307,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get arrivedOn =>
       (super.noSuchMethod(
             Invocation.getter(#arrivedOn),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#arrivedOn),
             ),
@@ -2223,7 +2318,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get editDiaryPage =>
       (super.noSuchMethod(
             Invocation.getter(#editDiaryPage),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#editDiaryPage),
             ),
@@ -2234,7 +2329,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get add =>
       (super.noSuchMethod(
             Invocation.getter(#add),
-            returnValue: _i12.dummyValue<String>(this, Invocation.getter(#add)),
+            returnValue: _i14.dummyValue<String>(this, Invocation.getter(#add)),
           )
           as String);
 
@@ -2242,7 +2337,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get enterPhoneNumber =>
       (super.noSuchMethod(
             Invocation.getter(#enterPhoneNumber),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#enterPhoneNumber),
             ),
@@ -2253,7 +2348,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get enterEmail =>
       (super.noSuchMethod(
             Invocation.getter(#enterEmail),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#enterEmail),
             ),
@@ -2264,7 +2359,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get errorMessage =>
       (super.noSuchMethod(
             Invocation.getter(#errorMessage),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#errorMessage),
             ),
@@ -2275,7 +2370,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get settings =>
       (super.noSuchMethod(
             Invocation.getter(#settings),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#settings),
             ),
@@ -2286,7 +2381,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get help =>
       (super.noSuchMethod(
             Invocation.getter(#help),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#help),
             ),
@@ -2297,7 +2392,7 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get reverie =>
       (super.noSuchMethod(
             Invocation.getter(#reverie),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#reverie),
             ),
@@ -2308,10 +2403,241 @@ class MockAppLocalizations extends _i1.Mock implements _i15.AppLocalizations {
   String get userNotSignedIn =>
       (super.noSuchMethod(
             Invocation.getter(#userNotSignedIn),
-            returnValue: _i12.dummyValue<String>(
+            returnValue: _i14.dummyValue<String>(
               this,
               Invocation.getter(#userNotSignedIn),
             ),
           )
           as String);
+}
+
+/// A class which mocks [CreateTimeCapsuleNotifier].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockCreateTimeCapsuleNotifier extends _i1.Mock
+    implements _i12.CreateTimeCapsuleNotifier {
+  MockCreateTimeCapsuleNotifier() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  bool get mounted =>
+      (super.noSuchMethod(Invocation.getter(#mounted), returnValue: false)
+          as bool);
+
+  @override
+  _i13.Stream<_i12.CreateTimeCapsuleState> get stream =>
+      (super.noSuchMethod(
+            Invocation.getter(#stream),
+            returnValue: _i13.Stream<_i12.CreateTimeCapsuleState>.empty(),
+          )
+          as _i13.Stream<_i12.CreateTimeCapsuleState>);
+
+  @override
+  _i12.CreateTimeCapsuleState get state =>
+      (super.noSuchMethod(
+            Invocation.getter(#state),
+            returnValue: _FakeCreateTimeCapsuleState_15(
+              this,
+              Invocation.getter(#state),
+            ),
+          )
+          as _i12.CreateTimeCapsuleState);
+
+  @override
+  _i12.CreateTimeCapsuleState get debugState =>
+      (super.noSuchMethod(
+            Invocation.getter(#debugState),
+            returnValue: _FakeCreateTimeCapsuleState_15(
+              this,
+              Invocation.getter(#debugState),
+            ),
+          )
+          as _i12.CreateTimeCapsuleState);
+
+  @override
+  bool get hasListeners =>
+      (super.noSuchMethod(Invocation.getter(#hasListeners), returnValue: false)
+          as bool);
+
+  @override
+  set onError(_i19.ErrorListener? _onError) => super.noSuchMethod(
+    Invocation.setter(#onError, _onError),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  set state(_i12.CreateTimeCapsuleState? value) => super.noSuchMethod(
+    Invocation.setter(#state, value),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  String validateTitle(String? title) =>
+      (super.noSuchMethod(
+            Invocation.method(#validateTitle, [title]),
+            returnValue: _i14.dummyValue<String>(
+              this,
+              Invocation.method(#validateTitle, [title]),
+            ),
+          )
+          as String);
+
+  @override
+  String validateContent(String? content) =>
+      (super.noSuchMethod(
+            Invocation.method(#validateContent, [content]),
+            returnValue: _i14.dummyValue<String>(
+              this,
+              Invocation.method(#validateContent, [content]),
+            ),
+          )
+          as String);
+
+  @override
+  String validateDeadline(_i20.Timestamp? deadline) =>
+      (super.noSuchMethod(
+            Invocation.method(#validateDeadline, [deadline]),
+            returnValue: _i14.dummyValue<String>(
+              this,
+              Invocation.method(#validateDeadline, [deadline]),
+            ),
+          )
+          as String);
+
+  @override
+  String validatePhoneNumber(String? phoneNumber) =>
+      (super.noSuchMethod(
+            Invocation.method(#validatePhoneNumber, [phoneNumber]),
+            returnValue: _i14.dummyValue<String>(
+              this,
+              Invocation.method(#validatePhoneNumber, [phoneNumber]),
+            ),
+          )
+          as String);
+
+  @override
+  String validateEmail(String? email) =>
+      (super.noSuchMethod(
+            Invocation.method(#validateEmail, [email]),
+            returnValue: _i14.dummyValue<String>(
+              this,
+              Invocation.method(#validateEmail, [email]),
+            ),
+          )
+          as String);
+
+  @override
+  void updateTitle(String? newTitle) => super.noSuchMethod(
+    Invocation.method(#updateTitle, [newTitle]),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void updateContent(String? newContent) => super.noSuchMethod(
+    Invocation.method(#updateContent, [newContent]),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void updateDeadline(_i20.Timestamp? newDeadline) => super.noSuchMethod(
+    Invocation.method(#updateDeadline, [newDeadline]),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void updatePhoneNumber(String? newPhoneNumber) => super.noSuchMethod(
+    Invocation.method(#updatePhoneNumber, [newPhoneNumber]),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void updateEmail(String? newEmail) => super.noSuchMethod(
+    Invocation.method(#updateEmail, [newEmail]),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void addUser(_i5.User? user) => super.noSuchMethod(
+    Invocation.method(#addUser, [user]),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void removeUser(_i5.User? user) => super.noSuchMethod(
+    Invocation.method(#removeUser, [user]),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void addPhoneNumber() => super.noSuchMethod(
+    Invocation.method(#addPhoneNumber, []),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void removePhoneNumber(String? phoneNumber) => super.noSuchMethod(
+    Invocation.method(#removePhoneNumber, [phoneNumber]),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void addEmail() => super.noSuchMethod(
+    Invocation.method(#addEmail, []),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void removeEmail(String? email) => super.noSuchMethod(
+    Invocation.method(#removeEmail, [email]),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  _i13.Future<void> updatePartialUsername(String? partialUsername) =>
+      (super.noSuchMethod(
+            Invocation.method(#updatePartialUsername, [partialUsername]),
+            returnValue: _i13.Future<void>.value(),
+            returnValueForMissingStub: _i13.Future<void>.value(),
+          )
+          as _i13.Future<void>);
+
+  @override
+  void createTimeCapsule(void Function(_i11.TimeCapsule)? onComplete) =>
+      super.noSuchMethod(
+        Invocation.method(#createTimeCapsule, [onComplete]),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  bool updateShouldNotify(
+    _i12.CreateTimeCapsuleState? old,
+    _i12.CreateTimeCapsuleState? current,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#updateShouldNotify, [old, current]),
+            returnValue: false,
+          )
+          as bool);
+
+  @override
+  _i19.RemoveListener addListener(
+    _i21.Listener<_i12.CreateTimeCapsuleState>? listener, {
+    bool? fireImmediately = true,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(
+              #addListener,
+              [listener],
+              {#fireImmediately: fireImmediately},
+            ),
+            returnValue: () {},
+          )
+          as _i19.RemoveListener);
+
+  @override
+  void dispose() => super.noSuchMethod(
+    Invocation.method(#dispose, []),
+    returnValueForMissingStub: null,
+  );
 }

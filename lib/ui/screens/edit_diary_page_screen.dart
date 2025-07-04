@@ -33,26 +33,30 @@ class EditDiaryPageScreen extends ConsumerWidget {
 
         return SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.only(top: 20),
+            padding: const EdgeInsets.symmetric(vertical: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: Text(localizations.editDiaryPageMessage, style: Theme.of(context).textTheme.bodyLarge,
+                Text(
+                  localizations.editDiaryPageMessage,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
                   ),
                 ),
-                ContentTextField(
-                  value: page.content,
-                  onNewValue: notifier.onUpdateContent,
-                  label: localizations.content,
+                Padding(
+                  padding: EdgeInsetsGeometry.symmetric(vertical: 16),
+                  child: ContentTextField(
+                    value: page.content,
+                    onNewValue: notifier.onUpdateContent,
+                    label: localizations.content,
+                  ),
                 ),
-                const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () => notifier.onUpdatePage(onComplete),
                   child: Text(localizations.save),
                 ),
-                const SizedBox(height: 12),
               ],
             ),
           ),

@@ -73,16 +73,20 @@ class CreateTimeCapsuleScreen extends ConsumerWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              DatePicker(
-                selectedDate: timeCapsule.deadline,
-                onUpdateDate: notifier.updateDeadline,
+              Expanded(
+                child: DatePicker(
+                  selectedDate: timeCapsule.deadline,
+                  onUpdateDate: notifier.updateDeadline,
+                ),
               ),
               SizedBox(width: 10),
-              Text(
-                timeCapsule.deadline.toDate().isBefore(DateTime.now())
-                    ? localizations.noDateSelected
-                    : '${localizations.date}: ${formatDate(timeCapsule.deadline.toDate())}',
-              ),
+              Expanded(
+                child: Text(
+                  timeCapsule.deadline.toDate().isBefore(DateTime.now())
+                      ? localizations.noDateSelected
+                      : '${localizations.date}: ${formatDate(timeCapsule.deadline.toDate())}',
+                ),
+              )
             ],
           ),
           ErrorField(errorMessage: state.deadlineError),
@@ -179,7 +183,7 @@ class CreateTimeCapsuleScreen extends ConsumerWidget {
 
           ElevatedButton(
             onPressed: () => notifier.createTimeCapsule(onComplete),
-            child: Text('Create'),
+            child: Text(localizations.create),
           ),
         ],
       ),

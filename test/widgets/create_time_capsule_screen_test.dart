@@ -1,0 +1,126 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
+import 'package:reverie_flutter/data/model/time_capsule.dart';
+import 'package:reverie_flutter/data/repository/time_capsule_repository.dart';
+import 'package:reverie_flutter/data/repository/user_repository.dart';
+import 'package:reverie_flutter/l10n/app_localizations.dart';
+import 'package:reverie_flutter/notifier/create_time_capsule_notifier.dart';
+import 'package:reverie_flutter/ui/components/content_text_field.dart';
+import 'package:reverie_flutter/ui/components/phone_number.dart';
+import 'package:reverie_flutter/ui/components/single_field.dart';
+import 'package:reverie_flutter/ui/screens/create_time_capsule_screen.dart';
+import 'package:reverie_flutter/notifier/create_time_capsule_notifier.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+import '../mocks.mocks.dart';
+
+class MockTimeCapsuleRepo extends Mock implements TimeCapsuleRepository {}
+class MockUserRepo extends Mock implements UserRepository {}
+class MockAuth extends Mock implements FirebaseAuth {}
+class MockLoc extends Mock implements AppLocalizations {}
+
+class FakeCreateTimeCapsuleNotifier extends CreateTimeCapsuleNotifier {
+  bool createCalled = false;
+
+  FakeCreateTimeCapsuleNotifier({
+    required super.repository,
+    required super.userRepository,
+    required super.auth,
+    required super.localizations,
+  });
+
+  @override
+  void createTimeCapsule(void Function(TimeCapsule) onComplete) {
+    createCalled = true;
+  }
+}
+
+void main() {
+  late MockTimeCapsuleRepository mockTimeCapsuleRepo;
+  late MockUserRepository mockUserRepo;
+  late MockFirebaseAuth mockAuth;
+  late MockUser mockUser;
+  late MockAppLocalizations mockLoc;
+
+  setUp(() {
+    mockTimeCapsuleRepo = MockTimeCapsuleRepository();
+    mockUserRepo = MockUserRepository();
+    mockUser = MockUser();
+    mockAuth = MockFirebaseAuth();
+    mockLoc = MockAppLocalizations();
+
+    when(mockAuth.currentUser).thenReturn(mockUser);
+    when(mockUser.uid).thenReturn('test-user-id');
+
+    when(mockLoc.titleMandatory).thenReturn('Title required');
+    when(mockLoc.contentMandatory).thenReturn('Content required');
+    when(mockLoc.deadlineMandatory).thenReturn('Deadline must be in the future');
+    when(mockLoc.receiverMandatory).thenReturn('Receiver required');
+    when(mockLoc.create).thenReturn('Create');
+  });
+
+  testWidgets('CreateTimeCapsuleScreen renders and create button calls createTimeCapsule', (tester) async {
+
+    final fakeTimeCapsule = TimeCapsule(
+      id: '1',
+      userId: 'test-user-id',
+      title: '',
+      content: '',
+      deadline: Timestamp.now(),
+      emails: [],
+      phones: [],
+      receiversIds: [],
+      creationDate: Timestamp.now(),
+      isSent: false,
+    );
+
+    final fakeState = CreateTimeCapsuleState(timeCapsule: fakeTimeCapsule);
+
+    final fakeNotifier = FakeCreateTimeCapsuleNotifier(
+      repository: mockTimeCapsuleRepo,
+      userRepository: mockUserRepo,
+      auth: mockAuth,
+      localizations: mockLoc,
+    )..state = fakeState;
+
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          createTimeCapsuleNotifierProvider.overrideWith((_) => fakeNotifier),
+        ],
+        child: MaterialApp(
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            DefaultWidgetsLocalizations.delegate,
+            DefaultMaterialLocalizations.delegate,
+          ],
+          supportedLocales: const [Locale('en')],
+          home: Scaffold(
+            body: CreateTimeCapsuleScreen(onComplete: (_) {}),
+          ),
+        ),
+      ),
+    );
+
+    await tester.pump();
+
+    // Controlla che ci siano i widget principali
+    expect(find.text('Create'), findsOneWidget);
+    expect(find.text('Select Date'), findsOneWidget);
+    expect(find.byType(SingleLineFieldWithError), findsNWidgets(2));
+    expect(find.byType(ContentTextFieldWithError), findsOneWidget);
+    expect(find.byType(PhoneNumberField), findsOneWidget);
+
+    // Tap sul bottone "Create"
+    await tester.ensureVisible(find.text('Create'));
+
+    await tester.tap(find.text('Create'));
+    await tester.pump();
+
+    // Verifica che sia stata chiamata createTimeCapsule
+    expect(fakeNotifier.createCalled, isTrue);
+  });
+}
