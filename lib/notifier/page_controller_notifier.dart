@@ -14,44 +14,41 @@ abstract class PageState with _$PageState {
       : pageController = pageController ?? PageController();
 
   factory PageState({
-    required int currentPage,
-    required List<String> pages,
+    @Default(0) int currentSubPage,
+    @Default([]) List<String> pages,
     PageController? pageController,
+    @Default(Size(0, 0)) Size pageSize,
+    @Default([]) List<String> texts,
+    @Default(TextStyle(fontSize: 25, color: Colors.black)) TextStyle textStyle,
   }) = _PageState;
-
-  factory PageState.initial() => PageState(currentPage: 0, pages: []);
 }
 
-final pageControllerProvider = NotifierProvider<PageControllerNotifier, PageState>(
-  PageControllerNotifier.new,
-);
+@freezed
+abstract class PageControllerParams with _$PageControllerParams{
+  factory PageControllerParams({
+    @Default(Size(0, 0)) Size pageSize,
+    @Default([]) List<String> texts,
+  }) = _PageControllerParams;
+}
 
-class PageControllerNotifier extends Notifier<PageState> {
-  final TextSplitter _splitter = TextSplitter();
+final pageControllerProvider = StateNotifierProvider.family<PageControllerNotifier, PageState, PageControllerParams>((ref, params) {
+  return PageControllerNotifier(pageSize: params.pageSize, texts: params.texts);
+});
 
-  Size? _pageSize;
-  final TextStyle _textStyle = const TextStyle(fontSize: 25, color: Colors.black);
-
-  @override
-  PageState build() => PageState.initial();
-
-  void updatePageSize(Size size) {
-    _pageSize = size;
-  }
-
-  void paginate(String text) {
-    if (_pageSize == null) return;
-    final pages = _splitter.splitText(
+class PageControllerNotifier extends StateNotifier<PageState> {
+  PageControllerNotifier({
+    required Size pageSize,
+    required List<String> texts,
+  }) : super(PageState(pageSize: pageSize)) {
+    final pages = texts.map((text) => splitText(
       text: text,
-      textStyle: _textStyle,
-      pageSize: _pageSize!,
-    );
-    state = state.copyWith(pages: pages);
+      textStyle: state.textStyle,
+      pageSize: state.pageSize,
+    )).toList().expand((e) => e).toList();
+    state = state.copyWith(pages: pages, texts: texts);
   }
 
-  void changePage(int index) {
-    state = state.copyWith(currentPage: index);
+  void changeSubPage(int index) {
+    state = state.copyWith(currentSubPage: index);
   }
-
-  TextStyle get textStyle => _textStyle;
 }

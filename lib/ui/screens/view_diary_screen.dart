@@ -31,22 +31,24 @@ class _ViewDiaryScreenState extends ConsumerState<ViewDiaryScreen> {
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
     final asyncState = ref.watch(viewDiaryNotifierProvider(widget.diaryId));
-    final state = ref.watch(pageControllerProvider);
-    final textStyle = ref.read(pageControllerProvider.notifier).textStyle;
-    final pageControllerNotifier = ref.read(pageControllerProvider.notifier);
 
     return asyncState.when(
       data: (data) {
 
       return LayoutBuilder(
         builder: (context, constraints) {
-          final size = Size(constraints.maxWidth, constraints.maxHeight);
+          final pageSize = Size(constraints.maxWidth, constraints.maxHeight);
 
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            final notifier = ref.read(pageControllerProvider.notifier);
-            notifier.updatePageSize(size);
-            notifier.paginate(data.pages.first.content);
-          });
+          final pageController = pageControllerProvider(
+            PageControllerParams(
+              pageSize: pageSize,
+              texts: data.pages.map((p) => p.content).toList()
+            )
+          );
+
+          // Watch provider state and notifier directly
+          final pageControllerState = ref.watch(pageController);
+          final pageControllerNotifier = ref.read(pageController.notifier);
 
           return Column(
             children: [
@@ -54,19 +56,19 @@ class _ViewDiaryScreenState extends ConsumerState<ViewDiaryScreen> {
                 child: Container(
                   color: Colors.yellowAccent.withValues(alpha: 0.2),
                   child: PageView.builder(
-                    controller: state.pageController,
-                    itemCount: state.pages.length,
+                    controller: pageControllerState.pageController,
+                    itemCount: pageControllerState.pages.length,
                     onPageChanged: (index) {
-                      pageControllerNotifier.changePage(index);
+                      pageControllerNotifier.changeSubPage(index);
                     },
                     itemBuilder: (context, index) => Padding(
                       padding: const EdgeInsets.all(12),
-                      child: Text(state.pages[index], style: textStyle),
+                      child: Text(pageControllerState.pages[index], style: pageControllerState.textStyle),
                     ),
                   ),
                 ),
               ),
-              _pageControls(state),
+              _pageControls(pageControllerState),
             ],
           );
         },
@@ -96,7 +98,7 @@ class _ViewDiaryScreenState extends ConsumerState<ViewDiaryScreen> {
             curve: Curves.easeInOut,
           ),
         ),
-        Text('${state.currentPage + 1}/${state.pages.length}'),
+        Text('${state.currentSubPage + 1}/${state.pages.length}'),
         IconButton(
           icon: const Icon(Icons.navigate_next),
           onPressed: () => state.pageController.nextPage(
