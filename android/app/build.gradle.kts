@@ -11,7 +11,7 @@ plugins {
 android {
     namespace = "com.mirage.reverie_flutter"
     compileSdk = 35
-    ndkVersion = "27.0.12077973"
+    ndkVersion = flutter.ndkVersion
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
