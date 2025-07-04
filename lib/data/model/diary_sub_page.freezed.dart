@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$DiarySubPage {
 
-@JsonKey(includeToJson: false) String get id; String get pageId; String get diaryId;@JsonKey(includeToJson: false) int get contentEndIndex;@JsonKey(includeToJson: false) int get cipolla;@JsonKey(includeToJson: false) int get testOverflow; List<String> get imageIds;
+@JsonKey(includeToJson: false) String get id; String get pageId; String get diaryId; List<String> get imageIds;
 /// Create a copy of DiarySubPage
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -29,16 +29,16 @@ $DiarySubPageCopyWith<DiarySubPage> get copyWith => _$DiarySubPageCopyWithImpl<D
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DiarySubPage&&(identical(other.id, id) || other.id == id)&&(identical(other.pageId, pageId) || other.pageId == pageId)&&(identical(other.diaryId, diaryId) || other.diaryId == diaryId)&&(identical(other.contentEndIndex, contentEndIndex) || other.contentEndIndex == contentEndIndex)&&(identical(other.cipolla, cipolla) || other.cipolla == cipolla)&&(identical(other.testOverflow, testOverflow) || other.testOverflow == testOverflow)&&const DeepCollectionEquality().equals(other.imageIds, imageIds));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DiarySubPage&&(identical(other.id, id) || other.id == id)&&(identical(other.pageId, pageId) || other.pageId == pageId)&&(identical(other.diaryId, diaryId) || other.diaryId == diaryId)&&const DeepCollectionEquality().equals(other.imageIds, imageIds));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,pageId,diaryId,contentEndIndex,cipolla,testOverflow,const DeepCollectionEquality().hash(imageIds));
+int get hashCode => Object.hash(runtimeType,id,pageId,diaryId,const DeepCollectionEquality().hash(imageIds));
 
 @override
 String toString() {
-  return 'DiarySubPage(id: $id, pageId: $pageId, diaryId: $diaryId, contentEndIndex: $contentEndIndex, cipolla: $cipolla, testOverflow: $testOverflow, imageIds: $imageIds)';
+  return 'DiarySubPage(id: $id, pageId: $pageId, diaryId: $diaryId, imageIds: $imageIds)';
 }
 
 
@@ -49,7 +49,7 @@ abstract mixin class $DiarySubPageCopyWith<$Res>  {
   factory $DiarySubPageCopyWith(DiarySubPage value, $Res Function(DiarySubPage) _then) = _$DiarySubPageCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(includeToJson: false) String id, String pageId, String diaryId,@JsonKey(includeToJson: false) int contentEndIndex,@JsonKey(includeToJson: false) int cipolla,@JsonKey(includeToJson: false) int testOverflow, List<String> imageIds
+@JsonKey(includeToJson: false) String id, String pageId, String diaryId, List<String> imageIds
 });
 
 
@@ -66,15 +66,12 @@ class _$DiarySubPageCopyWithImpl<$Res>
 
 /// Create a copy of DiarySubPage
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? pageId = null,Object? diaryId = null,Object? contentEndIndex = null,Object? cipolla = null,Object? testOverflow = null,Object? imageIds = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? pageId = null,Object? diaryId = null,Object? imageIds = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,pageId: null == pageId ? _self.pageId : pageId // ignore: cast_nullable_to_non_nullable
 as String,diaryId: null == diaryId ? _self.diaryId : diaryId // ignore: cast_nullable_to_non_nullable
-as String,contentEndIndex: null == contentEndIndex ? _self.contentEndIndex : contentEndIndex // ignore: cast_nullable_to_non_nullable
-as int,cipolla: null == cipolla ? _self.cipolla : cipolla // ignore: cast_nullable_to_non_nullable
-as int,testOverflow: null == testOverflow ? _self.testOverflow : testOverflow // ignore: cast_nullable_to_non_nullable
-as int,imageIds: null == imageIds ? _self.imageIds : imageIds // ignore: cast_nullable_to_non_nullable
+as String,imageIds: null == imageIds ? _self.imageIds : imageIds // ignore: cast_nullable_to_non_nullable
 as List<String>,
   ));
 }
@@ -86,15 +83,12 @@ as List<String>,
 @JsonSerializable()
 
 class _DiarySubPage implements DiarySubPage {
-  const _DiarySubPage({@JsonKey(includeToJson: false) this.id = '', this.pageId = '', this.diaryId = '', @JsonKey(includeToJson: false) this.contentEndIndex = 0, @JsonKey(includeToJson: false) this.cipolla = 0, @JsonKey(includeToJson: false) this.testOverflow = 0, final  List<String> imageIds = const <String>[]}): _imageIds = imageIds;
+  const _DiarySubPage({@JsonKey(includeToJson: false) this.id = '', this.pageId = '', this.diaryId = '', final  List<String> imageIds = const <String>[]}): _imageIds = imageIds;
   factory _DiarySubPage.fromJson(Map<String, dynamic> json) => _$DiarySubPageFromJson(json);
 
 @override@JsonKey(includeToJson: false) final  String id;
 @override@JsonKey() final  String pageId;
 @override@JsonKey() final  String diaryId;
-@override@JsonKey(includeToJson: false) final  int contentEndIndex;
-@override@JsonKey(includeToJson: false) final  int cipolla;
-@override@JsonKey(includeToJson: false) final  int testOverflow;
  final  List<String> _imageIds;
 @override@JsonKey() List<String> get imageIds {
   if (_imageIds is EqualUnmodifiableListView) return _imageIds;
@@ -116,16 +110,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DiarySubPage&&(identical(other.id, id) || other.id == id)&&(identical(other.pageId, pageId) || other.pageId == pageId)&&(identical(other.diaryId, diaryId) || other.diaryId == diaryId)&&(identical(other.contentEndIndex, contentEndIndex) || other.contentEndIndex == contentEndIndex)&&(identical(other.cipolla, cipolla) || other.cipolla == cipolla)&&(identical(other.testOverflow, testOverflow) || other.testOverflow == testOverflow)&&const DeepCollectionEquality().equals(other._imageIds, _imageIds));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DiarySubPage&&(identical(other.id, id) || other.id == id)&&(identical(other.pageId, pageId) || other.pageId == pageId)&&(identical(other.diaryId, diaryId) || other.diaryId == diaryId)&&const DeepCollectionEquality().equals(other._imageIds, _imageIds));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,pageId,diaryId,contentEndIndex,cipolla,testOverflow,const DeepCollectionEquality().hash(_imageIds));
+int get hashCode => Object.hash(runtimeType,id,pageId,diaryId,const DeepCollectionEquality().hash(_imageIds));
 
 @override
 String toString() {
-  return 'DiarySubPage(id: $id, pageId: $pageId, diaryId: $diaryId, contentEndIndex: $contentEndIndex, cipolla: $cipolla, testOverflow: $testOverflow, imageIds: $imageIds)';
+  return 'DiarySubPage(id: $id, pageId: $pageId, diaryId: $diaryId, imageIds: $imageIds)';
 }
 
 
@@ -136,7 +130,7 @@ abstract mixin class _$DiarySubPageCopyWith<$Res> implements $DiarySubPageCopyWi
   factory _$DiarySubPageCopyWith(_DiarySubPage value, $Res Function(_DiarySubPage) _then) = __$DiarySubPageCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(includeToJson: false) String id, String pageId, String diaryId,@JsonKey(includeToJson: false) int contentEndIndex,@JsonKey(includeToJson: false) int cipolla,@JsonKey(includeToJson: false) int testOverflow, List<String> imageIds
+@JsonKey(includeToJson: false) String id, String pageId, String diaryId, List<String> imageIds
 });
 
 
@@ -153,15 +147,12 @@ class __$DiarySubPageCopyWithImpl<$Res>
 
 /// Create a copy of DiarySubPage
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? pageId = null,Object? diaryId = null,Object? contentEndIndex = null,Object? cipolla = null,Object? testOverflow = null,Object? imageIds = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? pageId = null,Object? diaryId = null,Object? imageIds = null,}) {
   return _then(_DiarySubPage(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,pageId: null == pageId ? _self.pageId : pageId // ignore: cast_nullable_to_non_nullable
 as String,diaryId: null == diaryId ? _self.diaryId : diaryId // ignore: cast_nullable_to_non_nullable
-as String,contentEndIndex: null == contentEndIndex ? _self.contentEndIndex : contentEndIndex // ignore: cast_nullable_to_non_nullable
-as int,cipolla: null == cipolla ? _self.cipolla : cipolla // ignore: cast_nullable_to_non_nullable
-as int,testOverflow: null == testOverflow ? _self.testOverflow : testOverflow // ignore: cast_nullable_to_non_nullable
-as int,imageIds: null == imageIds ? _self._imageIds : imageIds // ignore: cast_nullable_to_non_nullable
+as String,imageIds: null == imageIds ? _self._imageIds : imageIds // ignore: cast_nullable_to_non_nullable
 as List<String>,
   ));
 }

@@ -6,7 +6,7 @@ import '../../notifier/profile_notifier.dart';
 
 class ProfileScreen extends ConsumerWidget {
   static const String name = 'profile';
-  static const String path = '/profile/:id';
+  static const String path = '/profile/:profileId';
 
   final String profileId;
   final Future<User> Function(String) onEditProfile;

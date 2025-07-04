@@ -10,9 +10,6 @@ abstract class DiarySubPage with _$DiarySubPage {
     @JsonKey(includeToJson: false) @Default('') String id,
     @Default('') String pageId,
     @Default('') String diaryId,
-    @JsonKey(includeToJson: false) @Default(0) int contentEndIndex,
-    @JsonKey(includeToJson: false) @Default(0) int cipolla,
-    @JsonKey(includeToJson: false) @Default(0) int testOverflow,
     @Default(<String>[]) List<String> imageIds,
   }) = _DiarySubPage;
 

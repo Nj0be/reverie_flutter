@@ -7,7 +7,7 @@ import 'package:reverie_flutter/utils.dart';
 
 class ViewTimeCapsuleScreen extends ConsumerWidget {
   static const String name = 'view_time_capsule';
-  static const String path = '/view/:id/:type';
+  static const String path = '/view/:timeCapsuleId/:timeCapsuleType';
 
   final ViewTimeCapsuleParams viewTimeCapsuleParams;
   final void Function(String) onViewProfile;

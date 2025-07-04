@@ -84,6 +84,39 @@ class EditDiaryNotifier extends StateNotifier<AsyncValue<EditDiaryState>> {
     }
   }
 
+  String validateTitle(String title) {
+    return title.trim().isEmpty ? localizations.titleMandatory : '';
+  }
+
+  String validateDescription(String description) {
+    return description.trim().isEmpty ? localizations.descriptionMandatory : '';
+  }
+
+  void onTitleChange(String newTitle) {
+    final error = validateTitle(newTitle);
+
+    state = state.whenData((s) {
+      final updated = s.diary.copyWith(title: newTitle);
+      return s.copyWith(diary: updated, titleError: error);
+    });
+  }
+
+  void onDescriptionChange(String newDescription) {
+    final error = validateDescription(newDescription);
+
+    state = state.whenData((s) {
+      final updated = s.diary.copyWith(description: newDescription);
+      return s.copyWith(diary: updated, descriptionError: error);
+    });
+  }
+
+  void updateCover(String newCoverId) {
+    state = state.whenData((s) {
+      final updated = s.diary.copyWith(coverId: newCoverId);
+      return s.copyWith(diary: updated);
+    });
+  }
+
   Future<void> onSaveDiary(void Function(Diary) onComplete) async {
     final currentState = state.value;
     if (currentState == null) return;
@@ -130,38 +163,5 @@ class EditDiaryNotifier extends StateNotifier<AsyncValue<EditDiaryState>> {
       // If save fails, keep current inputs but surface error in some way
       state = AsyncValue.error(e, st);
     }
-  }
-
-  void onTitleChange(String newTitle) {
-    final error = validateTitle(newTitle);
-
-    state = state.whenData((s) {
-      final updated = s.diary.copyWith(title: newTitle);
-      return s.copyWith(diary: updated, titleError: error);
-    });
-  }
-
-  void onDescriptionChange(String newDescription) {
-    final error = validateDescription(newDescription);
-
-    state = state.whenData((s) {
-      final updated = s.diary.copyWith(description: newDescription);
-      return s.copyWith(diary: updated, descriptionError: error);
-    });
-  }
-
-  void updateCover(String newCoverId) {
-    state = state.whenData((s) {
-      final updated = s.diary.copyWith(coverId: newCoverId);
-      return s.copyWith(diary: updated);
-    });
-  }
-
-  String validateTitle(String title) {
-    return title.trim().isEmpty ? 'Titolo obbligatiorio' : '';
-  }
-
-  String validateDescription(String description) {
-    return description.trim().isEmpty ? 'Descrizione obbligatoria' : '';
   }
 }

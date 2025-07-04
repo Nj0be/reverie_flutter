@@ -182,6 +182,12 @@ abstract class AppLocalizations {
   /// **'Title'**
   String get title;
 
+  /// No description provided for @description.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get description;
+
   /// No description provided for @page.
   ///
   /// In en, this message translates to:
@@ -331,6 +337,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Title is mandatory'**
   String get titleMandatory;
+
+  /// No description provided for @descriptionMandatory.
+  ///
+  /// In en, this message translates to:
+  /// **'Description is mandatory'**
+  String get descriptionMandatory;
 
   /// No description provided for @contentMandatory.
   ///

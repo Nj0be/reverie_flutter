@@ -11,12 +11,11 @@ import '../../notifier/edit_diary_notifier.dart';
 
 class EditDiaryScreen extends ConsumerWidget {
   static const String editName = 'edit_diary';
-  static const String editPath = '/edit/:id';
+  static const String editPath = '/edit/:diaryId';
   static const String editFullPath = AllDiariesScreen.path + editPath;
   static const String createName = 'create_diary';
   static const String createPath = '/create';
   static const String createFullPath = AllDiariesScreen.path + createPath;
-
 
   final String diaryId;
   final void Function(Diary) onComplete;
@@ -31,6 +30,7 @@ class EditDiaryScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(editDiaryNotifierProvider(diaryId));
     final notifier = ref.read(editDiaryNotifierProvider(diaryId).notifier);
+    final localizations = AppLocalizations.of(context)!;
 
     return state.when(
       data: (data) {
@@ -47,8 +47,8 @@ class EditDiaryScreen extends ConsumerWidget {
                   padding: const EdgeInsets.all(8),
                   child: Text(
                     diary.id.isEmpty
-                        ? 'Crea Diario'
-                        : 'Modifica Diario',
+                        ? localizations.createDiary
+                        : localizations.editDiary,
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                 ),
@@ -56,14 +56,14 @@ class EditDiaryScreen extends ConsumerWidget {
                   value: diary.title,
                   errorMessage: data.titleError,
                   onNewValue: notifier.onTitleChange,
-                  label: 'Titolo',
+                  label: localizations.title,
                 ),
                 const SizedBox(height: 20),
                 ContentTextFieldWithError(
                   value: diary.description,
                   errorMessage: data.descriptionError,
                   onNewValue: notifier.onDescriptionChange,
-                  label: 'Descrizione',
+                  label: localizations.description,
                 ),
                 const SizedBox(height: 20),
                 Expanded(
@@ -97,7 +97,7 @@ class EditDiaryScreen extends ConsumerWidget {
                 ),
                 ElevatedButton(
                   onPressed: () => notifier.onSaveDiary(onComplete),
-                  child: Text('Salva'),
+                  child: Text(localizations.save),
                 ),
                 const SizedBox(height: 12),
               ],

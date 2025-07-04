@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:reverie_flutter/data/model/diary.dart';
+import 'package:reverie_flutter/data/model/diary_page.dart';
 import 'package:reverie_flutter/data/model/time_capsule.dart';
 import 'package:reverie_flutter/data/model/user.dart';
 import 'package:reverie_flutter/main.dart';
@@ -9,6 +10,7 @@ import 'package:reverie_flutter/notifier/all_time_capsules_notifier.dart';
 import 'package:reverie_flutter/notifier/view_time_capsule_notifier.dart';
 import 'package:reverie_flutter/ui/screens/all_time_capsules_screen.dart';
 import 'package:reverie_flutter/ui/screens/create_time_capsule_screen.dart';
+import 'package:reverie_flutter/ui/screens/edit_diary_page_screen.dart';
 import 'package:reverie_flutter/ui/screens/edit_profile_screen.dart';
 import 'package:reverie_flutter/ui/screens/login_screen.dart';
 import 'package:reverie_flutter/ui/screens/profile_screen.dart';
@@ -52,14 +54,14 @@ final router = GoRouter(
               onNavigateToDiary: (diaryId) {
                 context.pushNamed(
                   ViewDiaryScreen.name,
-                  pathParameters: {'id': diaryId},
+                  pathParameters: {'diaryId': diaryId},
                 );
               },
               onNavigateToEditDiary: (diaryId) async {
                 // return updated profile from editProfile
                 return await context.pushNamed(
                   EditDiaryScreen.editName,
-                  pathParameters: {'id': diaryId},
+                  pathParameters: {'diaryId': diaryId},
                 ) as Diary;
               },
               onNavigateToCreateDiary: () async {
@@ -74,7 +76,7 @@ final router = GoRouter(
               name: EditDiaryScreen.editName,
               path: EditDiaryScreen.editPath,
               pageBuilder: (context, state) {
-                final diaryId = state.pathParameters['id']!;
+                final diaryId = state.pathParameters['diaryId']!;
                 return MaterialPage(
                   key: state.pageKey,
                   child: EditDiaryScreen(
@@ -109,22 +111,45 @@ final router = GoRouter(
               name: ViewDiaryScreen.name,
               path: ViewDiaryScreen.path,
               pageBuilder: (context, state) {
-                final diaryId = state.pathParameters['id']!;
+                final diaryId = state.pathParameters['diaryId']!;
                 return MaterialPage(
                   key: state.pageKey,
                   child: ViewDiaryScreen(
                       diaryId: diaryId,
-/*
-                      onNavigateToEditDiaryPage: (_) {
-
+                      onNavigateToEditDiaryPage: (pageId) async {
+                        // return updated profile from editProfile
+                        return await context.pushNamed(
+                          EditDiaryPageScreen.name,
+                          pathParameters: {
+                            'diaryId': diaryId,
+                            'pageId': pageId
+                          },
+                        ) as DiaryPage;
                       },
-                    onComplete: () {
-
-                    },
-*/
+                      onComplete: () {
+                        context.pop();
+                      },
                   ),
                 );
-              }
+              },
+              routes: [
+                GoRoute(
+                    name: EditDiaryPageScreen.name,
+                    path: EditDiaryPageScreen.path,
+                    pageBuilder: (context, state) {
+                      final pageId = state.pathParameters['pageId']!;
+                      return MaterialPage(
+                        key: state.pageKey,
+                        child: EditDiaryPageScreen(
+                          pageId: pageId,
+                          onComplete: (updatedPage) {
+                            context.pop(updatedPage);
+                          },
+                        ),
+                      );
+                    },
+                ),
+              ]
             ),
           ],
         ),
@@ -143,8 +168,8 @@ final router = GoRouter(
                 context.pushNamed(
                   ViewTimeCapsuleScreen.name,
                   pathParameters: {
-                    'id': timeCapsuleId,
-                    'type': timeCapsuleType.name,
+                    'timeCapsuleId': timeCapsuleId,
+                    'timeCapsuleType': timeCapsuleType.name,
                   },
                 );
               },
@@ -168,8 +193,8 @@ final router = GoRouter(
               name: ViewTimeCapsuleScreen.name,
               path: ViewTimeCapsuleScreen.path,
               pageBuilder: (context, state) {
-                final timeCapsuleId = state.pathParameters['id']!;
-                final timeCapsuleTypeStr = state.pathParameters['type']!;
+                final timeCapsuleId = state.pathParameters['timeCapsuleId']!;
+                final timeCapsuleTypeStr = state.pathParameters['timeCapsuleType']!;
                 final timeCapsuleType = TimeCapsuleType.values.firstWhere(
                       (e) => e.name == timeCapsuleTypeStr,
                   orElse: () => TimeCapsuleType.scheduled, // fallback
@@ -184,7 +209,7 @@ final router = GoRouter(
                     onViewProfile: (profileId) {
                       context.pushNamed(
                         ProfileScreen.name,
-                        pathParameters: {'id': profileId},
+                        pathParameters: {'profileId': profileId},
                       );
                     },
                   ),
@@ -199,7 +224,7 @@ final router = GoRouter(
           name: ProfileScreen.name,
           path: ProfileScreen.path,
           pageBuilder: (context, state) {
-            final profileId = state.pathParameters['id']!;
+            final profileId = state.pathParameters['profileId']!;
             return MaterialPage(
               key: state.pageKey,
               child: ProfileScreen(
@@ -208,7 +233,7 @@ final router = GoRouter(
                   // return updated profile from editProfile
                   return await context.pushNamed(
                     EditProfileScreen.name,
-                    pathParameters: {'id': id},
+                    pathParameters: {'profileId': id},
                   )
                   as User;
                 },
@@ -225,7 +250,7 @@ final router = GoRouter(
               name: EditProfileScreen.name,
               path: EditProfileScreen.path,
               pageBuilder: (context, state) {
-                final profileId = state.pathParameters['id']!;
+                final profileId = state.pathParameters['profileId']!;
                 return MaterialPage(
                   key: state.pageKey,
                   child: EditProfileScreen(

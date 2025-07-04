@@ -51,6 +51,9 @@ class AppLocalizationsIt extends AppLocalizations {
   String get title => 'Titolo';
 
   @override
+  String get description => 'Descrizione';
+
+  @override
   String get page => 'Pagina';
 
   @override
@@ -125,6 +128,9 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get titleMandatory => 'Il titolo è obbligatorio';
+
+  @override
+  String get descriptionMandatory => 'La descrizione è obbligatoria';
 
   @override
   String get contentMandatory => 'Il contenuto è obbligatorio';

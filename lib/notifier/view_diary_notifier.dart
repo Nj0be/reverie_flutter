@@ -1,10 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reverie_flutter/data/model/diary.dart';
 import 'package:reverie_flutter/data/model/diary_page.dart';
-import 'package:reverie_flutter/data/model/diary_sub_page.dart';
 import 'package:reverie_flutter/data/repository/diary_repository.dart';
+import 'package:flutter/material.dart';
 
 part 'view_diary_notifier.freezed.dart';
 
@@ -12,27 +11,51 @@ part 'view_diary_notifier.freezed.dart';
 abstract class ViewDiaryState with _$ViewDiaryState {
   @override
   final Diary diary;
+  @override
+  final PageController pageController;
 
-  ViewDiaryState._({Diary? diary})
-      : diary = diary ?? Diary();
+  ViewDiaryState._({Diary? diary, PageController? pageController})
+      : diary = diary ?? Diary(), pageController = pageController ?? PageController();
 
   @override
   factory ViewDiaryState({
     Diary? diary,
     @Default({}) Map<String, DiaryPage> pagesMap,
-    @Default({}) Map<String, DiarySubPage> subPagesMap,
+    @Default(0) int currentSubPage,
+    PageController? pageController,
+    @Default(Size(0, 0)) Size pageSize,
+    @Default(TextStyle(fontSize: 25, color: Colors.black)) TextStyle textStyle,
   }) = _ViewDiaryState;
 
   List<DiaryPage> get pages => diary.pageIds.map((pageId) => pagesMap[pageId]).whereType<DiaryPage>().toList();
-  List<DiarySubPage> get subPages => pages.expand((page) => page.subPageIds).map((subPageId) => subPagesMap[subPageId]).whereType<DiarySubPage>().toList();
+  List<List<String>> get splitPagesList => pages.map((p) => p.content).toList().map((text) => splitText(
+    text: text,
+    textStyle: textStyle,
+    pageSize: pageSize,
+  )).toList();
+  List<String> get splitPages => splitPagesList.expand((e) => e).toList();
+  List<int> get subPagesPerPage => splitPagesList.map((pagesList) => pagesList.length).toList();
+  int get currentPageIndex => subPagesPerPage.indexWhere((i) =>
+    currentSubPage < subPagesPerPage.take(i + 1).fold(0, (a, b) => a + b)
+  );
+  DiaryPage get currentPage => pages[currentPageIndex];
 }
 
-final viewDiaryNotifierProvider = StateNotifierProvider.family<ViewDiaryNotifier, AsyncValue<ViewDiaryState>, String>((ref, diaryId) {
+@freezed
+abstract class ViewDiaryParams with _$ViewDiaryParams{
+  factory ViewDiaryParams({
+    @Default('') String diaryId,
+    @Default(Size(0, 0)) Size pageSize,
+  }) = _ViewDiaryParams;
+}
+
+final viewDiaryNotifierProvider = StateNotifierProvider.family<ViewDiaryNotifier, AsyncValue<ViewDiaryState>, ViewDiaryParams>((ref, params) {
   final repository = ref.read(diaryRepositoryProvider);
 
   return ViewDiaryNotifier(
     repository: repository,
-    diaryId: diaryId,
+    diaryId: params.diaryId,
+    pageSize: params.pageSize,
   );
 });
 
@@ -42,95 +65,78 @@ class ViewDiaryNotifier extends StateNotifier<AsyncValue<ViewDiaryState>> {
   ViewDiaryNotifier({
     required DiaryRepository repository,
     required String diaryId,
+    required Size pageSize,
   }) : _repository = repository, super(AsyncLoading()) {
-    _onStart(diaryId);
+    _onStart(diaryId, pageSize);
   }
 
-  Future<void> _onStart(String diaryId) async {
+  Future<void> _onStart(String diaryId, Size pageSize) async {
     final diary = await _repository.getDiary(diaryId);
     final pagesMap = {
       for (var pageId in diary.pageIds)
         pageId : await _repository.getPage(pageId)
-    };
-    final subPagesMap = {
-      for (var subPageId in pagesMap.values.expand((page) => page.subPageIds))
-        subPageId : await _repository.getSubPage(subPageId)
     };
 
     state = AsyncData(
         ViewDiaryState(
             diary: diary,
           pagesMap: pagesMap,
-          subPagesMap: subPagesMap,
+          pageSize: pageSize
         )
     );
-
-    addEmptyPage();
-  }
-
-  Future<void> addEmptyPage() async {
-    final currentState = state.value;
-    if (currentState == null) return;
-
-    final pages = currentState.pages;
-    final subPages = currentState.subPages;
-
-    // if no necessity to add empty page, return
-    if (pages.isNotEmpty && pages.last.timestamp.toDate().day == DateTime.now().day) return;
-
-    final lastPage = pages.isNotEmpty ? pages.last : null;
-    final lastSubPage = subPages.isNotEmpty ? subPages.last : null;
-
-    // if last page is empty, just update its timestamp
-    if (lastPage != null &&
-        lastPage.content.isEmpty &&
-        (lastSubPage?.imageIds.isEmpty ?? true)) {
-      final updatedPage = lastPage.copyWith(timestamp: Timestamp.now());
-      await _repository.updatePage(updatedPage);
-
-      final updatedPagesMap = Map<String, DiaryPage>.from(currentState.pagesMap)
-        ..[updatedPage.id] = updatedPage;
-
-      state = AsyncData(currentState.copyWith(pagesMap: updatedPagesMap));
-      return;
-    }
-
-    // otherwise create a new page
-    final newPage = DiaryPage(diaryId: currentState.diary.id);
-    final savedPage = await _repository.savePage(newPage);
-
-    final updatedPagesMap = Map<String, DiaryPage>.from(currentState.pagesMap)
-      ..[savedPage.id] = savedPage;
-
-    final updatedPageIds = [...currentState.diary.pageIds, savedPage.id];
-    final updatedDiary = currentState.diary.copyWith(pageIds: updatedPageIds);
-
-    final updatedSubPagesMap = Map<String, DiarySubPage>.from(currentState.subPagesMap);
-    final firstSubPageId = savedPage.subPageIds.first;
-    final firstSubPage = await _repository.getSubPage(firstSubPageId);
-    updatedSubPagesMap[firstSubPageId] = firstSubPage;
-
-    state = AsyncData(currentState.copyWith(
-      diary: updatedDiary,
-      pagesMap: updatedPagesMap,
-      subPagesMap: updatedSubPagesMap,
-    ));
   }
 
   void overwritePage(DiaryPage page) {
     final currentState = state.value;
     if (currentState == null) return;
 
-    var pagesMap = currentState.pagesMap;
-    var subPagesMap = currentState.subPagesMap;
+    debugPrint(page.toString());
+
+    final pagesMap = Map<String, DiaryPage>.from(currentState.pagesMap);
 
     pagesMap[page.id] = page;
 
-    for (var subPageId in page.subPageIds) {
-      final subPage = subPagesMap[subPageId];
-      if (subPage != null) {
-        subPagesMap[subPageId] = subPage.copyWith(testOverflow: 0, contentEndIndex: 0);
-      }
+    state = state.whenData((s) {
+      return s.copyWith(pagesMap: pagesMap);
+    });
+  }
+
+  void changeSubPage(int index) {
+    state = state.whenData((s) => s.copyWith(currentSubPage: index));
+  }
+}
+
+List<String> splitText({
+  required String text,
+  required TextStyle textStyle,
+  required Size pageSize,
+}) {
+  final List<String> pageTexts = [];
+  final textSpan = TextSpan(text: text, style: textStyle);
+  final textPainter = TextPainter(
+    text: textSpan,
+    textDirection: TextDirection.ltr,
+  );
+
+  textPainter.layout(minWidth: 0, maxWidth: pageSize.width);
+  final lines = textPainter.computeLineMetrics();
+
+  double currentPageBottom = pageSize.height;
+  int start = 0, end = 0;
+
+  for (final line in lines) {
+    final top = line.baseline - line.ascent;
+    final bottom = line.baseline + line.descent;
+
+    if (currentPageBottom < bottom) {
+      end = textPainter.getPositionForOffset(Offset(line.left, top)).offset;
+      final pageText = text.substring(start, end);
+      pageTexts.add(pageText);
+      start = end;
+      currentPageBottom = top + pageSize.height;
     }
   }
+
+  pageTexts.add(text.substring(start));
+  return pageTexts;
 }
