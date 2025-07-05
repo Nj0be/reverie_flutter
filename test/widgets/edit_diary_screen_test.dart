@@ -57,6 +57,8 @@ void main() {
   });
 
   testWidgets('Renders and triggers save button to save Diary', (tester) async {
+    final createDiary = 'Create diary';
+    final save = 'Save';
 
     final fakeDiary = Diary(
       id: 'test-diary-id',
@@ -111,14 +113,14 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    expect(find.text('Create diary'), findsOneWidget);
+    expect(find.text(createDiary), findsOneWidget);
     expect(find.byType(SingleLineFieldWithError), findsOneWidget);
     expect(find.byType(ContentTextFieldWithError), findsOneWidget);
     expect(find.byType(GridView), findsOneWidget);
     expect(find.byType(DiaryCoverPreview), findsNWidgets(2));
 
     // Tap on save button
-    await tester.tap(find.text('Save'));
+    await tester.tap(find.text(save));
     await tester.pump();
 
     expect(fakeNotifier.saveCalled, isTrue);

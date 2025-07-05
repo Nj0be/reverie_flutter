@@ -33,10 +33,12 @@ void main() {
   });
 
   testWidgets('Displays time capsule title', (tester) async {
+    final message = 'Messaggio per il futuro';
+
     final fakeTimeCapsule = TimeCapsule(
       id: '1',
       userId: 'test-user-id',
-      title: 'Messaggio per il futuro',
+      title: message,
       content: 'Ciao futuro me! Spero che tu abbia raggiunto i tuoi sogni.',
       deadline: Timestamp.fromDate(DateTime(2030, 1, 1)),
       emails: [],
@@ -76,7 +78,7 @@ void main() {
           supportedLocales: const [Locale('en')],
           home: AllTimeCapsulesScreen(
             onNavigateToCreateTimeCapsule: () async => fakeTimeCapsule,
-            onNavigateToViewTimeCapsule: (_, __) {},
+            onNavigateToViewTimeCapsule: (_, _) {},
           ),
         ),
       ),
@@ -85,7 +87,7 @@ void main() {
     await tester.pumpAndSettle();
 
     // Controlla che il titolo della capsula sia visibile
-    expect(find.text('Messaggio per il futuro'), findsOneWidget);
+    expect(find.text(message), findsOneWidget);
 
     // Verifica che il FloatingActionButton esista
     expect(find.byType(FloatingActionButton), findsOneWidget);
