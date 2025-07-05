@@ -34,6 +34,11 @@ class DiaryRepository {
 
   Future<List<Diary>> getUserDiaries(String userId) async {
     final user = await _userRepository.getUser(userId);
+
+    if (user.diaryIds.isEmpty) {
+      return [];
+    }
+
     return Future.wait(user.diaryIds.map(getDiary));
   }
 

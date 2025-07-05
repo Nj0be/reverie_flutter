@@ -341,4 +341,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get received => 'Received';
+
+  @override
+  String get createFirstDiary => 'Create your first diary!';
 }

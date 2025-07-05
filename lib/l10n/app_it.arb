@@ -97,5 +97,6 @@
     "generalInfo": "Informazioni generali",
     "scheduled": "Programmate",
     "sent": "Inviate",
-    "received": "Ricevute"
+    "received": "Ricevute",
+    "createFirstDiary":  "Crea il tuo primo diario!"
 }

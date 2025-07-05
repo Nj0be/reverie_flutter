@@ -343,4 +343,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get received => 'Ricevute';
+
+  @override
+  String get createFirstDiary => 'Crea il tuo primo diario!';
 }

@@ -108,5 +108,6 @@
     "generalInfo": "General info",
     "scheduled": "Scheduled",
     "sent": "Sent",
-    "received": "Received"
+    "received": "Received",
+    "createFirstDiary":  "Create your first diary!"
 }

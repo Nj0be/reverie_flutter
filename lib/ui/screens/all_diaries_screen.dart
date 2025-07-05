@@ -78,7 +78,25 @@ class AllDiariesScreen extends ConsumerWidget {
             child: const Icon(Icons.add),
           ),
           body: Column(
-            children: [
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: data.diaries.isEmpty
+              ? [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      AppLocalizations.of(context)!.createFirstDiary,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ],
+                )
+              ]
+              : [
               Flexible(
                 child: PageView.builder(
                   controller: controller,

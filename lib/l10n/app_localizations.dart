@@ -757,6 +757,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Received'**
   String get received;
+
+  /// No description provided for @createFirstDiary.
+  ///
+  /// In en, this message translates to:
+  /// **'Create your first diary!'**
+  String get createFirstDiary;
 }
 
 class _AppLocalizationsDelegate
