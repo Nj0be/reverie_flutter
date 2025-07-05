@@ -53,15 +53,9 @@ void main() {
 
     when(mockAuth.currentUser).thenReturn(mockUser);
     when(mockUser.uid).thenReturn('test-user-id');
-
-    when(mockLoc.titleMandatory).thenReturn('Title required');
-    when(mockLoc.contentMandatory).thenReturn('Content required');
-    when(mockLoc.deadlineMandatory).thenReturn('Deadline must be in the future');
-    when(mockLoc.receiverMandatory).thenReturn('Receiver required');
-    when(mockLoc.create).thenReturn('Create');
   });
 
-  testWidgets('CreateTimeCapsuleScreen renders and create button calls createTimeCapsule', (tester) async {
+  testWidgets('Renders and triggers create button to create TimeCapsule', (tester) async {
 
     final fakeTimeCapsule = TimeCapsule(
       id: '1',

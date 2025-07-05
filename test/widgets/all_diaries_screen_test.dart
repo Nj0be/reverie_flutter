@@ -31,19 +31,16 @@ void main() {
 
     when(mockAuth.currentUser).thenReturn(mockUser);
     when(mockUser.uid).thenReturn('test-user-id');
-
-    when(mockLoc.confirmDiaryDeletion).thenReturn('Confermi cancellazione?');
-    when(mockLoc.deleteDiary).thenReturn('Questa azione è irreversibile.');
-    when(mockLoc.cancel).thenReturn('Annulla');
-    when(mockLoc.delete).thenReturn('Elimina');
-    when(mockLoc.errorMessage).thenReturn('Errore');
   });
 
-  testWidgets('Visualizza titolo e descrizione del diario', (tester) async {
+  testWidgets('Displays diary title and description', (tester) async {
+    final title = 'Titolo Test';
+    final description = 'Descrizione Test';
+
     final fakeDiary = Diary(
       id: '1',
-      title: 'Titolo Test',
-      description: 'Descrizione Test',
+      title: title,
+      description: description,
       coverId: 'cover1',
       pageIds: ['p1', 'p2'],
       creationDate: Timestamp(1, 1),
@@ -80,6 +77,7 @@ void main() {
             DefaultWidgetsLocalizations.delegate,
             DefaultMaterialLocalizations.delegate,
           ],
+          supportedLocales: const [Locale('en')],
           home: AllDiariesScreen(
             onNavigateToDiary: (_) {},
             onNavigateToEditDiary: (_) async => fakeDiary,
@@ -92,8 +90,8 @@ void main() {
     await tester.pumpAndSettle();
 
     // Verifiche
-    expect(find.text('Titolo Test'), findsOneWidget);
-    expect(find.text('Descrizione Test'), findsOneWidget);
+    expect(find.text(title), findsOneWidget);
+    expect(find.text(description), findsOneWidget);
     expect(find.byIcon(Icons.edit), findsOneWidget);
     expect(find.byIcon(Icons.delete_outline), findsOneWidget);
   });

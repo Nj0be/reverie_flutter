@@ -22,7 +22,6 @@ class MockLoc extends Mock implements AppLocalizations {}
 class FakeEditDiaryNotifier extends EditDiaryNotifier {
   bool saveCalled = false;
 
-
   FakeEditDiaryNotifier({
     required super.diaryId,
     required super.repository,
@@ -55,18 +54,9 @@ void main() {
       DiaryCover(id: '1', url: 'https://example.com/cover1.jpg'),
       DiaryCover(id: '2', url: 'https://example.com/cover2.jpg'),
     ]);
-
-    when(mockLoc.createDiary).thenReturn('Create Diary');
-    when(mockLoc.editDiary).thenReturn('Edit Diary');
-    when(mockLoc.title).thenReturn('Title');
-    when(mockLoc.description).thenReturn('Description');
-    when(mockLoc.save).thenReturn('Save');
-    when(mockLoc.errorMessage).thenReturn('Error');
-
-
   });
 
-  testWidgets('EditDiaryScreen renders and save button calls onSaveDiary', (tester) async {
+  testWidgets('Renders and triggers save button to save Diary', (tester) async {
 
     final fakeDiary = Diary(
       id: 'test-diary-id',
@@ -118,8 +108,6 @@ void main() {
         ),
       ),
     );
-
-
 
     await tester.pumpAndSettle();
 

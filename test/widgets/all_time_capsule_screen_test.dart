@@ -30,14 +30,9 @@ void main() {
 
     when(mockAuth.currentUser).thenReturn(mockUser);
     when(mockUser.uid).thenReturn('test-user-id');
-
-    when(mockLoc.confirmDiaryDeletion).thenReturn('delete');
-    when(mockLoc.letterForTheFuture).thenReturn('letterTitle');
-    when(mockLoc.letterForTheFutureDescription).thenReturn('letterDescription');
-    when(mockLoc.error).thenReturn('error');
   });
 
-  testWidgets('Visualizza titolo delle time capsule', (tester) async {
+  testWidgets('Displays time capsule title', (tester) async {
     final fakeTimeCapsule = TimeCapsule(
       id: '1',
       userId: 'test-user-id',
@@ -78,6 +73,7 @@ void main() {
             DefaultWidgetsLocalizations.delegate,
             DefaultMaterialLocalizations.delegate,
           ],
+          supportedLocales: const [Locale('en')],
           home: AllTimeCapsulesScreen(
             onNavigateToCreateTimeCapsule: () async => fakeTimeCapsule,
             onNavigateToViewTimeCapsule: (_, __) {},
