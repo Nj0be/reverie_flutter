@@ -52,13 +52,17 @@ class AllTimeCapsulesScreen extends ConsumerWidget {
         };
 
         return Scaffold(
-          floatingActionButton: FloatingActionButton(
-            onPressed: () async {
-              final newCapsule = await _onNavigateToCreateTimeCapsule();
-              notifier.addNewTimeCapsule(newCapsule);
-            },
-            child: Icon(Icons.add),
+          floatingActionButton: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 16),
+              child: FloatingActionButton(
+              onPressed: () async {
+                final newCapsule = await _onNavigateToCreateTimeCapsule();
+                notifier.addNewTimeCapsule(newCapsule);
+              },
+              child: Icon(Icons.add),
+            ),
           ),
+          floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
           body: SafeArea(
             child: ListView(
               children: [
