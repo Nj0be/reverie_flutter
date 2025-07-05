@@ -39,6 +39,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       title: 'Reverie',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: AppColors.secondary),
         useMaterial3: true,
@@ -57,7 +58,6 @@ class MyApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: AppLocalizations.supportedLocales,
-      locale: const Locale('en'),
     );
   }
 }
@@ -87,42 +87,32 @@ class _MainScaffoldState extends State<MainScaffold> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
-        centerTitle: true,
+        title: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
+          child: Text(widget.title),
+        ),
+        centerTitle: false,
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         actions: widget.hideBars
             ? []
             : [
-                IconButton(
-                  icon: const Icon(Icons.person),
-                  tooltip: AppLocalizations.of(context)!.yourProfile,
-                  onPressed: () {
-                    context.pushNamed(
-                      ProfileScreen.name,
-                      pathParameters: {'id': ?getUserId()},
-                    );
-                  },
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
+                  child:
+                  IconButton(
+                    icon: const Icon(Icons.person),
+                    tooltip: AppLocalizations.of(context)!.yourProfile,
+                    onPressed: () {
+                      context.pushNamed(
+                        ProfileScreen.name,
+                        pathParameters: {'profileId': ?getUserId()},
+                      );
+                    },
+                  ),
                 ),
               ],
       ),
       body: widget.child,
-      drawer: widget.hideBars
-          ? null
-          : Drawer(
-              child: ListView(
-                padding: EdgeInsets.zero,
-                children: [
-                  DrawerHeader(
-                    decoration: BoxDecoration(color: AppColors.background),
-                    child: Text(AppLocalizations.of(context)!.settings),
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.help_outline),
-                    title: Text(AppLocalizations.of(context)!.help),
-                  ),
-                ],
-              ),
-            ),
       bottomNavigationBar: widget.hideBars
           ? null
           : BottomNavigationBar(

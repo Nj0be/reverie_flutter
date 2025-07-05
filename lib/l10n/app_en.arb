@@ -104,5 +104,9 @@
     "settings": "Settings",
     "help": "Help and Feedbacks",
     "reverie": "Reverie",
-    "userNotSignedIn": "User not signed in"
+    "userNotSignedIn": "User not signed in",
+    "generalInfo": "General info",
+    "scheduled": "Scheduled",
+    "sent": "Sent",
+    "received": "Received"
 }

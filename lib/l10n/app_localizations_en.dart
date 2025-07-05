@@ -329,4 +329,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get userNotSignedIn => 'User not signed in';
+
+  @override
+  String get generalInfo => 'General info';
+
+  @override
+  String get scheduled => 'Scheduled';
+
+  @override
+  String get sent => 'Sent';
+
+  @override
+  String get received => 'Received';
 }

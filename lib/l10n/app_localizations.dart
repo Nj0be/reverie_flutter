@@ -733,6 +733,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'User not signed in'**
   String get userNotSignedIn;
+
+  /// No description provided for @generalInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'General info'**
+  String get generalInfo;
+
+  /// No description provided for @scheduled.
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduled'**
+  String get scheduled;
+
+  /// No description provided for @sent.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent'**
+  String get sent;
+
+  /// No description provided for @received.
+  ///
+  /// In en, this message translates to:
+  /// **'Received'**
+  String get received;
 }
 
 class _AppLocalizationsDelegate

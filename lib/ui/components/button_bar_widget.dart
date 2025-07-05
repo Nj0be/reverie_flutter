@@ -5,12 +5,14 @@ class ButtonBarWidget<T> extends StatelessWidget {
   final T buttonState;
   final List<T> buttonElements;
   final ValueChanged<T> onButtonStateUpdate;
+  final String Function(T)? displayNameBuilder;
 
   const ButtonBarWidget({
     super.key,
     required this.buttonState,
     required this.buttonElements,
     required this.onButtonStateUpdate,
+    this.displayNameBuilder,
   });
 
   @override
@@ -52,12 +54,9 @@ class ButtonBarWidget<T> extends StatelessWidget {
   }
 
   String _displayName(T item) {
-    // Check if item has a `name` property (enum in Dart 2.15+)
-    // We can do this with `item is Enum` or use a try-catch on `item.name`
+    if (displayNameBuilder != null) return displayNameBuilder!(item);
 
-    if (item is Enum) {
-      return (item as Enum).name.toUpperCase();
-    }
+    if (item is Enum) return item.name.toUpperCase();
     return item.toString().toUpperCase();
   }
 }

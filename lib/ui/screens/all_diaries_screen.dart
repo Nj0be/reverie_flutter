@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reverie_flutter/data/model/diary.dart';
 import 'package:reverie_flutter/l10n/app_localizations.dart';
+import 'package:reverie_flutter/utils.dart';
 import '../../notifier/all_diaries_notifier.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:intl/intl.dart';
 
 
 class AllDiariesScreen extends ConsumerWidget {
@@ -24,6 +24,7 @@ class AllDiariesScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+
     // Gestione dialog tramite listener
     ref.listen<AsyncValue<AllDiariesState>>(allDiariesNotifierProvider, (previous, next) {
       next.whenData((data) {
@@ -58,7 +59,8 @@ class AllDiariesScreen extends ConsumerWidget {
     });
 
     final state = ref.watch(allDiariesNotifierProvider);
-    final notifier = ref.watch(allDiariesNotifierProvider.notifier);
+    final notifier = ref.read(allDiariesNotifierProvider.notifier);
+    final localizations = AppLocalizations.of(context)!;
 
     return state.when(
       data: (data) {
@@ -68,6 +70,13 @@ class AllDiariesScreen extends ConsumerWidget {
         final controller = data.pageController;
 
         return Scaffold(
+          floatingActionButton: FloatingActionButton(
+            onPressed: () async {
+              final updatedDiary = await onNavigateToCreateDiary();
+              notifier.overwriteDiary(updatedDiary);
+            },
+            child: const Icon(Icons.add),
+          ),
           body: Column(
             children: [
               Flexible(
@@ -147,21 +156,21 @@ class AllDiariesScreen extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Center(
+                    Center(
                       child: Text(
-                        "Informazioni generali",
+                        "${localizations.generalInfo}:",
                         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                       ),
                     ),
                     const SizedBox(height: 16),
-                    const Text(
-                      "Creation Date:",
+                    Text(
+                      "${localizations.creationDate}:",
                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                     ),
-                    Text(DateFormat('dd MMM yyyy').format(diaries[currentIndex].creationDate.toDate())),
+                    Text(formatDate(diaries[currentIndex].creationDate.toDate())),
                     const SizedBox(height: 16),
-                    const Text(
-                      "Page Number:",
+                    Text(
+                      "${localizations.pageNumber}:",
                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                     ),
                     Text(diaries[currentIndex].pageIds.length.toString()),
@@ -170,13 +179,6 @@ class AllDiariesScreen extends ConsumerWidget {
                 ),
               ),
             ],
-          ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () async {
-              final updatedDiary = await onNavigateToCreateDiary();
-              notifier.overwriteDiary(updatedDiary);
-            },
-            child: const Icon(Icons.add),
           ),
         );
       },

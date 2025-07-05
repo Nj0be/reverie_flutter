@@ -93,5 +93,9 @@
     "errorMessage": "Errore",
     "settings": "Impostazioni",
     "help": "Aiuto e Feedbacks",
-    "userNotSignedIn": "Utente non loggato"
+    "userNotSignedIn": "Utente non loggato",
+    "generalInfo": "Informazioni generali",
+    "scheduled": "Programmate",
+    "sent": "Inviate",
+    "received": "Ricevute"
 }

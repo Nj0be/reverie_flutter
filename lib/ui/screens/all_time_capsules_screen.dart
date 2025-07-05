@@ -108,6 +108,13 @@ class AllTimeCapsulesScreen extends ConsumerWidget {
                   buttonState: data.buttonState,
                   buttonElements: data.buttonElements,
                   onButtonStateUpdate: notifier.onButtonStateUpdate,
+                  displayNameBuilder: (filter) {
+                    switch (filter) {
+                      case TimeCapsuleType.scheduled: return localizations.scheduled;
+                      case TimeCapsuleType.sent: return localizations.sent;
+                      case TimeCapsuleType.received: return localizations.received;
+                    }
+                  },
                 ),
                 ...capsules.map((capsule) {
                   return Column(

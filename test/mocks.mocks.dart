@@ -2409,6 +2409,50 @@ class MockAppLocalizations extends _i1.Mock implements _i18.AppLocalizations {
             ),
           )
           as String);
+
+  @override
+  String get generalInfo =>
+      (super.noSuchMethod(
+            Invocation.getter(#generalInfo),
+            returnValue: _i14.dummyValue<String>(
+              this,
+              Invocation.getter(#generalInfo),
+            ),
+          )
+          as String);
+
+  @override
+  String get scheduled =>
+      (super.noSuchMethod(
+            Invocation.getter(#scheduled),
+            returnValue: _i14.dummyValue<String>(
+              this,
+              Invocation.getter(#scheduled),
+            ),
+          )
+          as String);
+
+  @override
+  String get sent =>
+      (super.noSuchMethod(
+            Invocation.getter(#sent),
+            returnValue: _i14.dummyValue<String>(
+              this,
+              Invocation.getter(#sent),
+            ),
+          )
+          as String);
+
+  @override
+  String get received =>
+      (super.noSuchMethod(
+            Invocation.getter(#received),
+            returnValue: _i14.dummyValue<String>(
+              this,
+              Invocation.getter(#received),
+            ),
+          )
+          as String);
 }
 
 /// A class which mocks [CreateTimeCapsuleNotifier].
