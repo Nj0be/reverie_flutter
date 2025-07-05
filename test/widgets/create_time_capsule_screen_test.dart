@@ -56,6 +56,8 @@ void main() {
   });
 
   testWidgets('Renders and triggers create button to create TimeCapsule', (tester) async {
+    final create = 'Create';
+    final selectDate = 'Select Date';
 
     final fakeTimeCapsule = TimeCapsule(
       id: '1',
@@ -101,16 +103,16 @@ void main() {
     await tester.pump();
 
     // Controlla che ci siano i widget principali
-    expect(find.text('Create'), findsOneWidget);
-    expect(find.text('Select Date'), findsOneWidget);
+    expect(find.text(create), findsOneWidget);
+    expect(find.text(selectDate), findsOneWidget);
     expect(find.byType(SingleLineFieldWithError), findsNWidgets(2));
     expect(find.byType(ContentTextFieldWithError), findsOneWidget);
     expect(find.byType(PhoneNumberField), findsOneWidget);
 
     // Tap sul bottone "Create"
-    await tester.ensureVisible(find.text('Create'));
+    await tester.ensureVisible(find.text(create));
 
-    await tester.tap(find.text('Create'));
+    await tester.tap(find.text(create));
     await tester.pump();
 
     // Verifica che sia stata chiamata createTimeCapsule
