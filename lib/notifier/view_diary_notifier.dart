@@ -89,7 +89,15 @@ class ViewDiaryNotifier extends StateNotifier<AsyncValue<ViewDiaryState>> {
     };
 
     state = AsyncData(
-        ViewDiaryState(diary: diary, pagesMap: pagesMap)
+      ViewDiaryState(
+        diary: diary,
+        pagesMap: pagesMap,
+        textStyle: const TextStyle(
+          fontSize: 18,
+          color: Colors.black,
+        ),
+        pageKey: GlobalKey(),
+      ),
     );
     state = state.whenData((s) => s.copyWith(pageController: PageController(initialPage: s.lastSubPageIndex)));
   }

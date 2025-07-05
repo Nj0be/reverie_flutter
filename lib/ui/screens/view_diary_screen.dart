@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reverie_flutter/data/model/diary_page.dart';
 import 'package:reverie_flutter/l10n/app_localizations.dart';
+import 'package:reverie_flutter/main.dart';
 import 'package:reverie_flutter/notifier/view_diary_notifier.dart';
 import 'package:reverie_flutter/ui/screens/all_diaries_screen.dart';
+import 'package:reverie_flutter/ui/themes/colors.dart';
 import 'package:reverie_flutter/utils.dart';
 
 class ViewDiaryScreen extends ConsumerStatefulWidget {
@@ -65,7 +67,7 @@ class _ViewDiaryScreenState extends ConsumerState<ViewDiaryScreen> {
         child: Column(
           children: [
             Text(
-              formatDate(data.currentPage.timestamp.toDate(), pattern: 'dd MMMM'),
+              data.diary.title,
               textAlign: TextAlign.center,
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
@@ -73,31 +75,45 @@ class _ViewDiaryScreenState extends ConsumerState<ViewDiaryScreen> {
               ),
             ),
             Expanded(
-              child: Container(
-                color: Colors.yellowAccent.withValues(alpha: 0.2),
-                child: Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: PageView.builder(
-                    key: data.pageKey,
-                    controller: data.pageController,
-                    itemCount: data.splitPages.length,
-                    onPageChanged: (_) { notifier.refreshState(); },
-                    itemBuilder: (context, index) => Text(
-                        data.splitPages[index],
-                        style: data.textStyle
+              child: Card(
+                elevation: 8,
+                color: AppColors.diaryPaperWhite,
+                child: PageView.builder(
+                  key: data.pageKey,
+                  controller: data.pageController,
+                  itemCount: data.splitPages.length,
+                  onPageChanged: (_) { notifier.refreshState(); },
+                  itemBuilder: (context, index) => Padding(
+                    padding: const EdgeInsets.all(16), // 👈 padding applicato a ogni pagina
+                    child: Text(
+                      data.splitPages[index],
+                      style: data.textStyle,
                     ),
+                  )
                 ),
-                )
               ),
             ),
             _pageControls(data, notifier),
-            IconButton(
-              icon: const Icon(Icons.edit),
-              onPressed: () async {
-                final updatedPage = await widget.onNavigateToEditDiaryPage(data.currentPage.id);
-                notifier.overwritePage(updatedPage);
-              },
-            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  formatDate(data.currentPage.timestamp.toDate(), pattern: 'dd MMMM'),
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.normal,
+                    fontSize: 18,
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.edit),
+                  onPressed: () async {
+                    final updatedPage = await widget.onNavigateToEditDiaryPage(data.currentPage.id);
+                    notifier.overwritePage(updatedPage);
+                  },
+                ),
+              ],
+            )
           ],
         ),
       ),
