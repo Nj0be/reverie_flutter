@@ -2,9 +2,9 @@ import 'dart:math';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:reverie_flutter/data/model/diary.dart';
-import 'package:reverie_flutter/data/model/diary_page.dart';
-import 'package:reverie_flutter/data/repository/diary_repository.dart';
+import 'package:reverieflutter/data/model/diary.dart';
+import 'package:reverieflutter/data/model/diary_page.dart';
+import 'package:reverieflutter/data/repository/diary_repository.dart';
 import 'package:flutter/material.dart';
 
 part 'view_diary_notifier.freezed.dart';

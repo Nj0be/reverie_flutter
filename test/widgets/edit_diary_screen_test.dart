@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:reverie_flutter/data/model/diary.dart';
-import 'package:reverie_flutter/data/model/diary_cover.dart';
-import 'package:reverie_flutter/data/repository/diary_repository.dart';
-import 'package:reverie_flutter/l10n/app_localizations.dart';
-import 'package:reverie_flutter/notifier/edit_diary_notifier.dart';
-import 'package:reverie_flutter/ui/components/content_text_field.dart';
-import 'package:reverie_flutter/ui/components/single_field.dart';
-import 'package:reverie_flutter/ui/screens/edit_diary_screen.dart';
+import 'package:reverieflutter/data/model/diary.dart';
+import 'package:reverieflutter/data/model/diary_cover.dart';
+import 'package:reverieflutter/data/repository/diary_repository.dart';
+import 'package:reverieflutter/l10n/app_localizations.dart';
+import 'package:reverieflutter/notifier/edit_diary_notifier.dart';
+import 'package:reverieflutter/ui/components/content_text_field.dart';
+import 'package:reverieflutter/ui/components/single_field.dart';
+import 'package:reverieflutter/ui/screens/edit_diary_screen.dart';
 
 import '../mocks.mocks.dart';
 

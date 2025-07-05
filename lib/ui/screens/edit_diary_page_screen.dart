@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:reverie_flutter/data/model/diary_page.dart';
-import 'package:reverie_flutter/l10n/app_localizations.dart';
-import 'package:reverie_flutter/notifier/edit_diary_page_notifier.dart';
-import 'package:reverie_flutter/ui/components/content_text_field.dart';
-import 'package:reverie_flutter/ui/screens/all_diaries_screen.dart';
+import 'package:reverieflutter/data/model/diary_page.dart';
+import 'package:reverieflutter/l10n/app_localizations.dart';
+import 'package:reverieflutter/notifier/edit_diary_page_notifier.dart';
+import 'package:reverieflutter/ui/components/content_text_field.dart';
+import 'package:reverieflutter/ui/screens/all_diaries_screen.dart';
 
 
 class EditDiaryPageScreen extends ConsumerWidget {

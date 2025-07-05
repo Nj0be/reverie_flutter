@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:reverie_flutter/data/model/diary_page.dart';
-import 'package:reverie_flutter/l10n/app_localizations.dart';
-import 'package:reverie_flutter/notifier/view_diary_notifier.dart';
-import 'package:reverie_flutter/ui/screens/all_diaries_screen.dart';
-import 'package:reverie_flutter/ui/themes/colors.dart';
-import 'package:reverie_flutter/utils.dart';
+import 'package:reverieflutter/data/model/diary_page.dart';
+import 'package:reverieflutter/l10n/app_localizations.dart';
+import 'package:reverieflutter/notifier/view_diary_notifier.dart';
+import 'package:reverieflutter/ui/screens/all_diaries_screen.dart';
+import 'package:reverieflutter/ui/themes/colors.dart';
+import 'package:reverieflutter/utils.dart';
 
 class ViewDiaryScreen extends ConsumerStatefulWidget {
   static const String name = 'view_diary';

@@ -3,12 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:reverie_flutter/data/model/time_capsule.dart';
-import 'package:reverie_flutter/data/repository/time_capsule_repository.dart';
-import 'package:reverie_flutter/l10n/app_localizations.dart';
-import 'package:reverie_flutter/notifier/all_time_capsules_notifier.dart';
+import 'package:reverieflutter/data/model/time_capsule.dart';
+import 'package:reverieflutter/data/repository/time_capsule_repository.dart';
+import 'package:reverieflutter/l10n/app_localizations.dart';
+import 'package:reverieflutter/notifier/all_time_capsules_notifier.dart';
 import 'package:mockito/mockito.dart';
-import 'package:reverie_flutter/ui/screens/all_time_capsules_screen.dart';
+import 'package:reverieflutter/ui/screens/all_time_capsules_screen.dart';
 
 import '../mocks.mocks.dart';
 

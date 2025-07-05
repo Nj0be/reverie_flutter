@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:reverie_flutter/l10n/app_localizations.dart';
-import 'package:reverie_flutter/notifier/all_time_capsules_notifier.dart';
-import 'package:reverie_flutter/notifier/view_time_capsule_notifier.dart';
-import 'package:reverie_flutter/utils.dart';
+import 'package:reverieflutter/l10n/app_localizations.dart';
+import 'package:reverieflutter/notifier/all_time_capsules_notifier.dart';
+import 'package:reverieflutter/notifier/view_time_capsule_notifier.dart';
+import 'package:reverieflutter/utils.dart';
 
 class ViewTimeCapsuleScreen extends ConsumerWidget {
   static const String name = 'view_time_capsule';
