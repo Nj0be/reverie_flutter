@@ -26,9 +26,9 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:382282258811:android:8655109cc9d752b34405de",
+        "mobilesdk_app_id": "1:382282258811:android:b468cc2cb29da1334405de",
         "android_client_info": {
-          "package_name": "com.mirage.reverie_flutter"
+          "package_name": "com.mirage.reverieflutter"
         }
       },
       "oauth_client": [],

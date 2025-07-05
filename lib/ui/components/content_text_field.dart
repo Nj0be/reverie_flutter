@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:reverie_flutter/ui/components/error_field.dart';
+import 'package:reverieflutter/ui/components/error_field.dart';
 
 // Basic ContentTextField without error
 class ContentTextField extends StatelessWidget {

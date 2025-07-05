@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:reverie_flutter/data/model/diary.dart';
-import 'package:reverie_flutter/l10n/app_localizations.dart';
-import 'package:reverie_flutter/utils.dart';
+import 'package:reverieflutter/data/model/diary.dart';
+import 'package:reverieflutter/l10n/app_localizations.dart';
+import 'package:reverieflutter/utils.dart';
 import '../../notifier/all_diaries_notifier.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:reverie_flutter/data/model/time_capsule.dart';
-import 'package:reverie_flutter/data/repository/user_repository.dart';
-import 'package:reverie_flutter/storage_service.dart';
+import 'package:reverieflutter/data/model/time_capsule.dart';
+import 'package:reverieflutter/data/repository/user_repository.dart';
+import 'package:reverieflutter/storage_service.dart';
 
 final timeCapsuleRepositoryProvider = Provider<TimeCapsuleRepository>((ref) {
   final storage = ref.read(storageServiceProvider);

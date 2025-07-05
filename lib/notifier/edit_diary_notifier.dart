@@ -1,13 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:reverie_flutter/data/model/diary.dart';
-import 'package:reverie_flutter/data/repository/diary_repository.dart';
-import 'package:reverie_flutter/l10n/app_localizations.dart';
-import 'package:reverie_flutter/storage_service.dart';
+import 'package:reverieflutter/data/model/diary.dart';
+import 'package:reverieflutter/data/repository/diary_repository.dart';
+import 'package:reverieflutter/l10n/app_localizations.dart';
+import 'package:reverieflutter/storage_service.dart';
 import 'package:riverpod/riverpod.dart';
-import 'package:reverie_flutter/data/model/diary_cover.dart';
-import 'package:reverie_flutter/l10n/localizations_provider.dart';
+import 'package:reverieflutter/data/model/diary_cover.dart';
+import 'package:reverieflutter/l10n/localizations_provider.dart';
 
 part 'edit_diary_notifier.freezed.dart';
 

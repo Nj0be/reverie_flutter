@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:reverie_flutter/ui/themes/colors.dart';
+import 'package:reverieflutter/ui/themes/colors.dart';
 
 class ButtonBarWidget<T> extends StatelessWidget {
   final T buttonState;

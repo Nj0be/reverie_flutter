@@ -1,10 +1,10 @@
 import 'package:async/async.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:reverie_flutter/data/model/user.dart';
+import 'package:reverieflutter/data/model/user.dart';
 import 'dart:async';
-import 'package:reverie_flutter/data/repository/user_repository.dart';
-import 'package:reverie_flutter/l10n/app_localizations.dart';
-import 'package:reverie_flutter/l10n/localizations_provider.dart';
+import 'package:reverieflutter/data/repository/user_repository.dart';
+import 'package:reverieflutter/l10n/app_localizations.dart';
+import 'package:reverieflutter/l10n/localizations_provider.dart';
 import 'package:riverpod/riverpod.dart';
 
 part 'edit_profile_notifier.freezed.dart';

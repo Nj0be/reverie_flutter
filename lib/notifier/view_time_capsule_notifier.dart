@@ -1,10 +1,10 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:reverie_flutter/data/model/time_capsule.dart';
-import 'package:reverie_flutter/data/model/username.dart';
-import 'package:reverie_flutter/data/repository/time_capsule_repository.dart';
-import 'package:reverie_flutter/data/repository/user_repository.dart';
-import 'package:reverie_flutter/notifier/all_time_capsules_notifier.dart';
+import 'package:reverieflutter/data/model/time_capsule.dart';
+import 'package:reverieflutter/data/model/username.dart';
+import 'package:reverieflutter/data/repository/time_capsule_repository.dart';
+import 'package:reverieflutter/data/repository/user_repository.dart';
+import 'package:reverieflutter/notifier/all_time_capsules_notifier.dart';
 
 part 'view_time_capsule_notifier.freezed.dart';
 

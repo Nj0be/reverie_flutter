@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:reverie_flutter/data/model/user.dart';
-import 'package:reverie_flutter/l10n/app_localizations.dart';
+import 'package:reverieflutter/data/model/user.dart';
+import 'package:reverieflutter/l10n/app_localizations.dart';
 import '../../notifier/profile_notifier.dart';
 
 class ProfileScreen extends ConsumerWidget {

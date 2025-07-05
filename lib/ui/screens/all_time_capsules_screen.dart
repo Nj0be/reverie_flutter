@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:reverie_flutter/data/model/time_capsule.dart';
-import 'package:reverie_flutter/l10n/app_localizations.dart';
-import 'package:reverie_flutter/notifier/all_time_capsules_notifier.dart';
-import 'package:reverie_flutter/ui/components/button_bar_widget.dart';
-import 'package:reverie_flutter/ui/themes/colors.dart';
+import 'package:reverieflutter/data/model/time_capsule.dart';
+import 'package:reverieflutter/l10n/app_localizations.dart';
+import 'package:reverieflutter/notifier/all_time_capsules_notifier.dart';
+import 'package:reverieflutter/ui/components/button_bar_widget.dart';
+import 'package:reverieflutter/ui/themes/colors.dart';
 
 class AllTimeCapsulesScreen extends ConsumerWidget {
   static const String name = 'all_time_capsules';

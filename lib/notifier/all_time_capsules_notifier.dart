@@ -1,11 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:reverie_flutter/data/model/time_capsule.dart';
-import 'package:reverie_flutter/data/repository/time_capsule_repository.dart';
-import 'package:reverie_flutter/l10n/app_localizations.dart';
-import 'package:reverie_flutter/l10n/localizations_provider.dart';
-import 'package:reverie_flutter/storage_service.dart';
+import 'package:reverieflutter/data/model/time_capsule.dart';
+import 'package:reverieflutter/data/repository/time_capsule_repository.dart';
+import 'package:reverieflutter/l10n/app_localizations.dart';
+import 'package:reverieflutter/l10n/localizations_provider.dart';
+import 'package:reverieflutter/storage_service.dart';
 import 'package:riverpod/riverpod.dart';
 
 part 'all_time_capsules_notifier.freezed.dart';

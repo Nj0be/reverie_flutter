@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_libphonenumber/flutter_libphonenumber.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:reverie_flutter/data/model/time_capsule.dart';
-import 'package:reverie_flutter/data/model/user.dart';
-import 'package:reverie_flutter/l10n/app_localizations.dart';
-import 'package:reverie_flutter/notifier/create_time_capsule_notifier.dart';
-import 'package:reverie_flutter/ui/components/content_text_field.dart';
-import 'package:reverie_flutter/ui/components/error_field.dart';
-import 'package:reverie_flutter/ui/components/phone_number.dart';
-import 'package:reverie_flutter/ui/components/single_field.dart';
-import 'package:reverie_flutter/utils.dart';
+import 'package:reverieflutter/data/model/time_capsule.dart';
+import 'package:reverieflutter/data/model/user.dart';
+import 'package:reverieflutter/l10n/app_localizations.dart';
+import 'package:reverieflutter/notifier/create_time_capsule_notifier.dart';
+import 'package:reverieflutter/ui/components/content_text_field.dart';
+import 'package:reverieflutter/ui/components/error_field.dart';
+import 'package:reverieflutter/ui/components/phone_number.dart';
+import 'package:reverieflutter/ui/components/single_field.dart';
+import 'package:reverieflutter/utils.dart';
 
 class CreateTimeCapsuleScreen extends ConsumerWidget {
   static const String name = 'create_time_capsule';

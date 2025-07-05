@@ -1,14 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:reverie_flutter/data/model/diary.dart';
-import 'package:reverie_flutter/data/model/diary_cover.dart';
-import 'package:reverie_flutter/data/model/diary_image.dart';
-import 'package:reverie_flutter/data/model/diary_page.dart';
-import 'package:reverie_flutter/data/model/diary_sub_page.dart';
-import 'package:reverie_flutter/data/model/time_capsule.dart';
-import 'package:reverie_flutter/l10n/app_localizations.dart';
-import 'package:reverie_flutter/l10n/localizations_provider.dart';
+import 'package:reverieflutter/data/model/diary.dart';
+import 'package:reverieflutter/data/model/diary_cover.dart';
+import 'package:reverieflutter/data/model/diary_image.dart';
+import 'package:reverieflutter/data/model/diary_page.dart';
+import 'package:reverieflutter/data/model/diary_sub_page.dart';
+import 'package:reverieflutter/data/model/time_capsule.dart';
+import 'package:reverieflutter/l10n/app_localizations.dart';
+import 'package:reverieflutter/l10n/localizations_provider.dart';
 import 'dart:async';
 
 import 'data/model/user.dart';

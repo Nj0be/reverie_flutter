@@ -1,4 +1,4 @@
-package com.mirage.reverie_flutter
+package com.mirage.reverieflutter
 
 import io.flutter.embedding.android.FlutterActivity
 

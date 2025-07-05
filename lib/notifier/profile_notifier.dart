@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:reverie_flutter/storage_service.dart';
+import 'package:reverieflutter/storage_service.dart';
 import '../data/repository/user_repository.dart';
 import '../data/model/user.dart';
 import 'package:riverpod/riverpod.dart';

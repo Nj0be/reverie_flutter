@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:reverie_flutter/ui/components/error_field.dart';
+import 'package:reverieflutter/ui/components/error_field.dart';
 
 class SingleLineField extends StatelessWidget {
   final String value;

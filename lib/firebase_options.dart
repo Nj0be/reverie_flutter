@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAbvxnvNjcAGbuVgFux4vZUJKmRU0HL4T8',
-    appId: '1:382282258811:android:8655109cc9d752b34405de',
+    appId: '1:382282258811:android:b468cc2cb29da1334405de',
     messagingSenderId: '382282258811',
     projectId: 'reverie-96138',
     storageBucket: 'reverie-96138.firebasestorage.app',

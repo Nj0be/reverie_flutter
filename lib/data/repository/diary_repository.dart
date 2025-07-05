@@ -1,9 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:reverie_flutter/data/model/diary_cover.dart';
-import 'package:reverie_flutter/data/model/diary_page.dart';
-import 'package:reverie_flutter/data/model/diary_sub_page.dart';
-import 'package:reverie_flutter/storage_service.dart';
-import 'package:reverie_flutter/data/repository/user_repository.dart';
+import 'package:reverieflutter/data/model/diary_cover.dart';
+import 'package:reverieflutter/data/model/diary_page.dart';
+import 'package:reverieflutter/data/model/diary_sub_page.dart';
+import 'package:reverieflutter/storage_service.dart';
+import 'package:reverieflutter/data/repository/user_repository.dart';
 
 import '../model/diary.dart';
 import '../model/diary_image.dart';

@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:reverie_flutter/data/model/diary.dart';
-import 'package:reverie_flutter/l10n/app_localizations.dart';
-import 'package:reverie_flutter/ui/components/content_text_field.dart';
-import 'package:reverie_flutter/ui/components/single_field.dart';
-import 'package:reverie_flutter/ui/screens/all_diaries_screen.dart';
+import 'package:reverieflutter/data/model/diary.dart';
+import 'package:reverieflutter/l10n/app_localizations.dart';
+import 'package:reverieflutter/ui/components/content_text_field.dart';
+import 'package:reverieflutter/ui/components/single_field.dart';
+import 'package:reverieflutter/ui/screens/all_diaries_screen.dart';
 import '../../notifier/edit_diary_notifier.dart';
 
 

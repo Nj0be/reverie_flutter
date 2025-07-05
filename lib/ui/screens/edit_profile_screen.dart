@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:reverie_flutter/data/model/user.dart';
-import 'package:reverie_flutter/l10n/app_localizations.dart';
-import 'package:reverie_flutter/ui/components/error_field.dart';
-import 'package:reverie_flutter/ui/components/single_field.dart';
-import 'package:reverie_flutter/ui/screens/profile_screen.dart';
+import 'package:reverieflutter/data/model/user.dart';
+import 'package:reverieflutter/l10n/app_localizations.dart';
+import 'package:reverieflutter/ui/components/error_field.dart';
+import 'package:reverieflutter/ui/components/single_field.dart';
+import 'package:reverieflutter/ui/screens/profile_screen.dart';
 import '../../notifier/edit_profile_notifier.dart';
 
 class EditProfileScreen extends ConsumerWidget {

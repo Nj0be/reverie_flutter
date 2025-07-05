@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:reverie_flutter/l10n/app_localizations.dart';
-import 'package:reverie_flutter/notifier/signup_notifier.dart';
-import 'package:reverie_flutter/ui/components/error_field.dart';
-import 'package:reverie_flutter/ui/components/single_field.dart';
+import 'package:reverieflutter/l10n/app_localizations.dart';
+import 'package:reverieflutter/notifier/signup_notifier.dart';
+import 'package:reverieflutter/ui/components/error_field.dart';
+import 'package:reverieflutter/ui/components/single_field.dart';
 
 class SignupScreen extends ConsumerWidget {
   static const String name = 'signup';
