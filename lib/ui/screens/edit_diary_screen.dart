@@ -126,6 +126,9 @@ class DiaryCoverPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Image.network(coverUrl, fit: BoxFit.cover);
+    return Image.network(coverUrl,
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) => const Icon(Icons.broken_image),
+    );
   }
 }
