@@ -26,7 +26,6 @@ abstract class ViewDiaryState with _$ViewDiaryState {
     Diary? diary,
     @Default({}) Map<String, DiaryPage> pagesMap,
     PageController? pageController,
-    @Default(TextStyle(fontSize: 25, color: Colors.black)) TextStyle textStyle,
     GlobalKey<State<StatefulWidget>>? pageKey,
   }) = _ViewDiaryState;
 
@@ -42,7 +41,7 @@ abstract class ViewDiaryState with _$ViewDiaryState {
   }();
   List<List<String>> get splitPagesList => pages.map((p) => p.content).toList().map((text) => splitText(
     text: text,
-    textStyle: textStyle,
+    textStyle: ViewDiaryNotifier.textStyle,
     pageSize: pageSize,
   )).toList();
   List<String> get splitPages => splitPagesList.expand((e) => e).toList();
@@ -52,36 +51,27 @@ abstract class ViewDiaryState with _$ViewDiaryState {
   int get lastSubPageIndex => splitPages.length - 1;
 }
 
-@freezed
-abstract class ViewDiaryParams with _$ViewDiaryParams{
-  factory ViewDiaryParams({
-    @Default('') String diaryId,
-    @Default(Size(0, 0)) Size pageSize,
-  }) = _ViewDiaryParams;
-}
-
-final viewDiaryNotifierProvider = StateNotifierProvider.family<ViewDiaryNotifier, AsyncValue<ViewDiaryState>, ViewDiaryParams>((ref, params) {
+final viewDiaryNotifierProvider = StateNotifierProvider.family<ViewDiaryNotifier, AsyncValue<ViewDiaryState>, String>((ref, diaryId) {
   final repository = ref.read(diaryRepositoryProvider);
 
   return ViewDiaryNotifier(
     repository: repository,
-    diaryId: params.diaryId,
-    pageSize: params.pageSize,
+    diaryId: diaryId,
   );
 });
 
 class ViewDiaryNotifier extends StateNotifier<AsyncValue<ViewDiaryState>> {
   final DiaryRepository _repository;
+  static const TextStyle textStyle = TextStyle(fontSize: 18, fontWeight: FontWeight.normal);
 
   ViewDiaryNotifier({
     required DiaryRepository repository,
     required String diaryId,
-    required Size pageSize,
   }) : _repository = repository, super(AsyncLoading()) {
-    _onStart(diaryId, pageSize);
+    _onStart(diaryId);
   }
 
-  Future<void> _onStart(String diaryId, Size pageSize) async {
+  Future<void> _onStart(String diaryId) async {
     final diary = await _repository.getDiary(diaryId);
     final pagesMap = {
       for (var pageId in diary.pageIds)
@@ -89,15 +79,7 @@ class ViewDiaryNotifier extends StateNotifier<AsyncValue<ViewDiaryState>> {
     };
 
     state = AsyncData(
-      ViewDiaryState(
-        diary: diary,
-        pagesMap: pagesMap,
-        textStyle: const TextStyle(
-          fontSize: 18,
-          color: Colors.black,
-        ),
-        pageKey: GlobalKey(),
-      ),
+        ViewDiaryState(diary: diary, pagesMap: pagesMap)
     );
     state = state.whenData((s) => s.copyWith(pageController: PageController(initialPage: s.lastSubPageIndex)));
   }

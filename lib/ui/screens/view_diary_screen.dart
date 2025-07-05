@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reverie_flutter/data/model/diary_page.dart';
 import 'package:reverie_flutter/l10n/app_localizations.dart';
-import 'package:reverie_flutter/main.dart';
 import 'package:reverie_flutter/notifier/view_diary_notifier.dart';
 import 'package:reverie_flutter/ui/screens/all_diaries_screen.dart';
 import 'package:reverie_flutter/ui/themes/colors.dart';
@@ -38,14 +37,16 @@ class _ViewDiaryScreenState extends ConsumerState<ViewDiaryScreen> {
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
 
-    final pageSize = Size(0, 0);
-
-    final state = ref.watch(viewDiaryNotifierProvider(
-      ViewDiaryParams(diaryId: widget.diaryId, pageSize: pageSize),
-    ));
-    final notifier = ref.read(viewDiaryNotifierProvider(
-      ViewDiaryParams(diaryId: widget.diaryId, pageSize: pageSize),
-    ).notifier);
+    final state = ref.watch(
+      viewDiaryNotifierProvider(
+        widget.diaryId,
+      ),
+    );
+    final notifier = ref.read(
+      viewDiaryNotifierProvider(
+        widget.diaryId,
+      ).notifier,
+    );
 
     // TODO: bad (?) but it works
     var lastPageSize = state.asData?.value.pageSize;
@@ -53,8 +54,10 @@ class _ViewDiaryScreenState extends ConsumerState<ViewDiaryScreen> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final newLastPageSize = state.asData?.value.pageSize;
-      final newLastCurrentSubPageIndex = state.asData?.value.currentSubPageIndex;
-      if (lastPageSize != newLastPageSize || lastCurrentSubPageIndex != newLastCurrentSubPageIndex) {
+      final newLastCurrentSubPageIndex =
+          state.asData?.value.currentSubPageIndex;
+      if (lastPageSize != newLastPageSize ||
+          lastCurrentSubPageIndex != newLastCurrentSubPageIndex) {
         lastPageSize = newLastPageSize;
         lastCurrentSubPageIndex = newLastCurrentSubPageIndex;
         notifier.refreshState();
@@ -69,27 +72,22 @@ class _ViewDiaryScreenState extends ConsumerState<ViewDiaryScreen> {
             Text(
               data.diary.title,
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-              ),
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
             ),
             Expanded(
               child: Card(
                 elevation: 8,
                 color: AppColors.diaryPaperWhite,
-                child: PageView.builder(
-                  key: data.pageKey,
-                  controller: data.pageController,
-                  itemCount: data.splitPages.length,
-                  onPageChanged: (_) { notifier.refreshState(); },
-                  itemBuilder: (context, index) => Padding(
-                    padding: const EdgeInsets.all(16), // 👈 padding applicato a ogni pagina
-                    child: Text(
-                      data.splitPages[index],
-                      style: data.textStyle,
-                    ),
-                  )
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: PageView.builder(
+                    key: data.pageKey,
+                    controller: data.pageController,
+                    itemCount: data.splitPages.length,
+                    onPageChanged: (_) { notifier.refreshState(); },
+                    itemBuilder: (context, index) =>
+                        Text(data.splitPages[index], style: ViewDiaryNotifier.textStyle),
+                  ),
                 ),
               ),
             ),
@@ -98,7 +96,10 @@ class _ViewDiaryScreenState extends ConsumerState<ViewDiaryScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  formatDate(data.currentPage.timestamp.toDate(), pattern: 'dd MMMM'),
+                  formatDate(
+                    data.currentPage.timestamp.toDate(),
+                    pattern: 'dd MMMM',
+                  ),
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     fontWeight: FontWeight.normal,
@@ -108,18 +109,19 @@ class _ViewDiaryScreenState extends ConsumerState<ViewDiaryScreen> {
                 IconButton(
                   icon: const Icon(Icons.edit),
                   onPressed: () async {
-                    final updatedPage = await widget.onNavigateToEditDiaryPage(data.currentPage.id);
+                    final updatedPage = await widget.onNavigateToEditDiaryPage(
+                      data.currentPage.id,
+                    );
                     notifier.overwritePage(updatedPage);
                   },
                 ),
               ],
-            )
+            ),
           ],
         ),
       ),
-      error: (error, _) => Center(
-        child: Text('${localizations.error}: ${error.toString()}'),
-      ),
+      error: (error, _) =>
+          Center(child: Text('${localizations.error}: ${error.toString()}')),
       loading: () => const Center(child: CircularProgressIndicator()),
     );
   }
