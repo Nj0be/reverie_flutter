@@ -39,12 +39,12 @@ class _ViewDiaryScreenState extends ConsumerState<ViewDiaryScreen> {
 
     final state = ref.watch(
       viewDiaryNotifierProvider(
-        widget.diaryId,
+          ViewDiaryParams(diaryId: widget.diaryId, textScaler: MediaQuery.textScalerOf(context))
       ),
     );
     final notifier = ref.read(
       viewDiaryNotifierProvider(
-        widget.diaryId,
+          ViewDiaryParams(diaryId: widget.diaryId, textScaler: MediaQuery.textScalerOf(context))
       ).notifier,
     );
 

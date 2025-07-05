@@ -18,8 +18,13 @@ abstract class ViewDiaryState with _$ViewDiaryState {
   @override
   final GlobalKey<State<StatefulWidget>> pageKey;
 
-  ViewDiaryState._({Diary? diary, PageController? pageController, GlobalKey<State<StatefulWidget>>? pageKey})
-      : diary = diary ?? Diary(), pageController = pageController ?? PageController(), pageKey = pageKey ?? GlobalKey();
+  ViewDiaryState._({
+    Diary? diary,
+    PageController? pageController,
+    GlobalKey<State<StatefulWidget>>? pageKey,
+  }) : diary = diary ?? Diary(),
+       pageController = pageController ?? PageController(),
+       pageKey = pageKey ?? GlobalKey();
 
   @override
   factory ViewDiaryState({
@@ -27,11 +32,19 @@ abstract class ViewDiaryState with _$ViewDiaryState {
     @Default({}) Map<String, DiaryPage> pagesMap,
     PageController? pageController,
     GlobalKey<State<StatefulWidget>>? pageKey,
+    @Default(TextScaler.noScaling) TextScaler textScaler,
   }) = _ViewDiaryState;
 
-  int get currentSubPageIndex => pageController.hasClients ? (pageController.page?.round() ?? lastSubPageIndex) : lastSubPageIndex;
-  List<DiaryPage> get pages => diary.pageIds.map((pageId) => pagesMap[pageId]).whereType<DiaryPage>().toList();
-  Size get pageSize => (){
+  int get currentSubPageIndex => pageController.hasClients
+      ? (pageController.page?.round() ?? lastSubPageIndex)
+      : lastSubPageIndex;
+
+  List<DiaryPage> get pages => diary.pageIds
+      .map((pageId) => pagesMap[pageId])
+      .whereType<DiaryPage>()
+      .toList();
+
+  Size get pageSize => () {
     final renderBox = pageKey.currentContext?.findRenderObject() as RenderBox?;
 
     if (renderBox != null && renderBox.hasSize) {
@@ -39,49 +52,92 @@ abstract class ViewDiaryState with _$ViewDiaryState {
     }
     return Size(0, 0);
   }();
-  List<List<String>> get splitPagesList => pages.map((p) => p.content).toList().map((text) => splitText(
-    text: text,
-    textStyle: ViewDiaryNotifier.textStyle,
-    pageSize: pageSize,
-  )).toList();
+
+  List<List<String>> get splitPagesList => pages
+      .map((p) => p.content)
+      .toList()
+      .map(
+        (text) => splitText(
+          text: text,
+          textStyle: ViewDiaryNotifier.textStyle,
+          pageSize: pageSize,
+          textScaler: textScaler,
+        ),
+      )
+      .toList();
+
   List<String> get splitPages => splitPagesList.expand((e) => e).toList();
-  List<int> get pagePerSubPage => splitPagesList.asMap().entries.expand((entry) => List.filled(entry.value.length, entry.key)).toList();
-  int get currentPageIndex => pagePerSubPage[min(currentSubPageIndex, lastSubPageIndex)];
+
+  List<int> get pagePerSubPage => splitPagesList
+      .asMap()
+      .entries
+      .expand((entry) => List.filled(entry.value.length, entry.key))
+      .toList();
+
+  int get currentPageIndex =>
+      pagePerSubPage[min(currentSubPageIndex, lastSubPageIndex)];
+
   DiaryPage get currentPage => pages[currentPageIndex];
+
   int get lastSubPageIndex => splitPages.length - 1;
 }
 
-final viewDiaryNotifierProvider = StateNotifierProvider.family<ViewDiaryNotifier, AsyncValue<ViewDiaryState>, String>((ref, diaryId) {
-  final repository = ref.read(diaryRepositoryProvider);
+@freezed
+abstract class ViewDiaryParams with _$ViewDiaryParams {
+  factory ViewDiaryParams({
+    @Default('') String diaryId,
+    @Default(TextScaler.noScaling) TextScaler textScaler,
+  }) = _ViewDiaryParams;
+}
 
-  return ViewDiaryNotifier(
-    repository: repository,
-    diaryId: diaryId,
-  );
-});
+final viewDiaryNotifierProvider =
+    StateNotifierProvider.family<
+      ViewDiaryNotifier,
+      AsyncValue<ViewDiaryState>,
+      ViewDiaryParams
+    >((ref, params) {
+      final repository = ref.read(diaryRepositoryProvider);
+
+      return ViewDiaryNotifier(
+        repository: repository,
+        diaryId: params.diaryId,
+        textScaler: params.textScaler,
+      );
+    });
 
 class ViewDiaryNotifier extends StateNotifier<AsyncValue<ViewDiaryState>> {
   final DiaryRepository _repository;
-  static const TextStyle textStyle = TextStyle(fontSize: 18, fontWeight: FontWeight.normal);
+  static const TextStyle textStyle = TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.normal,
+    color: Colors.black,
+    inherit: false,
+  );
 
   ViewDiaryNotifier({
     required DiaryRepository repository,
     required String diaryId,
-  }) : _repository = repository, super(AsyncLoading()) {
-    _onStart(diaryId);
+    required TextScaler textScaler,
+  }) : _repository = repository,
+       super(AsyncLoading()) {
+    _onStart(diaryId, textScaler);
   }
 
-  Future<void> _onStart(String diaryId) async {
+  Future<void> _onStart(String diaryId, TextScaler textScaler) async {
     final diary = await _repository.getDiary(diaryId);
     final pagesMap = {
       for (var pageId in diary.pageIds)
-        pageId : await _repository.getPage(pageId)
+        pageId: await _repository.getPage(pageId),
     };
 
     state = AsyncData(
-        ViewDiaryState(diary: diary, pagesMap: pagesMap)
+      ViewDiaryState(diary: diary, pagesMap: pagesMap, textScaler: textScaler),
     );
-    state = state.whenData((s) => s.copyWith(pageController: PageController(initialPage: s.lastSubPageIndex)));
+    state = state.whenData(
+      (s) => s.copyWith(
+        pageController: PageController(initialPage: s.lastSubPageIndex),
+      ),
+    );
   }
 
   void jumpToFirstPage() {
@@ -127,18 +183,24 @@ List<String> splitText({
   required String text,
   required TextStyle textStyle,
   required Size pageSize,
+  required TextScaler textScaler,
 }) {
   final List<String> pageTexts = [];
   final textSpan = TextSpan(text: text, style: textStyle);
   final textPainter = TextPainter(
     text: textSpan,
     textDirection: TextDirection.ltr,
+    textScaler: textScaler,
   );
 
   textPainter.layout(minWidth: 0, maxWidth: pageSize.width);
   final lines = textPainter.computeLineMetrics();
 
-  double currentPageBottom = pageSize.height;
+  if (lines.isEmpty) return [text];
+
+  final lineHeight = lines.first.ascent + lines.first.descent;
+
+  double currentPageBottom = pageSize.height + lineHeight;
   int start = 0, end = 0;
 
   for (final line in lines) {
