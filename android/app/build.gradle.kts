@@ -46,6 +46,10 @@ android {
                 // Default file with automatically generated optimization rules.
                 getDefaultProguardFile("proguard-android-optimize.txt"),
             )
+            ndk {
+                //noinspection ChromeOsAbiSupport
+                abiFilters += listOf("arm64-v8a")
+            }
         }
     }
 }
