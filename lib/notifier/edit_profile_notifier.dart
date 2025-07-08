@@ -21,7 +21,7 @@ abstract class EditProfileState with _$EditProfileState {
   }) = _EditProfileState;
 }
 
-final editProfileNotifierProvider = StateNotifierProvider.family<
+final editProfileNotifierProvider = StateNotifierProvider.autoDispose.family<
     EditProfileNotifier,
     AsyncValue<EditProfileState>,
     String>((ref, profileId) {

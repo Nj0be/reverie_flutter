@@ -30,7 +30,7 @@ abstract class SignupState with _$SignupState {
   }) = _SignupState;
 }
 
-final signupNotifierProvider = StateNotifierProvider<SignupNotifier, SignupState>((
+final signupNotifierProvider = StateNotifierProvider.autoDispose<SignupNotifier, SignupState>((
     ref,
     ) {
   final repository = ref.read(userRepositoryProvider);
@@ -217,7 +217,6 @@ class SignupNotifier extends StateNotifier<SignupState> {
 
     if (user != null) {
       onSignupSuccess();
-      state = SignupState();
     } else {
       state = state.copyWith(formError: localizations.signupError);
     }

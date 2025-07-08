@@ -18,7 +18,7 @@ abstract class LoginState with _$LoginState {
   }) = _LoginState;
 }
 
-final loginNotifierProvider = StateNotifierProvider<LoginNotifier, LoginState>((
+final loginNotifierProvider = StateNotifierProvider.autoDispose<LoginNotifier, LoginState>((
   ref,
 ) {
   final repository = ref.read(userRepositoryProvider);
@@ -82,7 +82,6 @@ class LoginNotifier extends StateNotifier<LoginState> {
 
       if (isAuthenticated) {
         onLoginSuccess();
-        state = LoginState();
       } else {
         state = state.copyWith(formError: localizations.loginError);
       }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:reverieflutter/ui/components/error_field.dart';
 
-class SingleLineField extends StatelessWidget {
+class SingleLineField extends StatefulWidget {
   final String value;
   final ValueChanged<String> onNewValue;
   final String label;
@@ -18,25 +18,47 @@ class SingleLineField extends StatelessWidget {
   });
 
   @override
+  State<SingleLineField> createState() => _SingleLineFieldState();
+}
+
+class _SingleLineFieldState extends State<SingleLineField> {
+  late final TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(text: widget.value);
+  }
+
+  @override
+  void didUpdateWidget(SingleLineField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Only update if the external value changed
+    if (oldWidget.value != widget.value &&
+        widget.value != _controller.text) {
+      _controller.text = widget.value;
+      _controller.selection = TextSelection.collapsed(offset: widget.value.length);
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: width, // set your desired width here
+      width: widget.width,
       child: TextField(
-        controller: TextEditingController.fromValue(
-          TextEditingValue(
-            text: value,
-            selection: TextSelection.collapsed(offset: value.length),
-          ),
-        ),
-        onChanged: onNewValue,
+        controller: _controller,
+        onChanged: widget.onNewValue,
         decoration: InputDecoration(
-          labelText: label,
-          border: OutlineInputBorder(),
-          suffixIconConstraints: BoxConstraints(
-              minHeight: 24,
-              minWidth: 24
-          ),
-          suffixIcon: trailingIcon,
+          labelText: widget.label,
+          border: const OutlineInputBorder(),
+          suffixIconConstraints: const BoxConstraints(minHeight: 24, minWidth: 24),
+          suffixIcon: widget.trailingIcon,
         ),
         maxLines: 1,
       ),

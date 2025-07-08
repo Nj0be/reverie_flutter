@@ -17,7 +17,7 @@ abstract class ResetPasswordState with _$ResetPasswordState {
 }
 
 final resetPasswordNotifierProvider =
-    StateNotifierProvider<ResetPasswordNotifier, ResetPasswordState>((ref) {
+    StateNotifierProvider.autoDispose<ResetPasswordNotifier, ResetPasswordState>((ref) {
       final repository = ref.read(userRepositoryProvider);
       final localizations = ref.read(appLocalizationsProvider);
 
@@ -70,7 +70,6 @@ class ResetPasswordNotifier extends StateNotifier<ResetPasswordState> {
       );
 
       onResetPasswordSuccess();
-      state = ResetPasswordState();
     } catch (error) {
       // Handle any unexpected errors
       state = state.copyWith(formError: localizations.loginError);

@@ -27,7 +27,7 @@ abstract class EditDiaryState with _$EditDiaryState {
   }) = _EditDiaryState;
 }
 
-final editDiaryNotifierProvider = StateNotifierProvider.family<
+final editDiaryNotifierProvider = StateNotifierProvider.autoDispose.family<
   EditDiaryNotifier,
   AsyncValue<EditDiaryState>,
   String

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:reverieflutter/ui/components/error_field.dart';
 
-// Basic ContentTextField without error
-class ContentTextField extends StatelessWidget {
+class ContentTextField extends StatefulWidget {
   final String value;
   final ValueChanged<String> onNewValue;
   final String label;
@@ -17,28 +16,51 @@ class ContentTextField extends StatelessWidget {
   });
 
   @override
+  State<ContentTextField> createState() => _ContentTextFieldState();
+}
+
+class _ContentTextFieldState extends State<ContentTextField> {
+  late final TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(text: widget.value);
+  }
+
+  @override
+  void didUpdateWidget(ContentTextField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.value != widget.value &&
+        widget.value != _controller.text) {
+      _controller.text = widget.value;
+      _controller.selection = TextSelection.collapsed(offset: widget.value.length);
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: width,
+      width: widget.width,
       child: TextField(
-        controller: TextEditingController.fromValue(
-          TextEditingValue(
-            text: value,
-            selection: TextSelection.collapsed(offset: value.length),
-          ),
-        ),
-        onChanged: onNewValue,
+        controller: _controller,
+        onChanged: widget.onNewValue,
         maxLines: null, // multiple lines
         decoration: InputDecoration(
-          labelText: label,
-          border: OutlineInputBorder(),
+          labelText: widget.label,
+          border: const OutlineInputBorder(),
         ),
       ),
     );
   }
 }
 
-// ContentTextField with error message that calls the basic ContentTextField
 class ContentTextFieldWithError extends StatelessWidget {
   final String value;
   final String errorMessage;

@@ -37,7 +37,7 @@ abstract class CreateTimeCapsuleState with _$CreateTimeCapsuleState {
   }) = _CreateTimeCapsuleState;
 }
 
-final createTimeCapsuleNotifierProvider = StateNotifierProvider<CreateTimeCapsuleNotifier, CreateTimeCapsuleState>((ref) {
+final createTimeCapsuleNotifierProvider = StateNotifierProvider.autoDispose<CreateTimeCapsuleNotifier, CreateTimeCapsuleState>((ref) {
   final repository = ref.read(timeCapsuleRepositoryProvider);
   final userRepository = ref.read(userRepositoryProvider);
   final auth = ref.read(firebaseAuthInstanceProvider);

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:reverieflutter/ui/components/error_field.dart';
 
-class PasswordField extends StatelessWidget {
+class PasswordField extends StatefulWidget {
   final String value;
   final ValueChanged<String> onNewValue;
   final String label;
@@ -16,20 +16,44 @@ class PasswordField extends StatelessWidget {
   });
 
   @override
+  State<PasswordField> createState() => _PasswordFieldState();
+}
+
+class _PasswordFieldState extends State<PasswordField> {
+  late final TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(text: widget.value);
+  }
+
+  @override
+  void didUpdateWidget(PasswordField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.value != widget.value &&
+        widget.value != _controller.text) {
+      _controller.text = widget.value;
+      _controller.selection = TextSelection.collapsed(offset: widget.value.length);
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: width,
+      width: widget.width,
       child: TextField(
-        obscureText: true, // equivalent of PasswordVisualTransformation()
-        controller: TextEditingController.fromValue(
-          TextEditingValue(
-            text: value,
-            selection: TextSelection.collapsed(offset: value.length),
-          ),
-        ),
-        onChanged: onNewValue,
+        obscureText: true,
+        controller: _controller,
+        onChanged: widget.onNewValue,
         decoration: InputDecoration(
-          labelText: label,
+          labelText: widget.label,
           border: const OutlineInputBorder(),
         ),
         maxLines: 1,
@@ -37,7 +61,6 @@ class PasswordField extends StatelessWidget {
     );
   }
 }
-
 
 class PasswordFieldWithError extends StatelessWidget {
   final String value;
