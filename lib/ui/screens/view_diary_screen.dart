@@ -49,17 +49,12 @@ class _ViewDiaryScreenState extends ConsumerState<ViewDiaryScreen> {
     );
 
     // TODO: bad (?) but it works
-    var lastPageSize = state.asData?.value.pageSize;
-    var lastCurrentSubPageIndex = state.asData?.value.currentSubPageIndex;
+    var lastSplitPagesList = state.asData?.value.splitPagesList;
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final newLastPageSize = state.asData?.value.pageSize;
-      final newLastCurrentSubPageIndex =
-          state.asData?.value.currentSubPageIndex;
-      if (lastPageSize != newLastPageSize ||
-          lastCurrentSubPageIndex != newLastCurrentSubPageIndex) {
-        lastPageSize = newLastPageSize;
-        lastCurrentSubPageIndex = newLastCurrentSubPageIndex;
+      final newSplitPagesList = state.asData?.value.splitPagesList;
+      if (lastSplitPagesList != newSplitPagesList) {
+        lastSplitPagesList = newSplitPagesList;
         notifier.refreshState();
       }
     });
