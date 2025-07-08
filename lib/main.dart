@@ -85,6 +85,8 @@ class _MainScaffoldState extends State<MainScaffold> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.hideBars) currentIndex = 0;
+
     return Scaffold(
       appBar: AppBar(
         title: Padding(

@@ -82,6 +82,7 @@ class LoginNotifier extends StateNotifier<LoginState> {
 
       if (isAuthenticated) {
         onLoginSuccess();
+        state = LoginState();
       } else {
         state = state.copyWith(formError: localizations.loginError);
       }

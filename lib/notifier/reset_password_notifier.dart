@@ -70,6 +70,7 @@ class ResetPasswordNotifier extends StateNotifier<ResetPasswordState> {
       );
 
       onResetPasswordSuccess();
+      state = ResetPasswordState();
     } catch (error) {
       // Handle any unexpected errors
       state = state.copyWith(formError: localizations.loginError);

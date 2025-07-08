@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reverieflutter/l10n/app_localizations.dart';
 import 'package:reverieflutter/notifier/login_notifier.dart';
 import 'package:reverieflutter/ui/components/error_field.dart';
+import 'package:reverieflutter/ui/components/password_field.dart';
 import 'package:reverieflutter/ui/components/single_field.dart';
 
 class LoginScreen extends ConsumerWidget {
@@ -51,7 +52,7 @@ class LoginScreen extends ConsumerWidget {
 
           const SizedBox(height: 16),
 
-          SingleLineFieldWithError(
+          PasswordFieldWithError(
             value: state.password,
             errorMessage: state.passwordError,
             onNewValue: notifier.onPasswordChange,

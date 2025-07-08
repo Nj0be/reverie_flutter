@@ -20,16 +20,15 @@ void main() {
   late MockTimeCapsuleRepository mockRepo;
   late MockFirebaseAuth mockAuth;
   late MockUser mockUser;
-  late MockAppLocalizations mockLoc;
+  final userId = 'test-user-id';
 
   setUp(() {
     mockRepo = MockTimeCapsuleRepository();
     mockAuth = MockFirebaseAuth();
     mockUser = MockUser();
-    mockLoc = MockAppLocalizations();
 
     when(mockAuth.currentUser).thenReturn(mockUser);
-    when(mockUser.uid).thenReturn('test-user-id');
+    when(mockUser.uid).thenReturn(userId);
   });
 
   testWidgets('Displays time capsule title', (tester) async {
@@ -37,13 +36,13 @@ void main() {
 
     final fakeTimeCapsule = TimeCapsule(
       id: '1',
-      userId: 'test-user-id',
+      userId: userId,
       title: message,
       content: 'Ciao futuro me! Spero che tu abbia raggiunto i tuoi sogni.',
       deadline: Timestamp.fromDate(DateTime(2030, 1, 1)),
       emails: [],
       phones: [],
-      receiversIds: ['test-user-id'],
+      receiversIds: [userId],
       creationDate: Timestamp.fromDate(DateTime(2029, 1, 1)),
       isSent: false,
     );
@@ -57,9 +56,9 @@ void main() {
     );
 
     final notifier = AllTimeCapsulesNotifier(
+      profileId: userId,
       repository: mockRepo,
       auth: mockAuth,
-      localizations: mockLoc,
     );
 
     notifier.state = fakeState;
@@ -67,7 +66,7 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
-          allTimeCapsulesNotifierProvider.overrideWith((_) => notifier),
+          allTimeCapsulesNotifierProvider(userId).overrideWith((_) => notifier),
         ],
         child: MaterialApp(
           localizationsDelegates: const [
@@ -77,6 +76,7 @@ void main() {
           ],
           supportedLocales: const [Locale('en')],
           home: AllTimeCapsulesScreen(
+            profileId: userId,
             onNavigateToCreateTimeCapsule: () async => fakeTimeCapsule,
             onNavigateToViewTimeCapsule: (_, _) {},
           ),

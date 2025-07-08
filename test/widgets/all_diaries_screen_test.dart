@@ -21,16 +21,15 @@ void main() {
   late MockDiaryRepository mockRepo;
   late MockFirebaseAuth mockAuth;
   late MockUser mockUser;
-  late MockAppLocalizations mockLoc;
+  final userId = 'test-user-id';
 
   setUp(() {
     mockRepo = MockDiaryRepository();
     mockAuth = MockFirebaseAuth();
     mockUser = MockUser();
-    mockLoc = MockAppLocalizations();
 
     when(mockAuth.currentUser).thenReturn(mockUser);
-    when(mockUser.uid).thenReturn('test-user-id');
+    when(mockUser.uid).thenReturn(userId);
   });
 
   testWidgets('Displays diary title and description', (tester) async {
@@ -59,9 +58,8 @@ void main() {
     );
 
     final notifier = AllDiariesNotifier(
+      profileId: userId,
       repository: mockRepo,
-      auth: mockAuth,
-      localizations: mockLoc,
     );
 
     notifier.state = fakeState;
@@ -69,7 +67,7 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
-          allDiariesNotifierProvider.overrideWith((_) => notifier),
+          allDiariesNotifierProvider(userId).overrideWith((_) => notifier),
         ],
         child: MaterialApp(
           localizationsDelegates: const [
@@ -79,6 +77,7 @@ void main() {
           ],
           supportedLocales: const [Locale('en')],
           home: AllDiariesScreen(
+            profileId: userId,
             onNavigateToDiary: (_) {},
             onNavigateToEditDiary: (_) async => fakeDiary,
             onNavigateToCreateDiary: () async => fakeDiary,

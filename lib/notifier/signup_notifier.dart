@@ -217,6 +217,7 @@ class SignupNotifier extends StateNotifier<SignupState> {
 
     if (user != null) {
       onSignupSuccess();
+      state = SignupState();
     } else {
       state = state.copyWith(formError: localizations.signupError);
     }

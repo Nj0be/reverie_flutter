@@ -1,13 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:reverieflutter/data/model/diary.dart';
 import 'package:reverieflutter/data/repository/diary_repository.dart';
-import 'package:reverieflutter/l10n/app_localizations.dart';
-import 'package:reverieflutter/storage_service.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:reverieflutter/data/model/diary_cover.dart';
-import 'package:reverieflutter/l10n/localizations_provider.dart';
 import 'package:flutter/material.dart';
 part 'all_diaries_notifier.freezed.dart';
 
@@ -28,45 +24,31 @@ abstract class AllDiariesState with _$AllDiariesState {
   }) = _AllDiariesState;
 }
 
-final allDiariesNotifierProvider = StateNotifierProvider<
+final allDiariesNotifierProvider = StateNotifierProvider.family<
     AllDiariesNotifier,
-    AsyncValue<AllDiariesState>
-  >((ref) {
+    AsyncValue<AllDiariesState>,
+    String
+  >((ref, profileId) {
   final repository = ref.read(diaryRepositoryProvider);
-  final auth = ref.read(firebaseAuthInstanceProvider);
-  final localizations = ref.read(appLocalizationsProvider);
 
-  return AllDiariesNotifier(repository: repository, auth: auth, localizations: localizations);
+  return AllDiariesNotifier(repository: repository, profileId: profileId);
 });
 
-class AllDiariesNotifier
-    extends StateNotifier<AsyncValue<AllDiariesState>> {
+class AllDiariesNotifier extends StateNotifier<AsyncValue<AllDiariesState>> {
   final DiaryRepository _repository;
-  final FirebaseAuth _auth;
-  final AppLocalizations _localizations;
 
   AllDiariesNotifier({
     required DiaryRepository repository,
-    required FirebaseAuth auth,
-    required AppLocalizations localizations,
+    required String profileId,
   })
-      : _auth = auth,
-        _repository = repository,
-        _localizations = localizations,
+      : _repository = repository,
         super(const AsyncLoading()) {
-    _loadDiaries();
+    _loadDiaries(profileId);
   }
 
-  Future<void> _loadDiaries() async {
-    final userId = _auth.currentUser?.uid;
-    if (userId == null) {
-      state =
-          AsyncValue.error(_localizations.userNotSignedIn, StackTrace.current);
-      return;
-    }
-
+  Future<void> _loadDiaries(String profileId) async {
     try {
-      final diaries = await _repository.getUserDiaries(userId);
+      final diaries = await _repository.getUserDiaries(profileId);
 
       final Set<String> diaryCoversSet = diaries
           .map((diary) => diary.coverId)

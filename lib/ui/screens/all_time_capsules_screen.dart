@@ -11,23 +11,26 @@ class AllTimeCapsulesScreen extends ConsumerWidget {
   static const String name = 'all_time_capsules';
   static const String path = '/time_capsules';
 
+  final String _profileId;
   final Future<TimeCapsule?> Function() _onNavigateToCreateTimeCapsule;
   final void Function(String, TimeCapsuleType) _onNavigateToViewTimeCapsule;
 
   const AllTimeCapsulesScreen({
     super.key,
+    required String profileId,
     required Future<TimeCapsule?> Function() onNavigateToCreateTimeCapsule,
     required void Function(String, TimeCapsuleType) onNavigateToViewTimeCapsule,
-  }) : _onNavigateToCreateTimeCapsule = onNavigateToCreateTimeCapsule,
-       _onNavigateToViewTimeCapsule = onNavigateToViewTimeCapsule;
+  }) : _profileId = profileId,
+        _onNavigateToCreateTimeCapsule = onNavigateToCreateTimeCapsule,
+        _onNavigateToViewTimeCapsule = onNavigateToViewTimeCapsule;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(allTimeCapsulesNotifierProvider);
-    final notifier = ref.read(allTimeCapsulesNotifierProvider.notifier);
+    final state = ref.watch(allTimeCapsulesNotifierProvider(_profileId));
+    final notifier = ref.read(allTimeCapsulesNotifierProvider(_profileId).notifier);
     final localizations = AppLocalizations.of(context)!;
 
-    ref.listen<AsyncValue<AllTimeCapsulesState>>(allTimeCapsulesNotifierProvider, (prev, next) {
+    ref.listen<AsyncValue<AllTimeCapsulesState>>(allTimeCapsulesNotifierProvider(_profileId), (prev, next) {
       final capsuleId = next.valueOrNull?.deleteDialogCapsuleId;
 
       if (capsuleId != null && capsuleId.isNotEmpty) {

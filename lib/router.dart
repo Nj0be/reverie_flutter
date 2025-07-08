@@ -47,28 +47,31 @@ final router = GoRouter(
         GoRoute(
           name: AllDiariesScreen.name,
           path: AllDiariesScreen.path,
-          pageBuilder: (context, state) => MaterialPage(
-            key: state.pageKey,
-            child: AllDiariesScreen(
-              onNavigateToDiary: (diaryId) {
-                context.pushNamed(
-                  ViewDiaryScreen.name,
-                  pathParameters: {'diaryId': diaryId},
-                );
-              },
-              onNavigateToEditDiary: (diaryId) async {
-                // return updated profile from editProfile
-                return await context.pushNamed(
-                  EditDiaryScreen.editName,
-                  pathParameters: {'diaryId': diaryId},
-                ) as Diary?;
-              },
-              onNavigateToCreateDiary: () async {
-                // return updated profile from editProfile
-                return await context.pushNamed(EditDiaryScreen.createName) as Diary?;
-              },
-            ),
-          ),
+          pageBuilder: (context, state) {
+            return MaterialPage(
+              child: AllDiariesScreen(
+                profileId: getUserId() ?? "",
+                onNavigateToDiary: (diaryId) {
+                  context.pushNamed(
+                    ViewDiaryScreen.name,
+                    pathParameters: {'diaryId': diaryId},
+                  );
+                },
+                onNavigateToEditDiary: (diaryId) async {
+                  // return updated profile from editProfile
+                  return await context.pushNamed(
+                    EditDiaryScreen.editName,
+                    pathParameters: {'diaryId': diaryId},
+                  ) as Diary?;
+                },
+                onNavigateToCreateDiary: () async {
+                  // return updated profile from editProfile
+                  return await context.pushNamed(
+                      EditDiaryScreen.createName) as Diary?;
+                },
+              ),
+            );
+          },
           routes: [
             // Route for editing a diary
             GoRoute(
@@ -159,6 +162,7 @@ final router = GoRouter(
           pageBuilder: (context, state) => MaterialPage(
             key: state.pageKey,
             child: AllTimeCapsulesScreen(
+              profileId: getUserId() ?? "",
               onNavigateToCreateTimeCapsule: () async {
                 return await context.pushNamed(CreateTimeCapsuleScreen.name)
                 as TimeCapsule?;

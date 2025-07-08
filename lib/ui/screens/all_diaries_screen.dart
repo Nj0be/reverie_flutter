@@ -11,12 +11,14 @@ class AllDiariesScreen extends ConsumerWidget {
   static const String name = 'all_diaries';
   static const String path = '/diaries';
 
+  final String profileId;
   final void Function(String) onNavigateToDiary;
   final Future<Diary?> Function(String) onNavigateToEditDiary;
   final Future<Diary?> Function() onNavigateToCreateDiary;
 
   const AllDiariesScreen({
     super.key,
+    required this.profileId,
     required this.onNavigateToDiary,
     required this.onNavigateToCreateDiary,
     required this.onNavigateToEditDiary,
@@ -24,9 +26,11 @@ class AllDiariesScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(allDiariesNotifierProvider(profileId));
+    final notifier = ref.read(allDiariesNotifierProvider(profileId).notifier);
 
     // Gestione dialog tramite listener
-    ref.listen<AsyncValue<AllDiariesState>>(allDiariesNotifierProvider, (previous, next) {
+    ref.listen<AsyncValue<AllDiariesState>>(allDiariesNotifierProvider(profileId), (previous, next) {
       next.whenData((data) {
         if (data.deleteDialogState) {
           final currentDiaryId = data.diaries[data.currentIndex].id;
@@ -39,14 +43,14 @@ class AllDiariesScreen extends ConsumerWidget {
               actions: [
                 TextButton(
                   onPressed: () {
-                    ref.read(allDiariesNotifierProvider.notifier).closeDeleteDialog();
+                    notifier.closeDeleteDialog();
                     Navigator.of(context).pop();
                   },
                   child: Text(AppLocalizations.of(context)!.cancel),
                 ),
                 TextButton(
                   onPressed: () {
-                    ref.read(allDiariesNotifierProvider.notifier).deleteDiary(currentDiaryId);
+                    notifier.deleteDiary(currentDiaryId);
                     Navigator.of(context).pop();
                   },
                   child: Text(AppLocalizations.of(context)!.delete),
@@ -58,8 +62,6 @@ class AllDiariesScreen extends ConsumerWidget {
       });
     });
 
-    final state = ref.watch(allDiariesNotifierProvider);
-    final notifier = ref.read(allDiariesNotifierProvider.notifier);
     final localizations = AppLocalizations.of(context)!;
 
     return state.when(
@@ -143,7 +145,7 @@ class AllDiariesScreen extends ConsumerWidget {
                                     IconButton(
                                       icon: const Icon(Icons.delete_outline),
                                       onPressed: () {
-                                        ref.read(allDiariesNotifierProvider.notifier).openDeleteDialog();
+                                        notifier.openDeleteDialog();
                                       },
                                     ),
                                   ],

@@ -3,8 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:reverieflutter/data/model/time_capsule.dart';
 import 'package:reverieflutter/data/repository/time_capsule_repository.dart';
-import 'package:reverieflutter/l10n/app_localizations.dart';
-import 'package:reverieflutter/l10n/localizations_provider.dart';
 import 'package:reverieflutter/storage_service.dart';
 import 'package:riverpod/riverpod.dart';
 
@@ -57,46 +55,37 @@ abstract class AllTimeCapsulesState with _$AllTimeCapsulesState {
 }
 
 final allTimeCapsulesNotifierProvider =
-    StateNotifierProvider<
+    StateNotifierProvider.family<
       AllTimeCapsulesNotifier,
-      AsyncValue<AllTimeCapsulesState>
-    >((ref) {
+      AsyncValue<AllTimeCapsulesState>,
+      String
+    >((ref, profileId) {
       final repository = ref.read(timeCapsuleRepositoryProvider);
       final auth = ref.read(firebaseAuthInstanceProvider);
-      final localizations = ref.read(appLocalizationsProvider);
 
-      return AllTimeCapsulesNotifier(repository: repository, auth: auth, localizations: localizations);
+      return AllTimeCapsulesNotifier(repository: repository, auth: auth, profileId: profileId);
     });
 
 class AllTimeCapsulesNotifier
     extends StateNotifier<AsyncValue<AllTimeCapsulesState>> {
   final TimeCapsuleRepository _repository;
   final FirebaseAuth _auth;
-  final AppLocalizations _localizations;
 
   AllTimeCapsulesNotifier({
     required TimeCapsuleRepository repository,
     required FirebaseAuth auth,
-    required AppLocalizations localizations,
+    required String profileId
   })
-    : _auth = auth, _repository = repository,
-        _localizations = localizations, super(const AsyncLoading()) {
-    _loadTimeCapsules();
+    : _auth = auth, _repository = repository, super(const AsyncLoading()) {
+    _loadTimeCapsules(profileId);
   }
 
-  Future<void> _loadTimeCapsules() async {
-    final userId = _auth.currentUser?.uid;
-    if (userId == null) {
-      state = AsyncValue.error(_localizations.userNotSignedIn, StackTrace.current);
-      return;
-    }
-
+  Future<void> _loadTimeCapsules(String profileId) async {
     try {
-      final sentTimeCapsules = await _repository.getUserSentTimeCapsules(
-          userId);
+      final sentTimeCapsules = await _repository.getUserSentTimeCapsules(profileId);
       final receivedTimeCapsules = await _repository
           .getUserReceivedTimeCapsules(
-        userId,
+        profileId,
       );
       final sentTimeCapsulesMap = {
         for (var capsule in sentTimeCapsules) capsule.id: capsule,

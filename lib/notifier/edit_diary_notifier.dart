@@ -43,13 +43,12 @@ class EditDiaryNotifier extends StateNotifier<AsyncValue<EditDiaryState>> {
   final DiaryRepository repository;
   final FirebaseAuth auth;
   final AppLocalizations localizations;
-  final String diaryId;
 
   EditDiaryNotifier({
     required this.repository,
     required this.auth,
     required this.localizations,
-    required this.diaryId,
+    required String diaryId,
   }) : super(const AsyncLoading()) {
     _loadDiary(diaryId);
   }

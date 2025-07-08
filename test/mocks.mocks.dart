@@ -2453,6 +2453,17 @@ class MockAppLocalizations extends _i1.Mock implements _i18.AppLocalizations {
             ),
           )
           as String);
+
+  @override
+  String get createFirstDiary =>
+      (super.noSuchMethod(
+            Invocation.getter(#createFirstDiary),
+            returnValue: _i14.dummyValue<String>(
+              this,
+              Invocation.getter(#createFirstDiary),
+            ),
+          )
+          as String);
 }
 
 /// A class which mocks [CreateTimeCapsuleNotifier].
