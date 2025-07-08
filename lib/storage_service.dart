@@ -62,16 +62,14 @@ class StorageService {
   }
 
   Future<User?> saveUser(User user) async {
-    final uid = FirebaseAuth.instance.currentUser?.uid;
-    if (uid == null) return null;
+    if (user.id.isEmpty) return null;
 
-    final userWithId = user.copyWith(id: uid);
-    final userRef = _firestore.collection(usersCollection).doc(uid);
+    final userRef = _firestore.collection(usersCollection).doc(user.id);
 
     try {
       await _firestore.runTransaction((transaction) async {
-        final usernameRef = _firestore.collection(usernamesCollection).doc(userWithId.username);
-        final emailRef = _firestore.collection(emailsCollection).doc(userWithId.email);
+        final usernameRef = _firestore.collection(usernamesCollection).doc(user.username);
+        final emailRef = _firestore.collection(emailsCollection).doc(user.email);
 
         final usernameSnapshot = await transaction.get(usernameRef);
         if (usernameSnapshot.exists) {
@@ -83,12 +81,12 @@ class StorageService {
           throw Exception(_localizations.emailAlreadyTaken);
         }
 
-        transaction.set(usernameRef, {'uid': uid});
-        transaction.set(emailRef, {'uid': uid});
-        transaction.set(userRef, userWithId.toJson());
+        transaction.set(usernameRef, {'uid': user.id});
+        transaction.set(emailRef, {'uid': user.id});
+        transaction.set(userRef, user.toJson());
       });
 
-      return userWithId;
+      return user;
     } catch (e) {
       return null;
     }

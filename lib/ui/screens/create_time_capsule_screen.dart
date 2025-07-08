@@ -195,7 +195,7 @@ class DatePicker extends StatelessWidget {
   final Timestamp selectedDate;
   final ValueChanged<Timestamp> onUpdateDate;
 
-  DatePicker({required this.selectedDate, required this.onUpdateDate});
+  const DatePicker({super.key, required this.selectedDate, required this.onUpdateDate});
 
   @override
   Widget build(BuildContext context) {

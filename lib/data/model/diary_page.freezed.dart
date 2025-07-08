@@ -71,7 +71,7 @@ id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,diaryId: null == diaryId ? _self.diaryId : diaryId // ignore: cast_nullable_to_non_nullable
 as String,content: null == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
 as String,subPageIds: null == subPageIds ? _self.subPageIds : subPageIds // ignore: cast_nullable_to_non_nullable
-as List<String>,timestamp: freezed == timestamp ? _self.timestamp! : timestamp // ignore: cast_nullable_to_non_nullable
+as List<String>,timestamp: freezed == timestamp ? _self.timestamp : timestamp // ignore: cast_nullable_to_non_nullable
 as Timestamp?,
   ));
 }

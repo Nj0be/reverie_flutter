@@ -73,7 +73,7 @@ as String,title: null == title ? _self.title : title // ignore: cast_nullable_to
 as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String,coverId: null == coverId ? _self.coverId : coverId // ignore: cast_nullable_to_non_nullable
 as String,pageIds: null == pageIds ? _self.pageIds : pageIds // ignore: cast_nullable_to_non_nullable
-as List<String>,creationDate: freezed == creationDate ? _self.creationDate! : creationDate // ignore: cast_nullable_to_non_nullable
+as List<String>,creationDate: freezed == creationDate ? _self.creationDate : creationDate // ignore: cast_nullable_to_non_nullable
 as Timestamp?,
   ));
 }

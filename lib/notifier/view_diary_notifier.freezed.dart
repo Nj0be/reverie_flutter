@@ -64,10 +64,10 @@ class _$ViewDiaryStateCopyWithImpl<$Res>
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? diary = freezed,Object? pagesMap = null,Object? pageController = freezed,Object? pageKey = freezed,Object? textScaler = null,}) {
   return _then(_self.copyWith(
-diary: freezed == diary ? _self.diary! : diary // ignore: cast_nullable_to_non_nullable
+diary: freezed == diary ? _self.diary : diary // ignore: cast_nullable_to_non_nullable
 as Diary?,pagesMap: null == pagesMap ? _self.pagesMap : pagesMap // ignore: cast_nullable_to_non_nullable
-as Map<String, DiaryPage>,pageController: freezed == pageController ? _self.pageController! : pageController // ignore: cast_nullable_to_non_nullable
-as PageController?,pageKey: freezed == pageKey ? _self.pageKey! : pageKey // ignore: cast_nullable_to_non_nullable
+as Map<String, DiaryPage>,pageController: freezed == pageController ? _self.pageController : pageController // ignore: cast_nullable_to_non_nullable
+as PageController?,pageKey: freezed == pageKey ? _self.pageKey : pageKey // ignore: cast_nullable_to_non_nullable
 as GlobalKey<State<StatefulWidget>>?,textScaler: null == textScaler ? _self.textScaler : textScaler // ignore: cast_nullable_to_non_nullable
 as TextScaler,
   ));
@@ -77,11 +77,7 @@ as TextScaler,
 @override
 @pragma('vm:prefer-inline')
 $DiaryCopyWith<$Res>? get diary {
-    if (_self.diary == null) {
-    return null;
-  }
-
-  return $DiaryCopyWith<$Res>(_self.diary!, (value) {
+    return $DiaryCopyWith<$Res>(_self.diary, (value) {
     return _then(_self.copyWith(diary: value));
   });
 }
@@ -297,11 +293,7 @@ as TextScaler,
 @override
 @pragma('vm:prefer-inline')
 $DiaryCopyWith<$Res>? get diary {
-    if (_self.diary == null) {
-    return null;
-  }
-
-  return $DiaryCopyWith<$Res>(_self.diary!, (value) {
+    return $DiaryCopyWith<$Res>(_self.diary, (value) {
     return _then(_self.copyWith(diary: value));
   });
 }

@@ -53,15 +53,15 @@ class UserRepository {
 
   Future<User?> createAccount(User user, String password) async {
     try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      final firebaseUser = (await _auth.createUserWithEmailAndPassword(
         email: user.email,
         password: password,
-      );
+      )).user;
 
-      final userWithId = await _storage.saveUser(user);
-      if (userWithId == null) return null;
+      if (firebaseUser == null) return null;
 
-      return userWithId;
+      final userWithId = user.copyWith(id: firebaseUser.uid);
+      return _storage.saveUser(userWithId);
     } catch (e) {
       return null;
     }

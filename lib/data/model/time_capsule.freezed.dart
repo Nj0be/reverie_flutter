@@ -71,11 +71,11 @@ id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,content: null == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
-as String,deadline: freezed == deadline ? _self.deadline! : deadline // ignore: cast_nullable_to_non_nullable
+as String,deadline: freezed == deadline ? _self.deadline : deadline // ignore: cast_nullable_to_non_nullable
 as Timestamp?,emails: null == emails ? _self.emails : emails // ignore: cast_nullable_to_non_nullable
 as List<String>,phones: null == phones ? _self.phones : phones // ignore: cast_nullable_to_non_nullable
 as List<String>,receiversIds: null == receiversIds ? _self.receiversIds : receiversIds // ignore: cast_nullable_to_non_nullable
-as List<String>,creationDate: freezed == creationDate ? _self.creationDate! : creationDate // ignore: cast_nullable_to_non_nullable
+as List<String>,creationDate: freezed == creationDate ? _self.creationDate : creationDate // ignore: cast_nullable_to_non_nullable
 as Timestamp?,isSent: null == isSent ? _self.isSent : isSent // ignore: cast_nullable_to_non_nullable
 as bool,
   ));

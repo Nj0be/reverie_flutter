@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:reverieflutter/data/model/diary.dart';
@@ -295,7 +294,7 @@ final router = GoRouter(
             child: SignupScreen(
               onSignupSuccess: () {
                 // handle signup success
-                context.goNamed(LoginScreen.name);
+                context.goNamed(AllDiariesScreen.name);
               },
               onNavigateToLogin: () {
                 context.goNamed(LoginScreen.name);

@@ -64,7 +64,7 @@ class _$CreateTimeCapsuleStateCopyWithImpl<$Res>
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? timeCapsule = freezed,Object? titleError = null,Object? contentError = null,Object? deadlineError = null,Object? phoneNumber = null,Object? phoneNumberError = null,Object? email = null,Object? emailError = null,Object? partialUsername = null,Object? formError = null,Object? matchingUsers = null,Object? userReceivers = null,}) {
   return _then(_self.copyWith(
-timeCapsule: freezed == timeCapsule ? _self.timeCapsule! : timeCapsule // ignore: cast_nullable_to_non_nullable
+timeCapsule: freezed == timeCapsule ? _self.timeCapsule : timeCapsule // ignore: cast_nullable_to_non_nullable
 as TimeCapsule?,titleError: null == titleError ? _self.titleError : titleError // ignore: cast_nullable_to_non_nullable
 as String,contentError: null == contentError ? _self.contentError : contentError // ignore: cast_nullable_to_non_nullable
 as String,deadlineError: null == deadlineError ? _self.deadlineError : deadlineError // ignore: cast_nullable_to_non_nullable
@@ -84,11 +84,7 @@ as List<User>,
 @override
 @pragma('vm:prefer-inline')
 $TimeCapsuleCopyWith<$Res>? get timeCapsule {
-    if (_self.timeCapsule == null) {
-    return null;
-  }
-
-  return $TimeCapsuleCopyWith<$Res>(_self.timeCapsule!, (value) {
+    return $TimeCapsuleCopyWith<$Res>(_self.timeCapsule, (value) {
     return _then(_self.copyWith(timeCapsule: value));
   });
 }
@@ -326,11 +322,7 @@ as List<User>,
 @override
 @pragma('vm:prefer-inline')
 $TimeCapsuleCopyWith<$Res>? get timeCapsule {
-    if (_self.timeCapsule == null) {
-    return null;
-  }
-
-  return $TimeCapsuleCopyWith<$Res>(_self.timeCapsule!, (value) {
+    return $TimeCapsuleCopyWith<$Res>(_self.timeCapsule, (value) {
     return _then(_self.copyWith(timeCapsule: value));
   });
 }

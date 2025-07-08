@@ -64,7 +64,7 @@ class _$EditDiaryStateCopyWithImpl<$Res>
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? diary = freezed,Object? allCoversList = null,Object? titleError = null,Object? descriptionError = null,}) {
   return _then(_self.copyWith(
-diary: freezed == diary ? _self.diary! : diary // ignore: cast_nullable_to_non_nullable
+diary: freezed == diary ? _self.diary : diary // ignore: cast_nullable_to_non_nullable
 as Diary?,allCoversList: null == allCoversList ? _self.allCoversList : allCoversList // ignore: cast_nullable_to_non_nullable
 as List<DiaryCover>,titleError: null == titleError ? _self.titleError : titleError // ignore: cast_nullable_to_non_nullable
 as String,descriptionError: null == descriptionError ? _self.descriptionError : descriptionError // ignore: cast_nullable_to_non_nullable
@@ -76,11 +76,7 @@ as String,
 @override
 @pragma('vm:prefer-inline')
 $DiaryCopyWith<$Res>? get diary {
-    if (_self.diary == null) {
-    return null;
-  }
-
-  return $DiaryCopyWith<$Res>(_self.diary!, (value) {
+    return $DiaryCopyWith<$Res>(_self.diary, (value) {
     return _then(_self.copyWith(diary: value));
   });
 }
@@ -296,11 +292,7 @@ as String,
 @override
 @pragma('vm:prefer-inline')
 $DiaryCopyWith<$Res>? get diary {
-    if (_self.diary == null) {
-    return null;
-  }
-
-  return $DiaryCopyWith<$Res>(_self.diary!, (value) {
+    return $DiaryCopyWith<$Res>(_self.diary, (value) {
     return _then(_self.copyWith(diary: value));
   });
 }

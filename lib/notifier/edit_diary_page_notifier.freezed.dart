@@ -64,7 +64,7 @@ class _$EditDiaryPageStateCopyWithImpl<$Res>
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? page = freezed,}) {
   return _then(_self.copyWith(
-page: freezed == page ? _self.page! : page // ignore: cast_nullable_to_non_nullable
+page: freezed == page ? _self.page : page // ignore: cast_nullable_to_non_nullable
 as DiaryPage?,
   ));
 }
@@ -73,11 +73,7 @@ as DiaryPage?,
 @override
 @pragma('vm:prefer-inline')
 $DiaryPageCopyWith<$Res>? get page {
-    if (_self.page == null) {
-    return null;
-  }
-
-  return $DiaryPageCopyWith<$Res>(_self.page!, (value) {
+    return $DiaryPageCopyWith<$Res>(_self.page, (value) {
     return _then(_self.copyWith(page: value));
   });
 }
@@ -282,11 +278,7 @@ as DiaryPage?,
 @override
 @pragma('vm:prefer-inline')
 $DiaryPageCopyWith<$Res>? get page {
-    if (_self.page == null) {
-    return null;
-  }
-
-  return $DiaryPageCopyWith<$Res>(_self.page!, (value) {
+    return $DiaryPageCopyWith<$Res>(_self.page, (value) {
     return _then(_self.copyWith(page: value));
   });
 }

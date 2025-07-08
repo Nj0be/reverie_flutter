@@ -122,7 +122,7 @@ class EditDiaryNotifier extends StateNotifier<AsyncValue<EditDiaryState>> {
     if (currentState == null) return;
 
     // Validate all fields
-    final titleError = await validateTitle(currentState.diary.title);
+    final titleError = validateTitle(currentState.diary.title);
     final descriptionError = validateDescription(currentState.diary.description);
 
     // Update errors in state

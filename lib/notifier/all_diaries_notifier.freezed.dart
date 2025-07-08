@@ -68,7 +68,7 @@ diaries: null == diaries ? _self.diaries : diaries // ignore: cast_nullable_to_n
 as List<Diary>,diaryCoversMap: null == diaryCoversMap ? _self.diaryCoversMap : diaryCoversMap // ignore: cast_nullable_to_non_nullable
 as Map<String, DiaryCover>,deleteDialogState: null == deleteDialogState ? _self.deleteDialogState : deleteDialogState // ignore: cast_nullable_to_non_nullable
 as bool,currentIndex: null == currentIndex ? _self.currentIndex : currentIndex // ignore: cast_nullable_to_non_nullable
-as int,pageController: freezed == pageController ? _self.pageController! : pageController // ignore: cast_nullable_to_non_nullable
+as int,pageController: freezed == pageController ? _self.pageController : pageController // ignore: cast_nullable_to_non_nullable
 as PageController?,
   ));
 }
