@@ -81,11 +81,15 @@ class MainScaffold extends StatefulWidget {
 }
 
 class _MainScaffoldState extends State<MainScaffold> {
-  var currentIndex = 0;
-
   @override
   Widget build(BuildContext context) {
-    if (widget.hideBars) currentIndex = 0;
+    late final int currentIndex;
+
+    if (widget.currentPath == AllDiariesScreen.path) {
+      currentIndex = 0;
+    } else if (widget.currentPath == AllTimeCapsulesScreen.path) {
+      currentIndex = 1;
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -132,9 +136,6 @@ class _MainScaffoldState extends State<MainScaffold> {
               selectedItemColor: AppColors.secondary,
               onTap: (index) {
                 if (index == currentIndex) return;
-                setState(() {
-                  currentIndex = index; // update current index state
-                });
                 switch (index) {
                   case 0:
                     context.goNamed(AllDiariesScreen.name);
