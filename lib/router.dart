@@ -313,7 +313,7 @@ final router = GoRouter(
           pageBuilder: (context, state) => MaterialPage(
             key: state.pageKey,
             child: ResetPasswordScreen(
-              onResetPasswordSuccess: () {
+              onNavigateToLogin: () {
                 // handle signup success
                 context.goNamed(LoginScreen.name);
               },

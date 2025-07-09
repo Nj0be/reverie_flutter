@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ResetPasswordState {
 
- String get email; String get emailError; String get formError;
+ String get email; String get emailError; String get formError; bool get resetSuccessful;
 /// Create a copy of ResetPasswordState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $ResetPasswordStateCopyWith<ResetPasswordState> get copyWith => _$ResetPasswordS
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ResetPasswordState&&(identical(other.email, email) || other.email == email)&&(identical(other.emailError, emailError) || other.emailError == emailError)&&(identical(other.formError, formError) || other.formError == formError));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ResetPasswordState&&(identical(other.email, email) || other.email == email)&&(identical(other.emailError, emailError) || other.emailError == emailError)&&(identical(other.formError, formError) || other.formError == formError)&&(identical(other.resetSuccessful, resetSuccessful) || other.resetSuccessful == resetSuccessful));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,email,emailError,formError);
+int get hashCode => Object.hash(runtimeType,email,emailError,formError,resetSuccessful);
 
 @override
 String toString() {
-  return 'ResetPasswordState(email: $email, emailError: $emailError, formError: $formError)';
+  return 'ResetPasswordState(email: $email, emailError: $emailError, formError: $formError, resetSuccessful: $resetSuccessful)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $ResetPasswordStateCopyWith<$Res>  {
   factory $ResetPasswordStateCopyWith(ResetPasswordState value, $Res Function(ResetPasswordState) _then) = _$ResetPasswordStateCopyWithImpl;
 @useResult
 $Res call({
- String email, String emailError, String formError
+ String email, String emailError, String formError, bool resetSuccessful
 });
 
 
@@ -62,12 +62,13 @@ class _$ResetPasswordStateCopyWithImpl<$Res>
 
 /// Create a copy of ResetPasswordState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? email = null,Object? emailError = null,Object? formError = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? email = null,Object? emailError = null,Object? formError = null,Object? resetSuccessful = null,}) {
   return _then(_self.copyWith(
 email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String,emailError: null == emailError ? _self.emailError : emailError // ignore: cast_nullable_to_non_nullable
 as String,formError: null == formError ? _self.formError : formError // ignore: cast_nullable_to_non_nullable
-as String,
+as String,resetSuccessful: null == resetSuccessful ? _self.resetSuccessful : resetSuccessful // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 
@@ -152,10 +153,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String email,  String emailError,  String formError)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String email,  String emailError,  String formError,  bool resetSuccessful)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ResetPasswordState() when $default != null:
-return $default(_that.email,_that.emailError,_that.formError);case _:
+return $default(_that.email,_that.emailError,_that.formError,_that.resetSuccessful);case _:
   return orElse();
 
 }
@@ -173,10 +174,10 @@ return $default(_that.email,_that.emailError,_that.formError);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String email,  String emailError,  String formError)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String email,  String emailError,  String formError,  bool resetSuccessful)  $default,) {final _that = this;
 switch (_that) {
 case _ResetPasswordState():
-return $default(_that.email,_that.emailError,_that.formError);case _:
+return $default(_that.email,_that.emailError,_that.formError,_that.resetSuccessful);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -193,10 +194,10 @@ return $default(_that.email,_that.emailError,_that.formError);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String email,  String emailError,  String formError)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String email,  String emailError,  String formError,  bool resetSuccessful)?  $default,) {final _that = this;
 switch (_that) {
 case _ResetPasswordState() when $default != null:
-return $default(_that.email,_that.emailError,_that.formError);case _:
+return $default(_that.email,_that.emailError,_that.formError,_that.resetSuccessful);case _:
   return null;
 
 }
@@ -208,12 +209,13 @@ return $default(_that.email,_that.emailError,_that.formError);case _:
 
 
 class _ResetPasswordState implements ResetPasswordState {
-  const _ResetPasswordState({this.email = '', this.emailError = '', this.formError = ''});
+  const _ResetPasswordState({this.email = '', this.emailError = '', this.formError = '', this.resetSuccessful = false});
   
 
 @override@JsonKey() final  String email;
 @override@JsonKey() final  String emailError;
 @override@JsonKey() final  String formError;
+@override@JsonKey() final  bool resetSuccessful;
 
 /// Create a copy of ResetPasswordState
 /// with the given fields replaced by the non-null parameter values.
@@ -225,16 +227,16 @@ _$ResetPasswordStateCopyWith<_ResetPasswordState> get copyWith => __$ResetPasswo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ResetPasswordState&&(identical(other.email, email) || other.email == email)&&(identical(other.emailError, emailError) || other.emailError == emailError)&&(identical(other.formError, formError) || other.formError == formError));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ResetPasswordState&&(identical(other.email, email) || other.email == email)&&(identical(other.emailError, emailError) || other.emailError == emailError)&&(identical(other.formError, formError) || other.formError == formError)&&(identical(other.resetSuccessful, resetSuccessful) || other.resetSuccessful == resetSuccessful));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,email,emailError,formError);
+int get hashCode => Object.hash(runtimeType,email,emailError,formError,resetSuccessful);
 
 @override
 String toString() {
-  return 'ResetPasswordState(email: $email, emailError: $emailError, formError: $formError)';
+  return 'ResetPasswordState(email: $email, emailError: $emailError, formError: $formError, resetSuccessful: $resetSuccessful)';
 }
 
 
@@ -245,7 +247,7 @@ abstract mixin class _$ResetPasswordStateCopyWith<$Res> implements $ResetPasswor
   factory _$ResetPasswordStateCopyWith(_ResetPasswordState value, $Res Function(_ResetPasswordState) _then) = __$ResetPasswordStateCopyWithImpl;
 @override @useResult
 $Res call({
- String email, String emailError, String formError
+ String email, String emailError, String formError, bool resetSuccessful
 });
 
 
@@ -262,12 +264,13 @@ class __$ResetPasswordStateCopyWithImpl<$Res>
 
 /// Create a copy of ResetPasswordState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? email = null,Object? emailError = null,Object? formError = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? email = null,Object? emailError = null,Object? formError = null,Object? resetSuccessful = null,}) {
   return _then(_ResetPasswordState(
 email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String,emailError: null == emailError ? _self.emailError : emailError // ignore: cast_nullable_to_non_nullable
 as String,formError: null == formError ? _self.formError : formError // ignore: cast_nullable_to_non_nullable
-as String,
+as String,resetSuccessful: null == resetSuccessful ? _self.resetSuccessful : resetSuccessful // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 

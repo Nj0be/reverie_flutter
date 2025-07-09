@@ -1,3 +1,4 @@
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:reverieflutter/data/repository/user_repository.dart';
 import 'package:reverieflutter/l10n/app_localizations.dart';
@@ -13,6 +14,7 @@ abstract class ResetPasswordState with _$ResetPasswordState {
     @Default('') String email,
     @Default('') String emailError,
     @Default('') String formError,
+    @Default(false) bool resetSuccessful,
   }) = _ResetPasswordState;
 }
 
@@ -51,7 +53,7 @@ class ResetPasswordNotifier extends StateNotifier<ResetPasswordState> {
     );
   }
 
-  Future<void> onResetPassword(void Function() onResetPasswordSuccess) async {
+  Future<void> onResetPassword() async {
     // Clear any form-wide errors
     // Validate individual inputs
     state = state.copyWith(
@@ -69,7 +71,9 @@ class ResetPasswordNotifier extends StateNotifier<ResetPasswordState> {
         state.email
       );
 
-      onResetPasswordSuccess();
+      state = state.copyWith(
+        resetSuccessful: true
+      );
     } catch (error) {
       // Handle any unexpected errors
       state = state.copyWith(formError: localizations.loginError);
