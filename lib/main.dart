@@ -83,7 +83,7 @@ class MainScaffold extends StatefulWidget {
 class _MainScaffoldState extends State<MainScaffold> {
   @override
   Widget build(BuildContext context) {
-    late final int currentIndex;
+    var currentIndex = 0;
 
     if (widget.currentPath == AllDiariesScreen.path) {
       currentIndex = 0;
