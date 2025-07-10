@@ -20,6 +20,7 @@ abstract class ViewTimeCapsuleState with _$ViewTimeCapsuleState {
     TimeCapsule? timeCapsule,
     @Default(TimeCapsuleType.scheduled) TimeCapsuleType timeCapsuleType,
     @Default([]) List<Username> receiversUsername,
+    @Default(Username()) Username sender,
   }) = _ViewTimeCapsuleState;
 }
 
@@ -65,6 +66,8 @@ class ViewTimeCapsuleNotifier extends StateNotifier<AsyncValue<ViewTimeCapsuleSt
       return Username(username: user.username, uid: receiverId);
     }));
 
-    state = AsyncValue.data(ViewTimeCapsuleState(timeCapsule: timeCapsule, timeCapsuleType: timeCapsuleType, receiversUsername: receiverUsers));
+    final sender = Username(username: (await _userRepository.getUser(timeCapsule.userId)).username, uid: timeCapsule.userId);
+
+    state = AsyncValue.data(ViewTimeCapsuleState(timeCapsule: timeCapsule, timeCapsuleType: timeCapsuleType, receiversUsername: receiverUsers, sender: sender));
   }
 }

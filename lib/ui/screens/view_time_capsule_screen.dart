@@ -30,6 +30,7 @@ class ViewTimeCapsuleScreen extends ConsumerWidget {
         final timeCapsule = data.timeCapsule;
         final timeCapsuleType = data.timeCapsuleType;
         final receiversUsername = data.receiversUsername;
+        final sender = data.sender;
 
         return SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 50),
@@ -76,7 +77,16 @@ class ViewTimeCapsuleScreen extends ConsumerWidget {
                   fontSize: 18,
                 ),
               ),
-              Text(timeCapsule.userId),
+              InkWell(
+                onTap: () => onViewProfile(sender.uid),
+                child: Text(
+                  sender.username,
+                  style: const TextStyle(
+                    decoration: TextDecoration.underline,
+                    color: Colors.blue,
+                  ),
+                ),
+              ),
 
               /// Receivers
               if (timeCapsuleType != TimeCapsuleType.received) ...[

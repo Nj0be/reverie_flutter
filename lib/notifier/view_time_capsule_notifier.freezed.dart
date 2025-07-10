@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ViewTimeCapsuleState {
 
- TimeCapsule get timeCapsule; TimeCapsuleType get timeCapsuleType; List<Username> get receiversUsername;
+ TimeCapsule get timeCapsule; TimeCapsuleType get timeCapsuleType; List<Username> get receiversUsername; Username get sender;
 /// Create a copy of ViewTimeCapsuleState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $ViewTimeCapsuleStateCopyWith<ViewTimeCapsuleState> get copyWith => _$ViewTimeCa
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ViewTimeCapsuleState&&(identical(other.timeCapsule, timeCapsule) || other.timeCapsule == timeCapsule)&&(identical(other.timeCapsuleType, timeCapsuleType) || other.timeCapsuleType == timeCapsuleType)&&const DeepCollectionEquality().equals(other.receiversUsername, receiversUsername));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ViewTimeCapsuleState&&(identical(other.timeCapsule, timeCapsule) || other.timeCapsule == timeCapsule)&&(identical(other.timeCapsuleType, timeCapsuleType) || other.timeCapsuleType == timeCapsuleType)&&const DeepCollectionEquality().equals(other.receiversUsername, receiversUsername)&&(identical(other.sender, sender) || other.sender == sender));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,timeCapsule,timeCapsuleType,const DeepCollectionEquality().hash(receiversUsername));
+int get hashCode => Object.hash(runtimeType,timeCapsule,timeCapsuleType,const DeepCollectionEquality().hash(receiversUsername),sender);
 
 @override
 String toString() {
-  return 'ViewTimeCapsuleState(timeCapsule: $timeCapsule, timeCapsuleType: $timeCapsuleType, receiversUsername: $receiversUsername)';
+  return 'ViewTimeCapsuleState(timeCapsule: $timeCapsule, timeCapsuleType: $timeCapsuleType, receiversUsername: $receiversUsername, sender: $sender)';
 }
 
 
@@ -45,11 +45,11 @@ abstract mixin class $ViewTimeCapsuleStateCopyWith<$Res>  {
   factory $ViewTimeCapsuleStateCopyWith(ViewTimeCapsuleState value, $Res Function(ViewTimeCapsuleState) _then) = _$ViewTimeCapsuleStateCopyWithImpl;
 @useResult
 $Res call({
- TimeCapsule? timeCapsule, TimeCapsuleType timeCapsuleType, List<Username> receiversUsername
+ TimeCapsule? timeCapsule, TimeCapsuleType timeCapsuleType, List<Username> receiversUsername, Username sender
 });
 
 
-$TimeCapsuleCopyWith<$Res>? get timeCapsule;
+$TimeCapsuleCopyWith<$Res>? get timeCapsule;$UsernameCopyWith<$Res> get sender;
 
 }
 /// @nodoc
@@ -62,12 +62,13 @@ class _$ViewTimeCapsuleStateCopyWithImpl<$Res>
 
 /// Create a copy of ViewTimeCapsuleState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? timeCapsule = freezed,Object? timeCapsuleType = null,Object? receiversUsername = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? timeCapsule = freezed,Object? timeCapsuleType = null,Object? receiversUsername = null,Object? sender = null,}) {
   return _then(_self.copyWith(
 timeCapsule: freezed == timeCapsule ? _self.timeCapsule : timeCapsule // ignore: cast_nullable_to_non_nullable
 as TimeCapsule?,timeCapsuleType: null == timeCapsuleType ? _self.timeCapsuleType : timeCapsuleType // ignore: cast_nullable_to_non_nullable
 as TimeCapsuleType,receiversUsername: null == receiversUsername ? _self.receiversUsername : receiversUsername // ignore: cast_nullable_to_non_nullable
-as List<Username>,
+as List<Username>,sender: null == sender ? _self.sender : sender // ignore: cast_nullable_to_non_nullable
+as Username,
   ));
 }
 /// Create a copy of ViewTimeCapsuleState
@@ -77,6 +78,15 @@ as List<Username>,
 $TimeCapsuleCopyWith<$Res>? get timeCapsule {
     return $TimeCapsuleCopyWith<$Res>(_self.timeCapsule, (value) {
     return _then(_self.copyWith(timeCapsule: value));
+  });
+}/// Create a copy of ViewTimeCapsuleState
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$UsernameCopyWith<$Res> get sender {
+  
+  return $UsernameCopyWith<$Res>(_self.sender, (value) {
+    return _then(_self.copyWith(sender: value));
   });
 }
 }
@@ -160,10 +170,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( TimeCapsule? timeCapsule,  TimeCapsuleType timeCapsuleType,  List<Username> receiversUsername)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( TimeCapsule? timeCapsule,  TimeCapsuleType timeCapsuleType,  List<Username> receiversUsername,  Username sender)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ViewTimeCapsuleState() when $default != null:
-return $default(_that.timeCapsule,_that.timeCapsuleType,_that.receiversUsername);case _:
+return $default(_that.timeCapsule,_that.timeCapsuleType,_that.receiversUsername,_that.sender);case _:
   return orElse();
 
 }
@@ -181,10 +191,10 @@ return $default(_that.timeCapsule,_that.timeCapsuleType,_that.receiversUsername)
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( TimeCapsule? timeCapsule,  TimeCapsuleType timeCapsuleType,  List<Username> receiversUsername)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( TimeCapsule? timeCapsule,  TimeCapsuleType timeCapsuleType,  List<Username> receiversUsername,  Username sender)  $default,) {final _that = this;
 switch (_that) {
 case _ViewTimeCapsuleState():
-return $default(_that.timeCapsule,_that.timeCapsuleType,_that.receiversUsername);case _:
+return $default(_that.timeCapsule,_that.timeCapsuleType,_that.receiversUsername,_that.sender);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -201,10 +211,10 @@ return $default(_that.timeCapsule,_that.timeCapsuleType,_that.receiversUsername)
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( TimeCapsule? timeCapsule,  TimeCapsuleType timeCapsuleType,  List<Username> receiversUsername)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( TimeCapsule? timeCapsule,  TimeCapsuleType timeCapsuleType,  List<Username> receiversUsername,  Username sender)?  $default,) {final _that = this;
 switch (_that) {
 case _ViewTimeCapsuleState() when $default != null:
-return $default(_that.timeCapsule,_that.timeCapsuleType,_that.receiversUsername);case _:
+return $default(_that.timeCapsule,_that.timeCapsuleType,_that.receiversUsername,_that.sender);case _:
   return null;
 
 }
@@ -216,7 +226,7 @@ return $default(_that.timeCapsule,_that.timeCapsuleType,_that.receiversUsername)
 
 
 class _ViewTimeCapsuleState extends ViewTimeCapsuleState {
-   _ViewTimeCapsuleState({final  TimeCapsule? timeCapsule, this.timeCapsuleType = TimeCapsuleType.scheduled, final  List<Username> receiversUsername = const []}): _receiversUsername = receiversUsername,super._(timeCapsule: timeCapsule);
+   _ViewTimeCapsuleState({final  TimeCapsule? timeCapsule, this.timeCapsuleType = TimeCapsuleType.scheduled, final  List<Username> receiversUsername = const [], this.sender = const Username()}): _receiversUsername = receiversUsername,super._(timeCapsule: timeCapsule);
   
 
 @override@JsonKey() final  TimeCapsuleType timeCapsuleType;
@@ -227,6 +237,7 @@ class _ViewTimeCapsuleState extends ViewTimeCapsuleState {
   return EqualUnmodifiableListView(_receiversUsername);
 }
 
+@override@JsonKey() final  Username sender;
 
 /// Create a copy of ViewTimeCapsuleState
 /// with the given fields replaced by the non-null parameter values.
@@ -238,16 +249,16 @@ _$ViewTimeCapsuleStateCopyWith<_ViewTimeCapsuleState> get copyWith => __$ViewTim
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ViewTimeCapsuleState&&(identical(other.timeCapsule, timeCapsule) || other.timeCapsule == timeCapsule)&&(identical(other.timeCapsuleType, timeCapsuleType) || other.timeCapsuleType == timeCapsuleType)&&const DeepCollectionEquality().equals(other._receiversUsername, _receiversUsername));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ViewTimeCapsuleState&&(identical(other.timeCapsule, timeCapsule) || other.timeCapsule == timeCapsule)&&(identical(other.timeCapsuleType, timeCapsuleType) || other.timeCapsuleType == timeCapsuleType)&&const DeepCollectionEquality().equals(other._receiversUsername, _receiversUsername)&&(identical(other.sender, sender) || other.sender == sender));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,timeCapsule,timeCapsuleType,const DeepCollectionEquality().hash(_receiversUsername));
+int get hashCode => Object.hash(runtimeType,timeCapsule,timeCapsuleType,const DeepCollectionEquality().hash(_receiversUsername),sender);
 
 @override
 String toString() {
-  return 'ViewTimeCapsuleState(timeCapsule: $timeCapsule, timeCapsuleType: $timeCapsuleType, receiversUsername: $receiversUsername)';
+  return 'ViewTimeCapsuleState(timeCapsule: $timeCapsule, timeCapsuleType: $timeCapsuleType, receiversUsername: $receiversUsername, sender: $sender)';
 }
 
 
@@ -258,11 +269,11 @@ abstract mixin class _$ViewTimeCapsuleStateCopyWith<$Res> implements $ViewTimeCa
   factory _$ViewTimeCapsuleStateCopyWith(_ViewTimeCapsuleState value, $Res Function(_ViewTimeCapsuleState) _then) = __$ViewTimeCapsuleStateCopyWithImpl;
 @override @useResult
 $Res call({
- TimeCapsule? timeCapsule, TimeCapsuleType timeCapsuleType, List<Username> receiversUsername
+ TimeCapsule? timeCapsule, TimeCapsuleType timeCapsuleType, List<Username> receiversUsername, Username sender
 });
 
 
-@override $TimeCapsuleCopyWith<$Res>? get timeCapsule;
+@override $TimeCapsuleCopyWith<$Res>? get timeCapsule;@override $UsernameCopyWith<$Res> get sender;
 
 }
 /// @nodoc
@@ -275,12 +286,13 @@ class __$ViewTimeCapsuleStateCopyWithImpl<$Res>
 
 /// Create a copy of ViewTimeCapsuleState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? timeCapsule = freezed,Object? timeCapsuleType = null,Object? receiversUsername = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? timeCapsule = freezed,Object? timeCapsuleType = null,Object? receiversUsername = null,Object? sender = null,}) {
   return _then(_ViewTimeCapsuleState(
 timeCapsule: freezed == timeCapsule ? _self.timeCapsule : timeCapsule // ignore: cast_nullable_to_non_nullable
 as TimeCapsule?,timeCapsuleType: null == timeCapsuleType ? _self.timeCapsuleType : timeCapsuleType // ignore: cast_nullable_to_non_nullable
 as TimeCapsuleType,receiversUsername: null == receiversUsername ? _self._receiversUsername : receiversUsername // ignore: cast_nullable_to_non_nullable
-as List<Username>,
+as List<Username>,sender: null == sender ? _self.sender : sender // ignore: cast_nullable_to_non_nullable
+as Username,
   ));
 }
 
@@ -291,6 +303,15 @@ as List<Username>,
 $TimeCapsuleCopyWith<$Res>? get timeCapsule {
     return $TimeCapsuleCopyWith<$Res>(_self.timeCapsule, (value) {
     return _then(_self.copyWith(timeCapsule: value));
+  });
+}/// Create a copy of ViewTimeCapsuleState
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$UsernameCopyWith<$Res> get sender {
+  
+  return $UsernameCopyWith<$Res>(_self.sender, (value) {
+    return _then(_self.copyWith(sender: value));
   });
 }
 }
